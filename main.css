@@ -1,0 +1,46 @@
+#display {
+    border: 1px solid black; 
+    background-color: #fff;
+}
+
+.button-box{
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr 1fr;
+    grid-template-rows: 1fr 1fr 1fr 1fr 1fr;
+    /* border: 1px solid black; */
+}
+
+.calc-body{
+    max-width: 300px;
+    border: 2px solid black;
+    background-color: #eee;
+}
+
+.calc-btn {
+    border-radius: 6px;
+    cursor: pointer;
+}
+
+#clear, #clear-entry {
+    background-color: red;
+}
+
+#clear:hover, #clear-entry:hover{
+    background-color:rgb(207, 0, 0)
+}
+
+#multiply, #divide, #add, #subtract{
+    background-color: #666;
+}
+#multiply:hover, #divide:hover, #add:hover, #subtract:hover {
+    background-color: #555;
+}
+
+#equals{
+    grid-column: 3/5;
+    grid-row: 5;
+    background-color: darkorange;
+}
+#equals:hover{
+    background-color: rgb(226, 124, 0);
+}
