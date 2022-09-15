@@ -59,10 +59,17 @@ function App() {
     };
 
     const squarerootClickHandler = () => {
-        setCalc({
-            ...calc,
-            num: Math.sqrt(calc.num)
-        })
+        if (calc.num === 0 && calc.result !== 0) {
+            setCalc({
+                ...calc,
+                result: Math.sqrt(calc.result)
+            });
+        } else {
+            setCalc({
+                ...calc,
+                num: Math.sqrt(calc.num)
+            });
+        };
     };
 
     const negativeClickHandler = () => {
@@ -79,9 +86,15 @@ function App() {
         };
     }
 
+
+    //1+2*3+1+2*3...1...2...3
+
+    //4+5*6*4+5*6
     const operandClickHandler = (op) => {
         if (calc.num && calc.result) {
-            equalsClickHandler(op);//treat operand input as equals when it's a operand-to-operand (no equals) chain input
+            //if (op == "multiply" || op == "divide") {
+                equalsClickHandler(op);//treat operand input as equals when it's a operand-to-operand (no equals) chain input
+            //}
         } else {
             setCalc({
                 ...calc,
