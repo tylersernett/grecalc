@@ -107,11 +107,14 @@ function App() {
                 case '1': case '2': case '3': case '4': case '5': case '6': case '7': case '8': case '9': case '0':
                     numberClickHandler(key);
                     break;
-                case 'Enter':
+                case 'Enter': case '=':
                     equalsClickHandler();
                     break;
                 case '.':
                     decimalClickHandler();
+                    break;
+                case 'c':
+                    clearClickHandler();
                     break;
                 case '+':
                     operandClickHandler("add");
