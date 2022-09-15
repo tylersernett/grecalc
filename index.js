@@ -2,49 +2,48 @@ function App() {
     // {display, id}
     const btns = [
         ["MR", "memrecall"], ["MC", "memclear"], ["M+", "memadd"], ["(", "parenleft"], [")", "parenright"],
-        [7, "seven"], [8, "eight"], [9, "nine"], ["÷", "divide"], ["C", "clear"],
-        [4, "four"], [5, "five"], [6, "six"], ["×", "multiply"], ["CE", "clear-entry"],
-        [1, "one"], [2, "two"], [3, "three"], ["–", "subtract"], ["√", "squareroot"],
-        ["±", "negative"], [0, "zero"], [".", "decimal"], ["+", "add"],
+        [7, "seven"], [8, "eight"], [9, "nine"], ["÷", "/"], ["C", "clear"],
+        [4, "four"], [5, "five"], [6, "six"], ["×", "*"], ["CE", "clear-entry"],
+        [1, "one"], [2, "two"], [3, "three"], ["–", "-"], ["√", "squareroot"],
+        ["±", "negative"], [0, "zero"], [".", "decimal"], ["+", "+"],
         ["=", "equals"]];
 
     const [calc, setCalc] = React.useState({
         num: 0,
         operand: "",
-        result: 0
+        result: 0,
+        string: ""
     });
 
     React.useEffect(() => {
         console.log(calc);
     })
 
+    const parenLeftClickHandler = () => {
+        setCalc({
+            ...calc,
+            string: calc.string + "(",
+        });
+    }
+
+    const parenRightClickHandler = () => {
+        setCalc({
+            ...calc,
+            string: calc.string + ")",
+        });
+    }
+
     const numberClickHandler = (num) => {
         const value = num.toString();
         if (!(calc.num === 0 && value == 0)) { //no leading 0s
+            //if (pemdasHolder[0] != 0 && pemdasHolder[1] != "") {
             setCalc({
                 ...calc,
                 num: (calc.num === 0) ? value : calc.num + value,//needs ===, as 0. == 0
-                result: (!calc.operand) ? 0 : calc.result //reset result to 0 when clicking a # after equalsHandling
+                result: (!calc.operand) ? 0 : calc.result, //reset result to 0 when clicking a # after equalsHandling
+                string: calc.string + value
             });
-        }
-    };
-
-    const equalsClickHandler = (opr = "") => {
-        switch (calc.operand) {
-            case "add":
-                setCalc({ ...calc, num: 0, operand: opr, result: (Number(calc.result) + Number(calc.num)).toString() })
-                break;
-            case "subtract":
-                setCalc({ ...calc, num: 0, operand: opr, result: (Number(calc.result) - Number(calc.num)).toString() })
-                break;
-            case "multiply":
-                setCalc({ ...calc, num: 0, operand: opr, result: (Number(calc.result) * Number(calc.num)).toString() })
-                break;
-            case "divide":
-                setCalc({ ...calc, num: 0, operand: opr, result: (calc.num == "0") ? "Cannot divide by 0" : (Number(calc.result) / Number(calc.num)).toString() })
-                break;
-            default:
-                break;
+            //}
         }
     };
 
@@ -53,7 +52,8 @@ function App() {
         if (!calc.num.toString().includes('.')) {
             setCalc({
                 ...calc,
-                num: (calc.num == 0) ? "0." : calc.num + "."//add leading 0 for proper fractions
+                num: (calc.num == 0) ? "0." : calc.num + ".",//add leading 0 for proper fractions
+                string: calc.string + '.'
             })
         }
     };
@@ -62,12 +62,14 @@ function App() {
         if (calc.num === 0 && calc.result !== 0) {
             setCalc({
                 ...calc,
-                result: Math.sqrt(calc.result)
+                result: Math.sqrt(calc.result),
+                string: ""
             });
         } else {
             setCalc({
                 ...calc,
-                num: Math.sqrt(calc.num)
+                num: Math.sqrt(calc.num),
+                string: ""
             });
         };
     };
@@ -87,30 +89,66 @@ function App() {
     }
 
 
-    //1+2*3+1+2*3...1...2...3
+
+    //this determines when to execute the NEEDS*** --v
+    // if its plus or minus, execut the needs if needs exists
+
+    //this determines to INIT the NEEDS         --V
+    //if you hit X or / and there's a + or / in queue, INIT needs
+    //  [1]       [+]          [2]           [*]                [3]      [+]      [4]
+    //    num=1   op=add      num=2          needs[res,opp]      num=3
+    //           res=1                      [1,add]
+    //           num=0                      op=mult
+    //                                         res=2
 
     //4+5*6*4+5*6
     const operandClickHandler = (op) => {
-        if (calc.num && calc.result) {
-            //if (op == "multiply" || op == "divide") {
-                equalsClickHandler(op);//treat operand input as equals when it's a operand-to-operand (no equals) chain input
-            //}
-        } else {
-            setCalc({
-                ...calc,
-                operand: op,
-                //if there's a result & no new number, re-use old result for equals-to-operand chain input
-                result: (calc.result && !calc.num) ? calc.result : calc.num,
-                num: 0
-            });
-        }
+        // if (calc.num && calc.result) { //ACTIVE
+        // equalsClickHandler(op);//treat operand input as equals when it's a operand-to-operand (no equals) chain input
+        // } else {
+        setCalc({
+            ...calc,
+            operand: op,
+            //if there's a result & no new number, re-use old result for equals-to-operand chain input
+            //result: (calc.result && !calc.num) ? calc.result : calc.num,
+            result: (calc.result && !calc.num) ? calc.result.toString() : calc.num,
+            string: (calc.result && !calc.num) ? calc.result.toString()+ op : calc.string + op,
+            num: 0,
+            
+        });
+        // }
     }
+    const equalsClickHandler = (opr = "") => {
+        switch (calc.operand) {
+            case "+":
+                setCalc({ ...calc, num: 0, operand: opr, result: (Number(calc.result) + Number(calc.num)).toString() })
+                break;
+            case "-":
+                setCalc({ ...calc, num: 0, operand: opr, result: (Number(calc.result) - Number(calc.num)).toString() })
+                break;
+            case "*":
+                setCalc({ ...calc, num: 0, operand: opr, result: (Number(calc.result) * Number(calc.num)).toString() })
+                break;
+            case "/":
+                setCalc({ ...calc, num: 0, operand: opr, result: (calc.num == "0") ? "Cannot divide by 0" : (Number(calc.result) / Number(calc.num)).toString() })
+                break;
+            default:
+                break;
+        }
+        setCalc({
+            ...calc,
+            num:0,
+            result: eval(calc.string),
+            string: ""
+        })
+    };
 
     const clearClickHandler = () => {
         setCalc({
             num: 0,
             operand: "",
-            result: 0
+            result: 0,
+            string: "",
         });
     }
 
@@ -122,6 +160,7 @@ function App() {
         });
     }
 
+    //listen for keyboard presses
     React.useEffect(() => {
         function handleKeydown(e) {
             const key = e.key
@@ -139,16 +178,22 @@ function App() {
                     clearClickHandler();
                     break;
                 case '+':
-                    operandClickHandler("add");
+                    operandClickHandler("+");
                     break;
                 case '-':
-                    operandClickHandler("subtract");
+                    operandClickHandler("-");
                     break;
                 case '/':
-                    operandClickHandler("divide");
+                    operandClickHandler("/");
                     break;
                 case '*':
-                    operandClickHandler("multiply");
+                    operandClickHandler("*");
+                    break;
+                case '(':
+                    parenLeftClickHandler();
+                    break;
+                case ')':
+                    parenRightClickHandler();
                     break;
                 default:
             }
@@ -162,6 +207,7 @@ function App() {
     return (
         <div className="container">
             <div className="calc-body mt-3" >
+                {/* what appears at the top: display num unless it's 0 -- else display result */}
                 <div id="display" className="text-end fs-3 mx-2 mt-2 px-1">{calc.num ? calc.num : calc.result}</div>
                 <div className="button-box m-1">
                     {btns.map((item) =>
@@ -173,8 +219,10 @@ function App() {
                                     (item[1] === "clear") ? clearClickHandler :
                                         (item[1] === "clear-entry") ? clearEntryClickHandler :
                                             (item[1] === "squareroot") ? squarerootClickHandler :
-                                                (item[1] === "add" || item[1] === "subtract" || item[1] === "multiply" || item[1] === "divide") ? () => operandClickHandler(item[1]) :
-                                                    (item[1] === "equals") ? () => equalsClickHandler() : () => numberClickHandler(item[0])}>
+                                                (item[1] === "parenleft") ? parenLeftClickHandler :
+                                                    (item[1] === "parenright") ? parenRightClickHandler :
+                                                        (item[1] === "+" || item[1] === "-" || item[1] === "*" || item[1] === "/") ? () => operandClickHandler(item[1]) :
+                                                            (item[1] === "equals") ? () => equalsClickHandler() : () => numberClickHandler(item[0])}>
                             {/* anonymous arrow function needed on equals Handler because it has a default parameter */}
                             {item[0]}
                         </div>
