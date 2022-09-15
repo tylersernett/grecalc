@@ -5,7 +5,7 @@
 
 .button-box{
     display: grid;
-    grid-template-columns: 1fr 1fr 1fr 1fr;
+    grid-template-columns: 1fr 1fr 1fr 1fr 1fr;
     grid-template-rows: 1fr 1fr 1fr 1fr 1fr;
     /* border: 1px solid black; */
 }
@@ -29,16 +29,16 @@
     background-color:rgb(207, 0, 0)
 }
 
-#multiply, #divide, #add, #subtract{
+#multiply, #divide, #add, #subtract, #negative, #parenleft, #parenright, #squareroot{
     background-color: #666;
 }
 #multiply:hover, #divide:hover, #add:hover, #subtract:hover {
     background-color: #555;
 }
 
-#equals{
-    grid-column: 3/5;
-    grid-row: 5;
+#equals, #memrecall, #memclear, #memadd{
+    /* grid-column: 3/5; */
+    /* grid-row: 5; */
     background-color: darkorange;
 }
 #equals:hover{
