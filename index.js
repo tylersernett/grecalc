@@ -1,12 +1,12 @@
 function App() {
     // {display, id}
     const btns = [
-        ["MR", "memrecall"], ["MC", "memclear"], ["M+", "memadd"], ["(", "parenleft"],[")", "parenright"],
-        [7, "seven"], [8, "eight"], [9, "nine"], ["÷", "divide"],["C", "clear"], 
-    [4, "four"], [5, "five"], [6, "six"], ["×", "multiply"],["CE", "clear-entry"],
-    [1, "one"], [2, "two"], [3, "three"], ["–", "subtract"], ["√", "squareroot"],
-    ["±", "negative"], [0, "zero"], [".", "decimal"], ["+", "add"],
-     ["=", "equals"]];
+        ["MR", "memrecall"], ["MC", "memclear"], ["M+", "memadd"], ["(", "parenleft"], [")", "parenright"],
+        [7, "seven"], [8, "eight"], [9, "nine"], ["÷", "divide"], ["C", "clear"],
+        [4, "four"], [5, "five"], [6, "six"], ["×", "multiply"], ["CE", "clear-entry"],
+        [1, "one"], [2, "two"], [3, "three"], ["–", "subtract"], ["√", "squareroot"],
+        ["±", "negative"], [0, "zero"], [".", "decimal"], ["+", "add"],
+        ["=", "equals"]];
 
     const [calc, setCalc] = React.useState({
         num: 0,
@@ -56,6 +56,13 @@ function App() {
                 num: (calc.num == 0) ? "0." : calc.num + "."//add leading 0 for proper fractions
             })
         }
+    };
+
+    const squarerootClickHandler = () => {
+        setCalc({
+            ...calc,
+            num: Math.sqrt(calc.num)
+        })
     };
 
     const negativeClickHandler = () => {
@@ -152,8 +159,9 @@ function App() {
                                 (item[1] === "decimal") ? decimalClickHandler :
                                     (item[1] === "clear") ? clearClickHandler :
                                         (item[1] === "clear-entry") ? clearEntryClickHandler :
-                                            (item[1] === "add" || item[1] === "subtract" || item[1] === "multiply" || item[1] === "divide") ? () => operandClickHandler(item[1]) :
-                                                (item[1] === "equals") ? () => equalsClickHandler() : () => numberClickHandler(item[0])}>
+                                            (item[1] === "squareroot") ? squarerootClickHandler :
+                                                (item[1] === "add" || item[1] === "subtract" || item[1] === "multiply" || item[1] === "divide") ? () => operandClickHandler(item[1]) :
+                                                    (item[1] === "equals") ? () => equalsClickHandler() : () => numberClickHandler(item[0])}>
                             {/* anonymous arrow function needed on equals Handler because it has a default parameter */}
                             {item[0]}
                         </div>
