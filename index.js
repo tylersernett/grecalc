@@ -54,15 +54,22 @@ function App() {
 
     const numberClickHandler = (num) => {
         const stringValue = num;//.toString();
-        if (!(calc.num === 0 && stringValue == 0)) { //no leading 0s
-            //if (pemdasHolder[0] != 0 && pemdasHolder[1] != "") {
-            setCalc({
-                ...calc,
-                num: (calc.num === 0) ? stringValue : calc.num + stringValue,//needs ===, as 0. == 0
-                result: (!calc.operand) ? 0 : calc.result, //reset result to 0 when clicking a # after equalsHandling
-                string: calc.string + stringValue
-            });
-            //}
+        let str = calc.num.toString();
+        const regex = /[0-9]/g;
+        const digitCount = (str.match(regex) || []).length;
+        if (digitCount < 8) {
+            if (!(calc.num === 0 && stringValue == 0)) { //no leading 0s
+                //if (pemdasHolder[0] != 0 && pemdasHolder[1] != "") {
+                setCalc({
+                    ...calc,
+                    //needs ===, as 0. == 0
+                    //replace commas
+                    num: (calc.num === 0) ? stringValue : parseFloat(calc.num.replace(/,/g, '') + stringValue).toLocaleString(undefined, { maximumSignificantDigits: 8 }),
+                    result: (!calc.operand) ? 0 : calc.result, //reset result to 0 when clicking a # after equalsHandling
+                    string: calc.string + stringValue
+                });
+                //}
+            }
         }
     };
 
@@ -111,24 +118,7 @@ function App() {
         }
     }
 
-
-
-    //this determines when to execute the NEEDS*** --v
-    // if its plus or minus, execut the needs if needs exists
-
-    //this determines to INIT the NEEDS         --V
-    //if you hit X or / and there's a + or / in queue, INIT needs
-    //  [1]       [+]          [2]           [*]                [3]      [+]      [4]
-    //    num=1   op=add      num=2          needs[res,opp]      num=3
-    //           res=1                      [1,add]
-    //           num=0                      op=mult
-    //                                         res=2
-
-    //4+5*6*4+5*6
     const operandClickHandler = (op) => {
-        // if (calc.num && calc.result) { //ACTIVE
-        // equalsClickHandler(op);//treat operand input as equals when it's a operand-to-operand (no equals) chain input
-        // } else {
         setCalc({
             ...calc,
             operand: op,
@@ -163,7 +153,7 @@ function App() {
             setCalc({
                 ...calc,
                 num: 0,
-                result: eval(calc.string),
+                result: eval(calc.string.replace(/,/g, '')).toLocaleString("en-US"),
                 string: "",
             })
         }
@@ -283,3 +273,5 @@ ReactDOM.render(<App />, document.getElementById('app'))
 //how does GRE calc handle -? as negative, or always subtract?
 //add character limit-- ROUNDS, not truncates
 //add memory functions
+//fix float point error: .1 +.2 = 3.0000000000004
+//0.0 not working
