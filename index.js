@@ -20,17 +20,25 @@ function App() {
     })
 
     const parenLeftClickHandler = () => {
-        setCalc({
-            ...calc,
-            string: calc.string + "(",
-        });
+        const lp = /\(/g;
+        const rp = /\)/g;
+        if ((calc.string.match(lp) || []).length == (calc.string.match(rp) || []).length) {
+            setCalc({
+                ...calc,
+                string: calc.string + "(",
+            });
+        }
     }
 
     const parenRightClickHandler = () => {
-        setCalc({
-            ...calc,
-            string: calc.string + ")",
-        });
+        const lp = /\(/g;
+        const rp = /\)/g;
+        if ((calc.string.match(lp) || []).length -1 == (calc.string.match(rp) || []).length) {
+            setCalc({
+                ...calc,
+                string: calc.string + ")",
+            });
+        }
     }
 
     const numberClickHandler = (num) => {
@@ -112,9 +120,8 @@ function App() {
             //if there's a result & no new number, re-use old result for equals-to-operand chain input
             //result: (calc.result && !calc.num) ? calc.result : calc.num,
             result: (calc.result && !calc.num) ? calc.result.toString() : calc.num,
-            string: (calc.result && !calc.num) ? calc.result.toString()+ op : calc.string + op,
+            string: (calc.result && !calc.num) ? calc.result.toString() + op : calc.string + op,
             num: 0,
-            
         });
         // }
     }
@@ -137,7 +144,7 @@ function App() {
         }
         setCalc({
             ...calc,
-            num:0,
+            num: 0,
             result: eval(calc.string),
             string: ""
         })
