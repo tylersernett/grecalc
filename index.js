@@ -12,7 +12,8 @@ function App() {
         num: 0,
         operand: "",
         result: 0,
-        string: ""
+        string: "",
+        parenStarted: false,
     });
 
     React.useEffect(() => {
@@ -20,24 +21,30 @@ function App() {
     })
 
     const parenLeftClickHandler = () => {
-        const lp = /\(/g;
-        const rp = /\)/g;
-        if ((calc.string.match(lp) || []).length == (calc.string.match(rp) || []).length) {
+        // const lp = /\(/g;
+        // const rp = /\)/g;
+        // if ((calc.string.match(lp) || []).length == (calc.string.match(rp) || []).length) {
+        if (calc.parenStarted == false) {
             setCalc({
                 ...calc,
                 string: calc.string + "(",
+                parenStarted: true,
             });
         }
     }
 
     const parenRightClickHandler = () => {
-        const lp = /\(/g;
-        const rp = /\)/g;
-        if ((calc.string.match(lp) || []).length -1 == (calc.string.match(rp) || []).length) {
-            setCalc({
-                ...calc,
-                string: calc.string + ")",
-            });
+        // const lp = /\(/g;
+        // const rp = /\)/g;
+        // if ((calc.string.match(lp) || []).length -1 == (calc.string.match(rp) || []).length) {
+        if (calc.parenStarted == true) {
+            if (!(calc.num == 0 && calc.result == 0)) {
+                setCalc({
+                    ...calc,
+                    string: calc.string + ")",
+                    parenStarted: false,
+                });
+            }
         }
     }
 
@@ -126,28 +133,31 @@ function App() {
         // }
     }
     const equalsClickHandler = (opr = "") => {
-        switch (calc.operand) {
-            case "+":
-                setCalc({ ...calc, num: 0, operand: opr, result: (Number(calc.result) + Number(calc.num)).toString() })
-                break;
-            case "-":
-                setCalc({ ...calc, num: 0, operand: opr, result: (Number(calc.result) - Number(calc.num)).toString() })
-                break;
-            case "*":
-                setCalc({ ...calc, num: 0, operand: opr, result: (Number(calc.result) * Number(calc.num)).toString() })
-                break;
-            case "/":
-                setCalc({ ...calc, num: 0, operand: opr, result: (calc.num == "0") ? "Cannot divide by 0" : (Number(calc.result) / Number(calc.num)).toString() })
-                break;
-            default:
-                break;
+        if (calc.string !== "") {
+            switch (calc.operand) {
+                case "+":
+                    setCalc({ ...calc, num: 0, operand: opr, result: (Number(calc.result) + Number(calc.num)).toString() })
+                    break;
+                case "-":
+                    setCalc({ ...calc, num: 0, operand: opr, result: (Number(calc.result) - Number(calc.num)).toString() })
+                    break;
+                case "*":
+                    setCalc({ ...calc, num: 0, operand: opr, result: (Number(calc.result) * Number(calc.num)).toString() })
+                    break;
+                case "/":
+                    setCalc({ ...calc, num: 0, operand: opr, result: (calc.num == "0") ? "Cannot divide by 0" : (Number(calc.result) / Number(calc.num)).toString() })
+                    break;
+                default:
+                    break;
+            }
+
+            setCalc({
+                ...calc,
+                num: 0,
+                result: eval(calc.string),
+                string: "",
+            })
         }
-        setCalc({
-            ...calc,
-            num: 0,
-            result: eval(calc.string),
-            string: ""
-        })
     };
 
     const clearClickHandler = () => {
@@ -156,6 +166,7 @@ function App() {
             operand: "",
             result: 0,
             string: "",
+            parenStarted: false,
         });
     }
 
@@ -218,21 +229,32 @@ function App() {
                 <div id="display" className="text-end fs-3 mx-2 mt-2 px-1">{calc.num ? calc.num : calc.result}</div>
                 <div className="button-box m-1">
                     {btns.map((item) =>
-                        <div className="calc-btn btn-primary text-center fs-2 border-0 m-1"
-                            id={item[1]}
+
+                        (item[1] === "parenright") ? <div className="calc-btn btn-primary text-center fs-2 border-0 m-1"
+                            id={calc.parenStarted ? item[1] : "paren-inactive"}
                             key={item[1]}
-                            onClick={(item[1] === "negative") ? negativeClickHandler :
-                                (item[1] === "decimal") ? decimalClickHandler :
-                                    (item[1] === "clear") ? clearClickHandler :
-                                        (item[1] === "clear-entry") ? clearEntryClickHandler :
-                                            (item[1] === "squareroot") ? squarerootClickHandler :
-                                                (item[1] === "parenleft") ? parenLeftClickHandler :
-                                                    (item[1] === "parenright") ? parenRightClickHandler :
+                            onClick={parenRightClickHandler}>{item[0]}</div> :
+
+                            (item[1] === "parenleft") ? <div className="calc-btn btn-primary text-center fs-2 border-0 m-1"
+                                id={!calc.parenStarted ? item[1] : "paren-inactive"}
+                                key={item[1]}
+                                onClick={parenLeftClickHandler}>{item[0]}</div> :
+
+                                <div className="calc-btn btn-primary text-center fs-2 border-0 m-1"
+                                    id={item[1]}
+                                    key={item[1]}
+                                    onClick={(item[1] === "negative") ? negativeClickHandler :
+                                        (item[1] === "decimal") ? decimalClickHandler :
+                                            (item[1] === "clear") ? clearClickHandler :
+                                                (item[1] === "clear-entry") ? clearEntryClickHandler :
+                                                    (item[1] === "squareroot") ? squarerootClickHandler :
+                                                        // (item[1] === "parenleft") ? parenLeftClickHandler :
+                                                        //     (item[1] === "parenright") ? parenRightClickHandler :
                                                         (item[1] === "+" || item[1] === "-" || item[1] === "*" || item[1] === "/") ? () => operandClickHandler(item[1]) :
                                                             (item[1] === "equals") ? () => equalsClickHandler() : () => numberClickHandler(item[0])}>
-                            {/* anonymous arrow function needed on equals Handler because it has a default parameter */}
-                            {item[0]}
-                        </div>
+                                    {/* anonymous arrow function needed on equals Handler because it has a default parameter */}
+                                    {item[0]}
+                                </div>
                     )}
                 </div>
             </div >
@@ -241,8 +263,5 @@ function App() {
 }
 ReactDOM.render(<App />, document.getElementById('app'))
 
-//add sqrt button
 //redo equalsClickHandle switch statement for less redundancy
-//add keypress listener
 //how does GRE calc handle -? as negative, or always subtract?
-//and backspace delete for clear/ CE??

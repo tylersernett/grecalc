@@ -32,6 +32,11 @@
 #multiply, #divide, #add, #subtract, #negative, #parenleft, #parenright, #squareroot{
     background-color: #666;
 }
+
+#paren-inactive{
+    background-color: #CCC;
+}
+
 #multiply:hover, #divide:hover, #add:hover, #subtract:hover {
     background-color: #555;
 }
