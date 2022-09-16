@@ -1,5 +1,5 @@
 #display {
-    border: 1px solid black; 
+    /* border: 0px solid black;  */
     background-color: #fff;
 }
 
@@ -11,41 +11,53 @@
 }
 
 .calc-body{
-    max-width: 300px;
-    border: 2px solid black;
-    background-color: #eee;
+    max-width: 250px;
+    border: 1px solid rgb(187 187 188);
+    background-color: rgb(211 211 211);
 }
 
 .calc-btn {
     border-radius: 6px;
     cursor: pointer;
+    border: 1px;
+    margin: 1px;
+    background-color: rgb(235 240 246);
+    color: rgb(255 255 255); /**/
+    /* border: 1px outset rgba(0,0,0, 0.25); */
+    box-shadow:inset 0px 0px 0px 1px rgba(0,0,0,0.25);
 }
 
 #clear, #clear-entry {
-    background-color: red;
+    background-color: rgb(186 90 20);
 }
 
-#clear:hover, #clear-entry:hover{
+/* #clear:hover, #clear-entry:hover{
     background-color:rgb(207, 0, 0)
+} */
+
+#\*, #\/, #\+, #\-, #negative, #parenleft, #parenright, #squareroot{
+    background-color: rgb(57 119 160);
 }
 
-#multiply, #divide, #add, #subtract, #negative, #parenleft, #parenright, #squareroot{
-    background-color: #666;
+#zero, #one, #two, #three, #four, #five, #six, #seven, #eight, #nine, #decimal {
+    color: rgb(57 55 54);
+
 }
 
 #paren-inactive{
-    background-color: #CCC;
+    background-color: rgb(158 180 192);
 }
 
-#multiply:hover, #divide:hover, #add:hover, #subtract:hover {
+/* #multiply:hover, #divide:hover, #add:hover, #subtract:hover {
     background-color: #555;
-}
+} */
 
 #equals, #memrecall, #memclear, #memadd{
     /* grid-column: 3/5; */
     /* grid-row: 5; */
-    background-color: darkorange;
+    background-color: rgb(35 71 96);
 }
-#equals:hover{
+
+/* #equals:hover{
     background-color: rgb(226, 124, 0);
-}
+} */

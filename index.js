@@ -132,6 +132,7 @@ function App() {
         });
         // }
     }
+
     const equalsClickHandler = (opr = "") => {
         if (calc.string !== "") {
             switch (calc.operand) {
@@ -160,6 +161,7 @@ function App() {
         }
     };
 
+    //reset everything
     const clearClickHandler = () => {
         setCalc({
             num: 0,
@@ -227,20 +229,21 @@ function App() {
             <div className="calc-body mt-3" >
                 {/* what appears at the top: display num unless it's 0 -- else display result */}
                 <div id="display" className="text-end fs-3 mx-2 mt-2 px-1">{calc.num ? calc.num : calc.result}</div>
+                
                 <div className="button-box m-1">
                     {btns.map((item) =>
 
-                        (item[1] === "parenright") ? <div className="calc-btn btn-primary text-center fs-2 border-0 m-1"
+                        (item[1] === "parenright") ? <div className="calc-btn text-center fs-2"
                             id={calc.parenStarted ? item[1] : "paren-inactive"}
                             key={item[1]}
                             onClick={parenRightClickHandler}>{item[0]}</div> :
 
-                            (item[1] === "parenleft") ? <div className="calc-btn btn-primary text-center fs-2 border-0 m-1"
+                            (item[1] === "parenleft") ? <div className="calc-btn text-center fs-2"
                                 id={!calc.parenStarted ? item[1] : "paren-inactive"}
                                 key={item[1]}
                                 onClick={parenLeftClickHandler}>{item[0]}</div> :
 
-                                <div className="calc-btn btn-primary text-center fs-2 border-0 m-1"
+                                <div className="calc-btn text-center fs-2"
                                     id={item[1]}
                                     key={item[1]}
                                     onClick={(item[1] === "negative") ? negativeClickHandler :
