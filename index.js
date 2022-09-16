@@ -20,6 +20,10 @@ function App() {
         console.log(calc);
     })
 
+    //add commas for every 3rd before .
+    //return ERROR if > 8 places
+    //add decimal
+
     const parenLeftClickHandler = () => {
         // const lp = /\(/g;
         // const rp = /\)/g;
@@ -49,14 +53,14 @@ function App() {
     }
 
     const numberClickHandler = (num) => {
-        const value = num.toString();
-        if (!(calc.num === 0 && value == 0)) { //no leading 0s
+        const stringValue = num;//.toString();
+        if (!(calc.num === 0 && stringValue == 0)) { //no leading 0s
             //if (pemdasHolder[0] != 0 && pemdasHolder[1] != "") {
             setCalc({
                 ...calc,
-                num: (calc.num === 0) ? value : calc.num + value,//needs ===, as 0. == 0
+                num: (calc.num === 0) ? stringValue : calc.num + stringValue,//needs ===, as 0. == 0
                 result: (!calc.operand) ? 0 : calc.result, //reset result to 0 when clicking a # after equalsHandling
-                string: calc.string + value
+                string: calc.string + stringValue
             });
             //}
         }
@@ -90,17 +94,21 @@ function App() {
     };
 
     const negativeClickHandler = () => {
-        if (calc.num === 0 && calc.result !== 0) {
-            setCalc({
-                ...calc,
-                result: (calc.result * -1)
-            });
-        } else {
-            setCalc({
-                ...calc,
-                num: (calc.num * -1)
-            });
-        };
+        if (!(calc.num === 0 && calc.result === 0)) {
+            if (calc.num === 0 && calc.result !== 0) {
+                setCalc({
+                    ...calc,
+                    result: (calc.result * -1),
+                    string: calc.string + "*-1",
+                });
+            } else {
+                setCalc({
+                    ...calc,
+                    num: (calc.num * -1),
+                    string: calc.string + "*-1",
+                });
+            };
+        }
     }
 
 
@@ -135,22 +143,22 @@ function App() {
 
     const equalsClickHandler = (opr = "") => {
         if (calc.string !== "") {
-            switch (calc.operand) {
-                case "+":
-                    setCalc({ ...calc, num: 0, operand: opr, result: (Number(calc.result) + Number(calc.num)).toString() })
-                    break;
-                case "-":
-                    setCalc({ ...calc, num: 0, operand: opr, result: (Number(calc.result) - Number(calc.num)).toString() })
-                    break;
-                case "*":
-                    setCalc({ ...calc, num: 0, operand: opr, result: (Number(calc.result) * Number(calc.num)).toString() })
-                    break;
-                case "/":
-                    setCalc({ ...calc, num: 0, operand: opr, result: (calc.num == "0") ? "Cannot divide by 0" : (Number(calc.result) / Number(calc.num)).toString() })
-                    break;
-                default:
-                    break;
-            }
+            // switch (calc.operand) {
+            //     case "+":
+            //         setCalc({ ...calc, num: 0, operand: opr, result: (Number(calc.result) + Number(calc.num)).toString() })
+            //         break;
+            //     case "-":
+            //         setCalc({ ...calc, num: 0, operand: opr, result: (Number(calc.result) - Number(calc.num)).toString() })
+            //         break;
+            //     case "*":
+            //         setCalc({ ...calc, num: 0, operand: opr, result: (Number(calc.result) * Number(calc.num)).toString() })
+            //         break;
+            //     case "/":
+            //         setCalc({ ...calc, num: 0, operand: opr, result: (calc.num == "0") ? "Cannot divide by 0" : (Number(calc.result) / Number(calc.num)).toString() })
+            //         break;
+            //     default:
+            //         break;
+            // }
 
             setCalc({
                 ...calc,
@@ -174,9 +182,14 @@ function App() {
 
     //only clear most recent entry
     const clearEntryClickHandler = () => {
+        // let digits = calc.num;
+        // if (digits[0] == '0' && digits[1] == '.') {
+        //     digits = digits.substring(1);
+        // }
         setCalc({
             ...calc,
             num: 0,
+            // string: calc.string.substring(0, calc.string.length - digits.length),
         });
     }
 
@@ -186,7 +199,7 @@ function App() {
             const key = e.key
             switch (key) {
                 case '1': case '2': case '3': case '4': case '5': case '6': case '7': case '8': case '9': case '0':
-                    numberClickHandler(key);
+                    numberClickHandler((key));
                     break;
                 case 'Enter': case '=':
                     equalsClickHandler();
@@ -229,7 +242,7 @@ function App() {
             <div className="calc-body mt-3" >
                 {/* what appears at the top: display num unless it's 0 -- else display result */}
                 <div id="display" className="text-end fs-3 mx-2 mt-2 px-1">{calc.num ? calc.num : calc.result}</div>
-                
+
                 <div className="button-box m-1">
                     {btns.map((item) =>
 
@@ -268,3 +281,5 @@ ReactDOM.render(<App />, document.getElementById('app'))
 
 //redo equalsClickHandle switch statement for less redundancy
 //how does GRE calc handle -? as negative, or always subtract?
+//add character limit-- ROUNDS, not truncates
+//add memory functions
