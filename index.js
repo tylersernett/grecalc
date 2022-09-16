@@ -182,14 +182,14 @@ function App() {
 
     //only clear most recent entry
     const clearEntryClickHandler = () => {
-        // let digits = calc.num;
-        // if (digits[0] == '0' && digits[1] == '.') {
-        //     digits = digits.substring(1);
-        // }
+        let digits = calc.num;
+        if (digits[0] == '0' && digits[1] == '.') {
+            digits = digits.substring(1);
+        }
         setCalc({
             ...calc,
             num: 0,
-            // string: calc.string.substring(0, calc.string.length - digits.length),
+            string: calc.string.substring(0, calc.string.length - digits.length),
         });
     }
 
