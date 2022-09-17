@@ -16,9 +16,19 @@ function App() {
         parenStarted: false,
     });
 
+    const [display, setDisplay] = React.useState({
+        string: "0",
+    });
+
     React.useEffect(() => {
         console.log(calc);
     })
+
+    //code only gets called when contents of }, [] get changed
+    React.useEffect(() => {
+        setDisplay({string: calc.num ? calc.num.toString() : calc.result.toString()});
+        console.log(display.string);
+    }, [calc])
 
     // const formatter = new Intl.NumberFormat('en-US', {
     //     maximumSignificantDigits: 8,
@@ -27,17 +37,17 @@ function App() {
     //above doesn't work because one overrides the other -- use below instead
 
     const format = (n) => {
-        console.log(n);
+        //console.log(n);
         let num = new Intl.NumberFormat('en-US', {
             maximumSignificantDigits: 8
         }).format(n);
 
-        console.log(num);
+        //console.log(num);
         num = new Intl.NumberFormat('en-US', {
             maximumFractionDigits: 7
         }).format(removeCommas(num));
 
-        console.log(num);
+        //console.log(num);
 
         if (num == "-0") {
             return "0"
@@ -53,6 +63,7 @@ function App() {
         if (calc.parenStarted == false) {
             setCalc({
                 ...calc,
+                num: "(",
                 string: calc.string + "(",
                 parenStarted: true,
             });
@@ -83,14 +94,12 @@ function App() {
             if (!(calc.num === "0" && stringValue == '0')) { //no leading 0s
                 setCalc({
                     ...calc,
-                    num: (calc.num === 0) ? stringValue : //needs ===, as 0. == 0
+                    num: (calc.num === 0 || calc.num === '(') ? stringValue : //needs ===, as 0. == 0
                         (stringValue === "0") ? calc.num + '0' : //special exception for adding 0s after decimal
                             format(parseFloat(removeCommas(calc.num) + stringValue)),
-                    //remove commas
                     result: (!calc.operand) ? 0 : calc.result, //reset result to 0 when clicking a # after equalsHandling
                     string: calc.string + stringValue
                 });
-                //}
             }
         }
     };
@@ -248,15 +257,15 @@ function App() {
         }
 
         document.addEventListener("keydown", handleKeydown)
-        //remove eventListener, or you get weird repeating states for keyboard entry
+        //remove eventListener in the return, or you get weird repeating states for keyboard entry
         return () => document.removeEventListener("keydown", handleKeydown)
-    }, [numberClickHandler]); //use dependency, or you only get 1 number in display at a time for keyboard entry
+    }, [calc]); //use dependency, or you only get 1 number in display at a time for keyboard entry
 
     return (
         <div className="container">
             <div className="calc-body mt-3" >
                 {/* what appears at the top: display num unless it's 0 -- else display result */}
-                <div id="display" className="text-end fs-3 mx-2 mt-2 px-1">{calc.num ? calc.num : calc.result}</div>
+                <div id="display" className="text-end fs-3 mx-2 mt-2 px-1">{display.string.includes('.') ? display.string: display.string + "."}</div>
 
                 <div className="button-box m-1">
                     {btns.map((item) =>
