@@ -24,10 +24,14 @@ function App() {
         console.log(calc);
     })
 
-    //code only gets called when contents of }, [] get changed
+    //side effect: code only gets called when contents of CALC get changed
     React.useEffect(() => {
-        setDisplay({string: calc.num ? calc.num.toString() : calc.result.toString()});
-        console.log(display.string);
+        //assign to num or result, then add a period if necessary
+        let preString = calc.num ? calc.num.toString() : calc.result.toString();
+        if (!(preString === "(" || preString == "ERROR" || preString.includes("."))) {
+            preString += "."
+        }
+        setDisplay({ string: preString});
     }, [calc])
 
     // const formatter = new Intl.NumberFormat('en-US', {
@@ -265,7 +269,7 @@ function App() {
         <div className="container">
             <div className="calc-body mt-3" >
                 {/* what appears at the top: display num unless it's 0 -- else display result */}
-                <div id="display" className="text-end fs-3 mx-2 mt-2 px-1">{display.string.includes('.') ? display.string: display.string + "."}</div>
+                <div id="display" className="text-end fs-3 mx-2 mt-2 px-1">{display.string}</div>
 
                 <div className="button-box m-1">
                     {btns.map((item) =>
