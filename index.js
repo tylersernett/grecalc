@@ -52,6 +52,10 @@ function App() {
         }
     }
 
+    const formatter = new Intl.NumberFormat('en-US', {
+        maximumFractionDigits: 7,
+      })
+
     const numberClickHandler = (num) => {
         const stringValue = num;//.toString();
         let str = calc.num.toString();
@@ -64,7 +68,10 @@ function App() {
                     ...calc,
                     //needs ===, as 0. == 0
                     //replace commas
-                    num: (calc.num === 0) ? stringValue : parseFloat(calc.num.replace(/,/g, '') + stringValue).toLocaleString(undefined, { maximumSignificantDigits: 8 }),
+                    num: (calc.num === 0) ? stringValue :
+                        (stringValue === "0") ? calc.num + '0' :
+                            formatter.format( parseFloat(calc.num.replace(/,/g, '') + stringValue).toString() ), 
+                                                 //remove commas
                     result: (!calc.operand) ? 0 : calc.result, //reset result to 0 when clicking a # after equalsHandling
                     string: calc.string + stringValue
                 });
@@ -88,13 +95,13 @@ function App() {
         if (calc.num === 0 && calc.result !== 0) {
             setCalc({
                 ...calc,
-                result: Math.sqrt(calc.result),
+                result: formatter.format( Math.sqrt(calc.result) ),
                 string: ""
             });
         } else {
             setCalc({
                 ...calc,
-                num: Math.sqrt(calc.num),
+                num: formatter.format( Math.sqrt(calc.num) ),
                 string: ""
             });
         };
@@ -153,7 +160,7 @@ function App() {
             setCalc({
                 ...calc,
                 num: 0,
-                result: eval(calc.string.replace(/,/g, '')).toLocaleString("en-US"),
+                result: formatter.format( eval(calc.string.replace(/,/g, '')) ),
                 string: "",
             })
         }
@@ -174,12 +181,13 @@ function App() {
     const clearEntryClickHandler = () => {
         let digits = calc.num;
         if (digits[0] == '0' && digits[1] == '.') {
-            digits = digits.substring(1);
+            digits = digits.substring(1); //truncate the first 0 from the string, because calc.string doesn't store the first 0
         }
         setCalc({
             ...calc,
             num: 0,
             string: calc.string.substring(0, calc.string.length - digits.length),
+            //remove the length of num from the END of the string
         });
     }
 
