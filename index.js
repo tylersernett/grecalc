@@ -20,14 +20,36 @@ function App() {
         console.log(calc);
     })
 
-    //add commas for every 3rd before .
-    //return ERROR if > 8 places
-    //add decimal
+    // const formatter = new Intl.NumberFormat('en-US', {
+    //     maximumSignificantDigits: 8,
+    //     maximumFractionDigits: 7,
+    // })
+    //above doesn't work because one overrides the other -- use below instead
+
+    const format = (n) => {
+        console.log(n);
+        let num = new Intl.NumberFormat('en-US', {
+            maximumSignificantDigits: 8
+        }).format(n);
+
+        console.log(num);
+        num = new Intl.NumberFormat('en-US', {
+            maximumFractionDigits: 7
+        }).format(removeCommas(num));
+
+        console.log(num);
+
+        if (num == "-0") {
+            return "0"
+        }
+        return num;
+    }
+
+    const removeCommas = (string) => {
+        return string.replace(/,/g, '');
+    }
 
     const parenLeftClickHandler = () => {
-        // const lp = /\(/g;
-        // const rp = /\)/g;
-        // if ((calc.string.match(lp) || []).length == (calc.string.match(rp) || []).length) {
         if (calc.parenStarted == false) {
             setCalc({
                 ...calc,
@@ -38,9 +60,6 @@ function App() {
     }
 
     const parenRightClickHandler = () => {
-        // const lp = /\(/g;
-        // const rp = /\)/g;
-        // if ((calc.string.match(lp) || []).length -1 == (calc.string.match(rp) || []).length) {
         if (calc.parenStarted == true) {
             if (!(calc.num == 0 && calc.result == 0)) {
                 setCalc({
@@ -52,26 +71,22 @@ function App() {
         }
     }
 
-    const formatter = new Intl.NumberFormat('en-US', {
-        maximumFractionDigits: 7,
-      })
-
     const numberClickHandler = (num) => {
-        const stringValue = num;//.toString();
+        const stringValue = num.toString();
+
+        //make sure there's less than 8 digits 
         let str = calc.num.toString();
         const regex = /[0-9]/g;
         const digitCount = (str.match(regex) || []).length;
         if (digitCount < 8) {
-            if (!(calc.num === 0 && stringValue == 0)) { //no leading 0s
-                //if (pemdasHolder[0] != 0 && pemdasHolder[1] != "") {
+
+            if (!(calc.num === "0" && stringValue == '0')) { //no leading 0s
                 setCalc({
                     ...calc,
-                    //needs ===, as 0. == 0
-                    //replace commas
-                    num: (calc.num === 0) ? stringValue :
-                        (stringValue === "0") ? calc.num + '0' :
-                            formatter.format( parseFloat(calc.num.replace(/,/g, '') + stringValue).toString() ), 
-                                                 //remove commas
+                    num: (calc.num === 0) ? stringValue : //needs ===, as 0. == 0
+                        (stringValue === "0") ? calc.num + '0' : //special exception for adding 0s after decimal
+                            format(parseFloat(removeCommas(calc.num) + stringValue)),
+                    //remove commas
                     result: (!calc.operand) ? 0 : calc.result, //reset result to 0 when clicking a # after equalsHandling
                     string: calc.string + stringValue
                 });
@@ -95,30 +110,30 @@ function App() {
         if (calc.num === 0 && calc.result !== 0) {
             setCalc({
                 ...calc,
-                result: formatter.format( Math.sqrt(calc.result) ),
+                result: format(Math.sqrt(removeCommas(calc.result))),
                 string: ""
             });
         } else {
             setCalc({
                 ...calc,
-                num: formatter.format( Math.sqrt(calc.num) ),
+                num: format(Math.sqrt(removeCommas(calc.num))),
                 string: ""
             });
         };
     };
 
     const negativeClickHandler = () => {
-        if (!(calc.num === 0 && calc.result === 0)) {
+        if (!(calc.num == 0 && calc.result == 0)) {
             if (calc.num === 0 && calc.result !== 0) {
                 setCalc({
                     ...calc,
-                    result: (calc.result * -1),
+                    result: format(removeCommas(calc.result) * -1),
                     string: calc.string + "*-1",
                 });
             } else {
                 setCalc({
                     ...calc,
-                    num: (calc.num * -1),
+                    num: format(removeCommas(calc.num) * -1),
                     string: calc.string + "*-1",
                 });
             };
@@ -157,10 +172,12 @@ function App() {
             //         break;
             // }
 
+            const res = (eval(calc.string.replace(/,/g, '')))
+
             setCalc({
                 ...calc,
                 num: 0,
-                result: formatter.format( eval(calc.string.replace(/,/g, '')) ),
+                result: Math.abs(res) <= 99999999 ? format(res) : "ERROR",
                 string: "",
             })
         }
@@ -283,3 +300,4 @@ ReactDOM.render(<App />, document.getElementById('app'))
 //add memory functions
 //fix float point error: .1 +.2 = 3.0000000000004
 //0.0 not working
+//can't do 0 operands: x+0, x-0, x*0
