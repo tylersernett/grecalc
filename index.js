@@ -21,21 +21,26 @@ function App() {
     });
 
     const [memory, setMemory] = React.useState({
-        num: "0"
+        mem: 0,
+        memset: false,
     })
 
     React.useEffect(() => {
         console.log(calc);
-    })
+        console.log(memory);
+    }, [calc, memory])
 
     //side effect: code only gets called when contents of CALC get changed
     React.useEffect(() => {
         //assign to num or result, then add a period if necessary
         let preString = calc.num ? calc.num.toString() : calc.result.toString();
-        if (!(preString === "(" || preString == "ERROR" || preString.includes("."))) {
-            preString += "."
+        if (!(preString === "(" || preString == "ERROR")) {
+            preString = format(preString);
+            if (!preString.includes(".")) {
+                preString += "."
+            }
         }
-        setDisplay({ string: preString});
+        setDisplay({ string: preString });
     }, [calc])
 
     // const formatter = new Intl.NumberFormat('en-US', {
@@ -189,7 +194,7 @@ function App() {
             //         break;
             // }
 
-            const res = eval( removeCommas(calc.string) );//(eval(calc.string.replace(/,/g, '')))
+            const res = eval(removeCommas(calc.string));//(eval(calc.string.replace(/,/g, '')))
 
             setCalc({
                 ...calc,
@@ -200,21 +205,44 @@ function App() {
         }
     };
 
-//MEMORY
+    //MEMORY
     const memAddHandler = () => {
-        setMemory({
-            num: memory.num + display.string,
-        })
+        if (display.string != "ERROR" && display.string != "(") {
+            const valueOnScreen = parseFloat(removeCommas(display.string))
+            setMemory({
+                mem: memory.mem + valueOnScreen,
+                memset: true
+            })
+
+            setCalc({
+                ...calc,
+                num: 0,
+                result: valueOnScreen
+            })
+        }
     }
 
     const memClearHandler = () => {
         setMemory({
-            num: 0
+            mem: 0,
+            memset: false,
         })
     }
 
     const memRecallHandler = () => {
+        let lastEntry = calc.string[calc.string.length-1];
+        let stringPrefix = "";
+        //only change the stringPrefix for operators. this prevents appending the memory value to a previous string of #s
+        if (lastEntry == "+" || lastEntry == "-" || lastEntry == "*" || lastEntry =="/") {
+            stringPrefix = calc.string;
+        }
         
+        setCalc({
+            ...calc,
+            num: memory.mem,
+            result: 0,
+            string: stringPrefix + memory.mem
+        })
     }
 
     //reset everything
@@ -290,7 +318,10 @@ function App() {
         <div className="container">
             <div className="calc-body mt-3" >
                 {/* what appears at the top: display num unless it's 0 -- else display result */}
-                <div id="display" className="text-end fs-3 mx-2 mt-2 px-1">{display.string}</div>
+                <div id="display" className="text-end fs-3 mx-2 mt-2 px-1">
+                    <div id='displayL' className="text-start">{memory.memset ? "M" : ""}</div>
+                    <div id='displayR' className="text-end">{display.string}</div>
+                </div>
 
                 <div className="button-box m-1">
                     {btns.map((item) =>
@@ -313,10 +344,13 @@ function App() {
                                             (item[1] === "clear") ? clearClickHandler :
                                                 (item[1] === "clear-entry") ? clearEntryClickHandler :
                                                     (item[1] === "squareroot") ? squarerootClickHandler :
-                                                        // (item[1] === "parenleft") ? parenLeftClickHandler :
-                                                        //     (item[1] === "parenright") ? parenRightClickHandler :
-                                                        (item[1] === "+" || item[1] === "-" || item[1] === "*" || item[1] === "/") ? () => operandClickHandler(item[1]) :
-                                                            (item[1] === "equals") ? () => equalsClickHandler() : () => numberClickHandler(item[0])}>
+                                                        (item[1] === "memrecall") ? memRecallHandler :
+                                                            (item[1] === "memclear") ? memClearHandler :
+                                                                (item[1] === "memadd") ? memAddHandler :
+                                                                    // (item[1] === "parenleft") ? parenLeftClickHandler :
+                                                                    //     (item[1] === "parenright") ? parenRightClickHandler :
+                                                                    (item[1] === "+" || item[1] === "-" || item[1] === "*" || item[1] === "/") ? () => operandClickHandler(item[1]) :
+                                                                        (item[1] === "equals") ? () => equalsClickHandler() : () => numberClickHandler(item[0])}>
                                     {/* anonymous arrow function needed on equals Handler because it has a default parameter */}
                                     {item[0]}
                                 </div>
