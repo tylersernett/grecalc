@@ -8,6 +8,15 @@
     display: inline;
 }
 
+#displayL {
+    background-color: yellow;
+    width: 200px;
+}
+
+#displayR {
+    background-color: yellowgreen;
+}
+
 .button-box{
     display: grid;
     grid-template-columns: 1fr 1fr 1fr 1fr 1fr;

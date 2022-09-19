@@ -98,13 +98,15 @@ function App() {
 
     const parenLeftClickHandler = () => {
         if (calc.parenStarted == false) {
+            let stringPrefix = validateStringTail(calc.string);
             setCalc({
                 ...calc,
                 num: "(",
-                string: calc.string + "(",
+                string: stringPrefix + "(",
                 parenStarted: true,
             });
         }
+        resetLastPressed();
     }
 
     const parenRightClickHandler = () => {
@@ -117,6 +119,7 @@ function App() {
                 });
             }
         }
+        resetLastPressed();
     }
 
     const numberClickHandler = (num) => {
@@ -149,12 +152,14 @@ function App() {
             setCalc({
                 ...calc,
                 num: (calc.num == 0) ? "0." : calc.num + ".",//add leading 0 for proper decimals, else just add on "."
-                string: calc.string + '.'
+                string: memory.justRecalled ? "0." : calc.string + '.',
             })
         }
+        resetLastPressed();
     };
 
     const squarerootClickHandler = () => {
+        resetLastPressed();
         if (calc.num === 0 && calc.result !== 0) {
             setCalc({
                 ...calc,
@@ -195,7 +200,7 @@ function App() {
             //if there's a result & no new number, re-use old result for equals-to-operand chain input
             //result: (calc.result && !calc.num) ? calc.result : calc.num,
             result: (calc.result && !calc.num) ? calc.result.toString() : calc.num,
-            string: (calc.result && !calc.num) ? calc.result.toString() + op : calc.string + op,
+            string: (calc.result && !calc.num && !calc.parenStarted) ? calc.result.toString() + op : calc.string + op,
             num: 0,
         });
         resetLastPressed();
@@ -203,14 +208,20 @@ function App() {
     }
 
     const equalsClickHandler = (opr = "") => {
-        if (calc.string !== "") {
-            const res = eval((calc.string));//(eval(calc.string.replace(/,/g, '')))
+        let evalString = calc.string;
+        if (evalString !== "") {
+            //add closing parentheses if it's currently missing
+            if (calc.parenStarted == true) {
+                evalString += (")")
+            }
+            const res = eval((evalString));//(eval(calc.string.replace(/,/g, '')))
 
             setCalc({
                 ...calc,
                 num: 0,
                 result: Math.abs(res) <= 99999999 ? res : "ERROR",
                 string: "",
+                parenStarted: false,
             })
         }
     };
@@ -242,13 +253,28 @@ function App() {
         })
     }
 
-    const memRecallHandler = () => {
-        let lastEntry = calc.string[calc.string.length - 1];
+    const validateStringTail = (string) => {
+        if (string == "") {
+            return string;
+        }
+        let lastEntry = string[string.length - 1];
         let stringPrefix = "";
         //only change the stringPrefix for operators. this prevents appending the memory value to a previous string of #s
-        if (lastEntry == "+" || lastEntry == "-" || lastEntry == "*" || lastEntry == "/") {
-            stringPrefix = calc.string;
+        if (lastEntry == "+" || lastEntry == "-" || lastEntry == "*" || lastEntry == "/" || lastEntry == "(") {
+            stringPrefix = string;
         }
+        return stringPrefix;
+    }
+
+    const memRecallHandler = () => {
+        // let lastEntry = calc.string[calc.string.length - 1];
+        // let stringPrefix = "";
+        // //only change the stringPrefix for operators. this prevents appending the memory value to a previous string of #s
+        // if (lastEntry == "+" || lastEntry == "-" || lastEntry == "*" || lastEntry == "/") {
+        //     stringPrefix = calc.string;
+        // }
+
+        let stringPrefix = validateStringTail(calc.string);
 
         setMemory({
             ...memory,
@@ -259,7 +285,8 @@ function App() {
             ...calc,
             result: memory.mem,
             num: 0,
-            string: stringPrefix + memory.mem
+            string: stringPrefix + memory.mem,
+            //string: calc.parenStarted ? calc.string + memory.mem : "",//"",//stringPrefix + memory.mem
         })
 
 
@@ -338,9 +365,10 @@ function App() {
         <div className="container">
             <div className="calc-body mt-3" >
                 {/* what appears at the top: display num unless it's 0 -- else display result */}
+                <div id='displayL'>{memory.memset ? "M" : ""}</div>
                 <div id="display" className="text-end fs-3 mx-2 mt-2 px-1">
-                    <div id='displayL' className="text-left">{memory.memset ? "M" : ""}</div>
-                    <div id='displayR' className="text-end">{display.string}</div>
+                    
+                    <div id='displayR'>{display.string}</div>
                 </div>
 
                 <div className="button-box m-1">
@@ -385,5 +413,9 @@ ReactDOM.render(<App />, document.getElementById('app'))
 //redo equalsClickHandle switch statement for less redundancy
 //how does GRE calc handle -? as negative, or always subtract?
 //add memory functions
-//memory recall, then NUMBERBUTTON ==> append to string
 //sqrt: 9+, 9/, etc
+//memory recall, then NUMBERBUTTON ==> append to string
+//after recall -- reset string UNLESS its operand! +-*/
+//should it just be... result = recall, string = ""???
+//paren + memRecall + operand ==> ( paren removed??
+//14 / memRecall ... not recalling?
