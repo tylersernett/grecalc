@@ -223,7 +223,6 @@ function App() {
             ...calc,
             operand: op,
             //if there's a result & no new number, re-use old result for equals-to-operand chain input
-            //result: (calc.result && !calc.num) ? calc.result : calc.num,
             result: (calc.result && !calc.num) ? calc.result.toString() : calc.num,
             string: (calc.result && !calc.num && !calc.parenStarted) ? calc.result.toString() + op : calc.string + op,
             num: 0,
@@ -244,7 +243,7 @@ function App() {
             setCalc({
                 ...calc,
                 num: 0,
-                result: Math.abs(res) <= 99999999 ? res : "ERROR",
+                result: Math.abs(res) <= 99999999 ? (removeCommas(format(res.toString()))) : "ERROR",
                 string: "",
                 parenStarted: false,
             })
@@ -441,3 +440,5 @@ ReactDOM.render(<App />, document.getElementById('app'))
 //recall 5
 //clear 5, 9 ==> 59
 //BUG: result or num holding UNROUNDED values for lonnnnng decimals
+//FIXED!
+//TEST: 1/7 * 7 = 0.9999997
