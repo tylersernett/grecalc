@@ -20,6 +20,10 @@ function App() {
         string: "0",
     });
 
+    const [memory, setMemory] = React.useState({
+        num: "0"
+    })
+
     React.useEffect(() => {
         console.log(calc);
     })
@@ -113,7 +117,7 @@ function App() {
         if (!calc.num.toString().includes('.')) {
             setCalc({
                 ...calc,
-                num: (calc.num == 0) ? "0." : calc.num + ".",//add leading 0 for proper fractions
+                num: (calc.num == 0) ? "0." : calc.num + ".",//add leading 0 for proper decimals, else just add on "."
                 string: calc.string + '.'
             })
         }
@@ -185,7 +189,7 @@ function App() {
             //         break;
             // }
 
-            const res = (eval(calc.string.replace(/,/g, '')))
+            const res = eval( removeCommas(calc.string) );//(eval(calc.string.replace(/,/g, '')))
 
             setCalc({
                 ...calc,
@@ -195,6 +199,23 @@ function App() {
             })
         }
     };
+
+//MEMORY
+    const memAddHandler = () => {
+        setMemory({
+            num: memory.num + display.string,
+        })
+    }
+
+    const memClearHandler = () => {
+        setMemory({
+            num: 0
+        })
+    }
+
+    const memRecallHandler = () => {
+        
+    }
 
     //reset everything
     const clearClickHandler = () => {
@@ -263,7 +284,7 @@ function App() {
         document.addEventListener("keydown", handleKeydown)
         //remove eventListener in the return, or you get weird repeating states for keyboard entry
         return () => document.removeEventListener("keydown", handleKeydown)
-    }, [calc]); //use dependency, or you only get 1 number in display at a time for keyboard entry
+    }, [numberClickHandler]); //use dependency, or you only get 1 number in display at a time for keyboard entry
 
     return (
         <div className="container">
