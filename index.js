@@ -74,26 +74,61 @@ function App() {
     //above doesn't work because one overrides the other -- use below instead
 
     const format = (n) => {
-        //console.log(n);
+        console.log(n.toString());
         let num = new Intl.NumberFormat('en-US', {
             maximumSignificantDigits: 8
         }).format(n);
 
-        //console.log(num);
+        console.log(num);
         num = new Intl.NumberFormat('en-US', {
             maximumFractionDigits: 7
         }).format(removeCommas(num));
 
-        //console.log(num);
+        console.log(num);
 
         if (num == "-0") {
             return "0"
         }
+
+        //include trailing 0s in decimals:
+        if (n.includes(".")) {
+            if (!num.includes(".")) {
+                num += ".";
+            }
+            let trailingZeros = 0;
+            //start at string end in & move inwards, break if not a 0
+            for (let i = n.length - 1; i > 0; i--) {
+                if (n[i] === "0") {
+                    trailingZeros++;
+                } else {
+                    break;
+                }
+            }
+            //append the # of trailing 0s
+            for (let i = 0; i < trailingZeros; i++) {
+                num += "0";
+            }
+        }
+
+        console.log(num);
         return num;
     }
 
     const removeCommas = (string) => {
         return string.replace(/,/g, '');
+    }
+
+    const validateStringTail = (string) => {
+        if (string == "") {
+            return string;
+        }
+        let lastEntry = string[string.length - 1];
+        let stringPrefix = "";
+        //only change the stringPrefix for operators. this prevents appending the memory value to a previous string of #s
+        if (lastEntry == "+" || lastEntry == "-" || lastEntry == "*" || lastEntry == "/" || lastEntry == "(") {
+            stringPrefix = string;
+        }
+        return stringPrefix;
     }
 
     const parenLeftClickHandler = () => {
@@ -265,27 +300,7 @@ function App() {
         }
     }
 
-    const validateStringTail = (string) => {
-        if (string == "") {
-            return string;
-        }
-        let lastEntry = string[string.length - 1];
-        let stringPrefix = "";
-        //only change the stringPrefix for operators. this prevents appending the memory value to a previous string of #s
-        if (lastEntry == "+" || lastEntry == "-" || lastEntry == "*" || lastEntry == "/" || lastEntry == "(") {
-            stringPrefix = string;
-        }
-        return stringPrefix;
-    }
-
     const memRecallHandler = () => {
-        // let lastEntry = calc.string[calc.string.length - 1];
-        // let stringPrefix = "";
-        // //only change the stringPrefix for operators. this prevents appending the memory value to a previous string of #s
-        // if (lastEntry == "+" || lastEntry == "-" || lastEntry == "*" || lastEntry == "/") {
-        //     stringPrefix = calc.string;
-        // }
-
         let stringPrefix = validateStringTail(calc.string);
 
         setMemory({
@@ -436,3 +451,4 @@ ReactDOM.render(<App />, document.getElementById('app'))
 //store 5
 //recall 5
 //clear 5, 9 ==> 59
+//BUG: result or num holding UNROUNDED values for lonnnnng decimals
