@@ -118,6 +118,7 @@ function App() {
                     parenStarted: false,
                 });
             }
+            equalsClickHandler();
         }
         resetLastPressed();
     }
@@ -246,11 +247,22 @@ function App() {
     }
 
     const memClearHandler = () => {
-        setMemory({
-            mem: 0,
-            memset: false,
-            justRecalled: false,
-        })
+        if (display.string != "ERROR" && display.string != "(") {
+            const valueOnScreen = parseFloat(removeCommas(display.string))
+
+            setCalc({
+                ...calc,
+                num: valueOnScreen,
+                result: 0,
+                string: valueOnScreen.toString(),
+
+            })
+            setMemory({
+                mem: 0,
+                memset: false,
+                justRecalled: false,
+            })
+        }
     }
 
     const validateStringTail = (string) => {
@@ -367,7 +379,7 @@ function App() {
                 {/* what appears at the top: display num unless it's 0 -- else display result */}
                 <div id='displayL'>{memory.memset ? "M" : ""}</div>
                 <div id="display" className="text-end fs-3 mx-2 mt-2 px-1">
-                    
+
                     <div id='displayR'>{display.string}</div>
                 </div>
 
@@ -419,3 +431,8 @@ ReactDOM.render(<App />, document.getElementById('app'))
 //should it just be... result = recall, string = ""???
 //paren + memRecall + operand ==> ( paren removed??
 //14 / memRecall ... not recalling?
+//when closing Parens... something needs update
+//5 + memclear + 9 should not be 59
+//store 5
+//recall 5
+//clear 5, 9 ==> 59
