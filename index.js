@@ -23,12 +23,21 @@ function App() {
     const [memory, setMemory] = React.useState({
         mem: 0,
         memset: false,
+        justRecalled: false, //use to prevent #s from appending to the memory value
     })
 
     React.useEffect(() => {
         console.log(calc);
         console.log(memory);
     }, [calc, memory])
+
+    // React.useEffect(() => {
+    //     console.log(calc);
+    // }, [calc])
+
+    // React.useEffect(() => {
+    //     console.log(memory);
+    // }, [memory])
 
     //side effect: code only gets called when contents of CALC get changed
     React.useEffect(() => {
@@ -42,6 +51,21 @@ function App() {
         }
         setDisplay({ string: preString });
     }, [calc])
+
+    // React.useEffect(() => {
+    //     //if a calc button was hit, then mem was NOT justrecalled
+    //     setMemory({
+    //         ...memory,
+    //         justRecalled: false,
+    //     })
+    // }, [numberClickHandler, operandClickHandler])
+
+    const resetLastPressed = () => {
+        setMemory({
+            ...memory,
+            justRecalled: false,
+        })
+    }
 
     // const formatter = new Intl.NumberFormat('en-US', {
     //     maximumSignificantDigits: 8,
@@ -109,10 +133,12 @@ function App() {
                     ...calc,
                     num: (calc.num === 0 || calc.num === '(') ? stringValue : //needs ===, as 0. == 0
                         (stringValue === "0") ? calc.num + '0' : //special exception for adding 0s after decimal
-                            format(parseFloat(removeCommas(calc.num) + stringValue)),
+                            (calc.num) + stringValue,
                     result: (!calc.operand) ? 0 : calc.result, //reset result to 0 when clicking a # after equalsHandling
-                    string: calc.string + stringValue
+                    string: memory.justRecalled ? stringValue : calc.string + stringValue, //if a # is hit right after recalling, reset the string to just the #. 
                 });
+
+                resetLastPressed();
             }
         }
     };
@@ -132,13 +158,13 @@ function App() {
         if (calc.num === 0 && calc.result !== 0) {
             setCalc({
                 ...calc,
-                result: format(Math.sqrt(removeCommas(calc.result))),
+                result: Math.sqrt(calc.result),
                 string: ""
             });
         } else {
             setCalc({
                 ...calc,
-                num: format(Math.sqrt(removeCommas(calc.num))),
+                num: Math.sqrt(calc.num),
                 string: ""
             });
         };
@@ -149,13 +175,13 @@ function App() {
             if (calc.num === 0 && calc.result !== 0) {
                 setCalc({
                     ...calc,
-                    result: format(removeCommas(calc.result) * -1),
+                    result: calc.result * -1,
                     string: calc.string + "*-1",
                 });
             } else {
                 setCalc({
                     ...calc,
-                    num: format(removeCommas(calc.num) * -1),
+                    num: calc.num * -1,
                     string: calc.string + "*-1",
                 });
             };
@@ -172,34 +198,18 @@ function App() {
             string: (calc.result && !calc.num) ? calc.result.toString() + op : calc.string + op,
             num: 0,
         });
+        resetLastPressed();
         // }
     }
 
     const equalsClickHandler = (opr = "") => {
         if (calc.string !== "") {
-            // switch (calc.operand) {
-            //     case "+":
-            //         setCalc({ ...calc, num: 0, operand: opr, result: (Number(calc.result) + Number(calc.num)).toString() })
-            //         break;
-            //     case "-":
-            //         setCalc({ ...calc, num: 0, operand: opr, result: (Number(calc.result) - Number(calc.num)).toString() })
-            //         break;
-            //     case "*":
-            //         setCalc({ ...calc, num: 0, operand: opr, result: (Number(calc.result) * Number(calc.num)).toString() })
-            //         break;
-            //     case "/":
-            //         setCalc({ ...calc, num: 0, operand: opr, result: (calc.num == "0") ? "Cannot divide by 0" : (Number(calc.result) / Number(calc.num)).toString() })
-            //         break;
-            //     default:
-            //         break;
-            // }
-
-            const res = eval(removeCommas(calc.string));//(eval(calc.string.replace(/,/g, '')))
+            const res = eval((calc.string));//(eval(calc.string.replace(/,/g, '')))
 
             setCalc({
                 ...calc,
                 num: 0,
-                result: Math.abs(res) <= 99999999 ? format(res) : "ERROR",
+                result: Math.abs(res) <= 99999999 ? res : "ERROR",
                 string: "",
             })
         }
@@ -210,14 +220,16 @@ function App() {
         if (display.string != "ERROR" && display.string != "(") {
             const valueOnScreen = parseFloat(removeCommas(display.string))
             setMemory({
+                ...memory,
                 mem: memory.mem + valueOnScreen,
-                memset: true
+                memset: true,
+                justRecalled: true,
             })
 
             setCalc({
                 ...calc,
                 num: 0,
-                result: valueOnScreen
+                result: valueOnScreen,
             })
         }
     }
@@ -226,23 +238,31 @@ function App() {
         setMemory({
             mem: 0,
             memset: false,
+            justRecalled: false,
         })
     }
 
     const memRecallHandler = () => {
-        let lastEntry = calc.string[calc.string.length-1];
+        let lastEntry = calc.string[calc.string.length - 1];
         let stringPrefix = "";
         //only change the stringPrefix for operators. this prevents appending the memory value to a previous string of #s
-        if (lastEntry == "+" || lastEntry == "-" || lastEntry == "*" || lastEntry =="/") {
+        if (lastEntry == "+" || lastEntry == "-" || lastEntry == "*" || lastEntry == "/") {
             stringPrefix = calc.string;
         }
-        
+
+        setMemory({
+            ...memory,
+            justRecalled: true
+        })
+
         setCalc({
             ...calc,
-            num: memory.mem,
-            result: 0,
+            result: memory.mem,
+            num: 0,
             string: stringPrefix + memory.mem
         })
+
+
     }
 
     //reset everything
@@ -319,7 +339,7 @@ function App() {
             <div className="calc-body mt-3" >
                 {/* what appears at the top: display num unless it's 0 -- else display result */}
                 <div id="display" className="text-end fs-3 mx-2 mt-2 px-1">
-                    <div id='displayL' className="text-start">{memory.memset ? "M" : ""}</div>
+                    <div id='displayL' className="text-left">{memory.memset ? "M" : ""}</div>
                     <div id='displayR' className="text-end">{display.string}</div>
                 </div>
 
@@ -364,8 +384,6 @@ ReactDOM.render(<App />, document.getElementById('app'))
 
 //redo equalsClickHandle switch statement for less redundancy
 //how does GRE calc handle -? as negative, or always subtract?
-//add character limit-- ROUNDS, not truncates
 //add memory functions
-//fix float point error: .1 +.2 = 3.0000000000004
-//0.0 not working
-//can't do 0 operands: x+0, x-0, x*0
+//memory recall, then NUMBERBUTTON ==> append to string
+//sqrt: 9+, 9/, etc
