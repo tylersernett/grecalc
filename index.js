@@ -67,36 +67,26 @@ function App() {
         })
     }
 
-    // const formatter = new Intl.NumberFormat('en-US', {
-    //     maximumSignificantDigits: 8,
-    //     maximumFractionDigits: 7,
-    // })
-    //above doesn't work because one overrides the other -- use below instead
-
     const format = (n) => {
-        console.log(n.toString());
         let num = new Intl.NumberFormat('en-US', {
             maximumSignificantDigits: 8
         }).format(n);
 
-        console.log(num);
         num = new Intl.NumberFormat('en-US', {
             maximumFractionDigits: 7
         }).format(removeCommas(num));
-
-        console.log(num);
 
         if (num == "-0") {
             return "0"
         }
 
-        //include trailing 0s in decimals:
+        //include trailing 0s in decimals:\\\\\\\\\\\\\\\\\\\\\\\\\
         if (n.includes(".")) {
             if (!num.includes(".")) {
                 num += ".";
             }
             let trailingZeros = 0;
-            //start at string end in & move inwards, break if not a 0
+            //start at string end & move inwards, break if not a 0
             for (let i = n.length - 1; i > 0; i--) {
                 if (n[i] === "0") {
                     trailingZeros++;
@@ -109,8 +99,6 @@ function App() {
                 num += "0";
             }
         }
-
-        console.log(num);
         return num;
     }
 
@@ -200,13 +188,14 @@ function App() {
             setCalc({
                 ...calc,
                 result: Math.sqrt(calc.result),
-                string: ""
+                string: "",
             });
         } else {
             setCalc({
                 ...calc,
-                num: Math.sqrt(calc.num),
-                string: ""
+                result: Math.sqrt(calc.num),
+                num:0,
+                string: "",
             });
         };
     };
