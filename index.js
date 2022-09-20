@@ -91,6 +91,7 @@ function App() {
                 num += "0";
             }
         }
+        
         return num;
     }
 
@@ -176,20 +177,22 @@ function App() {
 
     const squarerootClickHandler = () => {
         resetLastPressed();
-        if (calc.num === 0 && calc.result !== 0) {
-            setCalc({
-                ...calc,
-                result: Math.sqrt(calc.result),
-                string: "",
-            });
+        let root = 0;
+        if (calc.result !== 0) {
+            root = Math.sqrt(calc.result)
         } else {
-            setCalc({
-                ...calc,
-                result: Math.sqrt(calc.num),
-                num: 0,
-                string: "",
-            });
-        };
+            root = Math.sqrt(calc.num)
+        }
+        //NaN check (for negative roots):
+        if (root !== root){
+            root = "ERROR";
+        }
+        setCalc({
+            ...calc,
+            num: 0,
+            result: root,
+            string: ""
+        })
     };
 
     const negativeClickHandler = () => {
@@ -437,3 +440,4 @@ ReactDOM.render(<App />, document.getElementById('app'))
 //BUG: result or num holding UNROUNDED values for lonnnnng decimals
 //FIXED!
 //TEST: 1/7 * 7 = 0.9999997
+//CHECK: behavior when ERROR is in display. must you hit C to move on?
