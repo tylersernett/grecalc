@@ -52,14 +52,6 @@ function App() {
         setDisplay({ string: preString });
     }, [calc])
 
-    // React.useEffect(() => {
-    //     //if a calc button was hit, then mem was NOT justrecalled
-    //     setMemory({
-    //         ...memory,
-    //         justRecalled: false,
-    //     })
-    // }, [numberClickHandler, operandClickHandler])
-
     const resetLastPressed = () => {
         setMemory({
             ...memory,
@@ -106,7 +98,7 @@ function App() {
         return string.replace(/,/g, '');
     }
 
-    const validateStringTail = (string) => {
+    const prefixIfPriorIsOperand = (string) => {
         if (string == "") {
             return string;
         }
@@ -121,7 +113,7 @@ function App() {
 
     const parenLeftClickHandler = () => {
         if (calc.parenStarted == false) {
-            let stringPrefix = validateStringTail(calc.string);
+            let stringPrefix = prefixIfPriorIsOperand(calc.string);
             setCalc({
                 ...calc,
                 num: "(",
@@ -194,7 +186,7 @@ function App() {
             setCalc({
                 ...calc,
                 result: Math.sqrt(calc.num),
-                num:0,
+                num: 0,
                 string: "",
             });
         };
@@ -219,16 +211,19 @@ function App() {
     }
 
     const operandClickHandler = (op) => {
-        setCalc({
-            ...calc,
-            operand: op,
-            //if there's a result & no new number, re-use old result for equals-to-operand chain input
-            result: (calc.result && !calc.num) ? calc.result.toString() : calc.num,
-            string: (calc.result && !calc.num && !calc.parenStarted) ? calc.result.toString() + op : calc.string + op,
-            num: 0,
-        });
-        resetLastPressed();
-        // }
+        if (calc.num || calc.result) {
+            if (calc.string[calc.string.length - 1] != "(") {
+                setCalc({
+                    ...calc,
+                    operand: op,
+                    //if there's a result & no new number, re-use old result for equals-to-operand chain input
+                    result: (calc.result && !calc.num) ? calc.result.toString() : calc.num,
+                    string: (calc.result && !calc.num && !calc.parenStarted) ? calc.result.toString() + op : calc.string + op,
+                    num: 0,
+                });
+                resetLastPressed();
+            }
+        }
     }
 
     const equalsClickHandler = (opr = "") => {
@@ -289,7 +284,7 @@ function App() {
     }
 
     const memRecallHandler = () => {
-        let stringPrefix = validateStringTail(calc.string);
+        let stringPrefix = prefixIfPriorIsOperand(calc.string);
 
         setMemory({
             ...memory,
