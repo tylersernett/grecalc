@@ -91,7 +91,7 @@ function App() {
                 num += "0";
             }
         }
-        
+
         return num;
     }
 
@@ -184,7 +184,7 @@ function App() {
             root = Math.sqrt(calc.num)
         }
         //NaN check (for negative roots):
-        if (root !== root){
+        if (root !== root) {
             root = "ERROR";
         }
         setCalc({
@@ -378,13 +378,16 @@ function App() {
         <div className="container">
             <div className="calc-body mt-3" >
                 {/* what appears at the top: display num unless it's 0 -- else display result */}
-                <div id='displayL'>{memory.memset ? "M" : ""}</div>
-                <div id="display" className="text-end fs-3 mx-2 mt-2 px-1">
+                <div id="display" className ='display-box m-1'>
+                        <div id='displayL' className="fs-3">{memory.memset ? "M" : ""}</div>
+                        <div id='displayR' className="fs-3 px-1">{display.string}</div>
+                    </div>
 
-                    <div id='displayR'>{display.string}</div>
-                </div>
+
+
 
                 <div className="button-box m-1">
+
                     {btns.map((item) =>
 
                         (item[1] === "parenright") ? <div className="calc-btn text-center fs-2"
@@ -441,3 +444,5 @@ ReactDOM.render(<App />, document.getElementById('app'))
 //FIXED!
 //TEST: 1/7 * 7 = 0.9999997
 //CHECK: behavior when ERROR is in display. must you hit C to move on?
+//ERROR-LOCK  you MUST hit C to continue 
+//CSS: everything gets darker on click, and gets BOX highlight on hover

@@ -1,20 +1,36 @@
-#display {
-    /* border: 0px solid black;  */
-    background-color: #fff;
+.display-box{
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr 1fr 1fr;
+    grid-template-rows: 1fr;
+    /* grid-column-start: 1; */
+    /* grid-column-end: 6; */
+    background-color: white;
+    border-radius: 6px;
+    border: 0px ;
+    padding: 1px;
 }
 
 #displayL, #displayR
 {
-    display: inline;
+    /* display: inline; */
+    cursor: auto;
+    
 }
 
 #displayL {
-    background-color: yellow;
-    width: 200px;
+    grid-column-start: 1;
+    grid-column-end: 2;
+    grid-row-start: 1;
+    grid-row-end: 2;
+    text-align: center;
+    color: black;
 }
 
 #displayR {
-    background-color: yellowgreen;
+    grid-column-start: 2;
+    grid-column-end: 6;
+    text-align: right;
+    color: black;
 }
 
 .button-box{
