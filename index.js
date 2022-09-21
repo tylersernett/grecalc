@@ -29,6 +29,7 @@ function App() {
     React.useEffect(() => {
         console.log(calc);
         console.log(memory);
+        // console.log(display);
     }, [calc, memory])
 
     // React.useEffect(() => {
@@ -112,12 +113,23 @@ function App() {
         return stringPrefix;
     }
 
+    const validPreOperandDisplay = () => {
+        if (display.string == "(" || display.string == "ERROR") {
+            return false;
+        }
+        return true;
+    }
+
     const parenLeftClickHandler = () => {
+        if (!validPreOperandDisplay()) {
+            return;
+        }
         if (calc.parenStarted == false) {
             let stringPrefix = prefixIfPriorIsOperand(calc.string);
             setCalc({
                 ...calc,
                 num: "(",
+                result: 0,
                 string: stringPrefix + "(",
                 parenStarted: true,
             });
@@ -168,7 +180,7 @@ function App() {
         if (!calc.num.toString().includes('.')) {
             setCalc({
                 ...calc,
-                num: (calc.num == 0) ? "0." : calc.num + ".",//add leading 0 for proper decimals, else just add on "."
+                num: (calc.num == 0 || calc.num == "(") ? "0." : calc.num + ".",//add leading 0 for proper decimals, else just add on "."
                 string: memory.justRecalled ? "0." : calc.string + '.',
             })
         }
@@ -176,6 +188,9 @@ function App() {
     };
 
     const squarerootClickHandler = () => {
+        if (!validPreOperandDisplay()) {
+            return;
+        }
         resetLastPressed();
         let root = 0;
         if (calc.result !== 0) {
@@ -196,6 +211,9 @@ function App() {
     };
 
     const negativeClickHandler = () => {
+        if (!validPreOperandDisplay()) {
+            return;
+        }
         if (!(calc.num == 0 && calc.result == 0)) {
             if (calc.num === 0 && calc.result !== 0) {
                 setCalc({
@@ -214,22 +232,28 @@ function App() {
     }
 
     const operandClickHandler = (op) => {
+        if (!validPreOperandDisplay()) {
+            return;
+        }
         if (calc.num || calc.result) {
-            if (calc.string[calc.string.length - 1] != "(") {
-                setCalc({
-                    ...calc,
-                    operand: op,
-                    //if there's a result & no new number, re-use old result for equals-to-operand chain input
-                    result: (calc.result && !calc.num) ? calc.result.toString() : calc.num,
-                    string: (calc.result && !calc.num && !calc.parenStarted) ? calc.result.toString() + op : calc.string + op,
-                    num: 0,
-                });
-                resetLastPressed();
-            }
+            // if (calc.string[calc.string.length - 1] != "(") {
+            setCalc({
+                ...calc,
+                operand: op,
+                //if there's a result & no new number, re-use old result for equals-to-operand chain input
+                result: (calc.result && !calc.num) ? calc.result.toString() : calc.num,
+                string: (calc.result && !calc.num && !calc.parenStarted) ? calc.result.toString() + op : calc.string + op,
+                num: 0,
+            });
+            resetLastPressed();
+            // }
         }
     }
 
     const equalsClickHandler = (opr = "") => {
+        if (!validPreOperandDisplay()) {
+            return;
+        }
         let evalString = calc.string;
         if (evalString !== "") {
             //add closing parentheses if it's currently missing
@@ -242,6 +266,7 @@ function App() {
                 ...calc,
                 num: 0,
                 result: Math.abs(res) <= 99999999 ? (removeCommas(format(res.toString()))) : "ERROR",
+                operand: "",
                 string: "",
                 parenStarted: false,
             })
@@ -250,43 +275,49 @@ function App() {
 
     //MEMORY
     const memAddHandler = () => {
-        if (display.string != "ERROR" && display.string != "(") {
-            const valueOnScreen = parseFloat(removeCommas(display.string))
-            setMemory({
-                ...memory,
-                mem: memory.mem + valueOnScreen,
-                memset: true,
-                justRecalled: true,
-            })
-
-            setCalc({
-                ...calc,
-                num: 0,
-                result: valueOnScreen,
-            })
+        if (!validPreOperandDisplay()) {
+            return;
         }
+        const valueOnScreen = parseFloat(removeCommas(display.string))
+        setMemory({
+            ...memory,
+            mem: memory.mem + valueOnScreen,
+            memset: true,
+            justRecalled: true,
+        })
+
+        setCalc({
+            ...calc,
+            num: 0,
+            result: valueOnScreen,
+        })
+
     }
 
     const memClearHandler = () => {
-        if (display.string != "ERROR" && display.string != "(") {
-            const valueOnScreen = parseFloat(removeCommas(display.string))
-
-            setCalc({
-                ...calc,
-                num: valueOnScreen,
-                result: 0,
-                string: valueOnScreen.toString(),
-
-            })
-            setMemory({
-                mem: 0,
-                memset: false,
-                justRecalled: false,
-            })
+        if (!validPreOperandDisplay()) {
+            return;
         }
+        const valueOnScreen = parseFloat(removeCommas(display.string))
+
+        setCalc({
+            ...calc,
+            num: valueOnScreen,
+            result: 0,
+            string: valueOnScreen.toString(),
+
+        })
+        setMemory({
+            mem: 0,
+            memset: false,
+            justRecalled: false,
+        })
     }
 
     const memRecallHandler = () => {
+        if (!validPreOperandDisplay()) {
+            return;
+        }
         let stringPrefix = prefixIfPriorIsOperand(calc.string);
 
         setMemory({
@@ -318,6 +349,9 @@ function App() {
 
     //only clear most recent entry
     const clearEntryClickHandler = () => {
+        if (!validPreOperandDisplay()) {
+            return;
+        }
         let digits = calc.num;
         if (digits[0] == '0' && digits[1] == '.') {
             digits = digits.substring(1); //truncate the first 0 from the string, because calc.string doesn't store the first 0
@@ -378,10 +412,10 @@ function App() {
         <div className="container">
             <div className="calc-body mt-3" >
                 {/* what appears at the top: display num unless it's 0 -- else display result */}
-                <div id="display" className ='display-box m-1'>
-                        <div id='displayL' className="fs-3">{memory.memset ? "M" : ""}</div>
-                        <div id='displayR' className="fs-3 px-1">{display.string}</div>
-                    </div>
+                <div id="display" className='display-box m-1'>
+                    <div id='displayL' className="fs-3">{memory.memset ? "M" : ""}</div>
+                    <div id='displayR' className="fs-3 px-1">{display.string}</div>
+                </div>
 
 
 
