@@ -140,7 +140,7 @@ function App() {
     }
 
     const numberClickHandler = (num) => {
-        const stringValue = num.toString();
+        const keyPressed = num.toString();
 
         //make sure there's less than 8 digits 
         let str = calc.num.toString();
@@ -148,14 +148,14 @@ function App() {
         const digitCount = (str.match(regex) || []).length;
         if (digitCount < 8) {
 
-            if (!(calc.num === "0" && stringValue == '0')) { //no leading 0s
+            if (!(calc.num === "0" && keyPressed == '0')) { //no leading 0s
                 setCalc({
                     ...calc,
-                    num: (calc.num === 0 || calc.num === '(') ? stringValue : //needs ===, as 0. == 0
-                        (stringValue === "0") ? calc.num + '0' : //special exception for adding 0s after decimal
-                            (calc.num) + stringValue,
+                    num: (calc.num === 0 || calc.num === '(' || calc.num === '0') ? keyPressed : //needs ===, as 0. == 0
+                        (keyPressed === "0") ? calc.num + '0' : //special exception for adding 0s after decimal
+                            (calc.num) + keyPressed,
                     result: (!calc.operand) ? 0 : calc.result, //reset result to 0 when clicking a # after equalsHandling
-                    string: memory.justRecalled ? stringValue : calc.string + stringValue, //if a # is hit right after recalling, reset the string to just the #. 
+                    string: (memory.justRecalled || calc.string == "0") ? keyPressed : calc.string + keyPressed, //if a # is hit right after recalling, reset the string to just the #. 
                 });
 
                 resetLastPressed();
