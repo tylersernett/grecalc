@@ -1,4 +1,4 @@
-function App() {
+function Calculator() {
     // {display, id}
     const btns = [
         ["MR", "memrecall"], ["MC", "memclear"], ["M+", "memadd"], ["(", "parenleft"], [")", "parenright"],
@@ -410,15 +410,12 @@ function App() {
 
     return (
         <div className="container">
-            <div className="calc-body mt-3" >
+            <div className="calc-body mt-3">
                 {/* what appears at the top: display num unless it's 0 -- else display result */}
                 <div id="display" className='display-box m-1'>
                     <div id='displayL' className="fs-3">{memory.memset ? "M" : ""}</div>
                     <div id='displayR' className="fs-3 px-1">{display.string}</div>
                 </div>
-
-
-
 
                 <div className="button-box m-1">
 
@@ -458,8 +455,17 @@ function App() {
         </div>
     )
 }
+
+function App() {
+    return (
+        <Calculator />
+    )
+}
+
 const root = document.getElementById('app');
-ReactDOM.createRoot(root).render(<App/>);
+ReactDOM.createRoot(root).render(<App />);
+
+module.exports = Calculator;
 
 //redo equalsClickHandle switch statement for less redundancy
 //how does GRE calc handle -? as negative, or always subtract?
