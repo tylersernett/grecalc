@@ -458,7 +458,8 @@ function App() {
         </div>
     )
 }
-ReactDOM.render(<App />, document.getElementById('app'))
+const root = document.getElementById('app');
+ReactDOM.createRoot(root).render(<App/>);
 
 //redo equalsClickHandle switch statement for less redundancy
 //how does GRE calc handle -? as negative, or always subtract?
