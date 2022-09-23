@@ -221,13 +221,28 @@ function Calculator() {
                 setCalc({
                     ...calc,
                     result: calc.result * -1,
-                    string: calc.string + "*-1",
+                    //string: "-"+calc.result,
                 });
             } else {
+                const regex = /([0-9.]+(?![\*\+\/-]))$/;
+                const operationString = calc.string;
+                const matches = operationString.match(/([0-9.]+(?![\*\+\/-]))$/);
+                const lastNumber = matches[0];
+                let prefix = operationString.slice(0, calc.string.length-lastNumber.length);
+                let newop = "-";
+                const lastop = prefix[prefix.length-1];
+                if (lastop == "+") {
+                    prefix = prefix.slice(0, prefix.length-1);
+                } else if (lastop == "-") {
+                    prefix = prefix.slice(0, prefix.length-1);
+                    newop = "+";
+                }
+                console.log("prefix: " + prefix + " | ln: " + lastNumber);
                 setCalc({
                     ...calc,
                     num: calc.num * -1,
-                    string: calc.string + "*-1",
+                    //regex: find last operand, stick a '-' right after it
+                    string: prefix + newop + lastNumber,
                 });
             };
         }
@@ -238,13 +253,18 @@ function Calculator() {
             return;
         }
         if (calc.num || calc.result) {
-            // if (calc.string[calc.string.length - 1] != "(") {
+            //if the last entry was an operator, this should be overrided by a new operand press
+            let prefix = calc.string;
+            const lastEntry = prefix[prefix.length-1];
+            if ( lastEntry == "+" || lastEntry =="-" || lastEntry == "*" || lastEntry == "/" ) {
+                prefix = prefix.slice(0, prefix.length-1)
+            }
             setCalc({
                 ...calc,
                 operand: op,
                 //if there's a result & no new number, re-use old result for equals-to-operand chain input
                 result: (calc.result && !calc.num) ? calc.result.toString() : calc.num,
-                string: (calc.result && !calc.num && !calc.parenStarted) ? calc.result.toString() + op : calc.string + op,
+                string: (calc.result && !calc.num && !calc.parenStarted) ? calc.result.toString() + op : prefix + op,
                 num: 0,
             });
             resetLastPressed();
@@ -459,3 +479,7 @@ function Calculator() {
   }
 
   export default Calculator;
+
+  //INVESTIGATE: plus-minus handling. 1(-)23 = -123? 1(-)23(-)45 = 12345?
+  //negative should have no effect on 0, 0.0, 0.000 until a nonzero digit is present
+  //result + (-) + # BUG
