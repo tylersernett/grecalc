@@ -7,7 +7,7 @@ function Calculator() {
         [7, "seven"], [8, "eight"], [9, "nine"], ["÷", "/"], ["C", "clear"],
         [4, "four"], [5, "five"], [6, "six"], ["×", "*"], ["CE", "clear-entry"],
         [1, "one"], [2, "two"], [3, "three"], ["–", "-"], ["√", "squareroot"],
-        ["±", "negative"], [0, "zero"], [".", "decimal"], ["+", "+"],
+        ["±", "negative"], [0, "zero"], [".", "decimal"], ["＋", "+"],
         ["=", "equals"]];
   
     const [calc, setCalc] = React.useState({
@@ -433,7 +433,7 @@ function Calculator() {
                                 key={item[1]}
                                 onClick={parenLeftClickHandler}>{item[0]}</div> :
   
-                                <div className="calc-btn text-center fs-2"
+                                <div className="calc-btn text-center fs-2" role='button'
                                     id={item[1]}
                                     key={item[1]}
                                     onClick={(item[1] === "negative") ? negativeClickHandler :
