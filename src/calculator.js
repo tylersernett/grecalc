@@ -109,10 +109,17 @@ function Calculator() {
         let lastEntry = string[string.length - 1];
         let stringPrefix = "";
         //only change the stringPrefix for operators. this prevents appending the memory value to a previous string of #s
-        if (lastEntry == "+" || lastEntry == "-" || lastEntry == "*" || lastEntry == "/" || lastEntry == "(") {
+        if (isOperand(lastEntry) || lastEntry == "(") {
             stringPrefix = string;
         }
         return stringPrefix;
+    }
+
+    const isOperand = (string) => {
+        if (string == "+" || string == "-" || string == "*" || string == "/") {
+            return true;
+        }
+        return false;
     }
 
     const validPreOperandDisplay = () => {
@@ -234,7 +241,7 @@ function Calculator() {
             }
             //slice from start to final operand
             let prefix = operationString.slice(0, calc.string.length - lastNumber.length);
-            
+
             //correct for adjacent +,- (*- and /- is okay)
             const lastop = prefix[prefix.length - 1];
             if (lastop == "+") {
@@ -269,7 +276,7 @@ function Calculator() {
             //if the last entry was an operator, this should be overrided by a new operand press
             let prefix = calc.string;
             const lastEntry = prefix[prefix.length - 1];
-            if (lastEntry == "+" || lastEntry == "-" || lastEntry == "*" || lastEntry == "/") {
+            if (isOperand(lastEntry)) {
                 prefix = prefix.slice(0, prefix.length - 1)
             }
             setCalc({
@@ -391,13 +398,15 @@ function Calculator() {
         if (lastEntry[0] === '0' && lastEntry[1] === '.') {
             lastEntry = lastEntry.substring(1); //truncate the first 0 from the string, because calc.string doesn't store the first 0
         }
-        setCalc({
-            ...calc,
-            num: 0,
-            string: calc.string.substring(0, calc.string.length - lastEntry.length),
-            parenStarted: (lastEntry === "(") ? false : calc.parenStarted,
-            //remove the length of num from the END of the string
-        });
+        if (!isOperand(lastEntry)) {
+            setCalc({
+                ...calc,
+                num: 0,
+                string: calc.string.substring(0, calc.string.length - lastEntry.length),
+                parenStarted: (lastEntry === "(") ? false : calc.parenStarted,
+                //remove the length of num from the END of the string
+            });
+        }
     }
 
     //listen for keyboard presses
