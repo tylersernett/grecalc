@@ -154,6 +154,9 @@ function Calculator() {
     }
 
     const numberClickHandler = (num) => {
+        if (display.string == "ERROR") {
+            return;
+        }
         const keyPressed = num.toString();
 
         //make sure there's less than 8 digits 
@@ -327,7 +330,7 @@ function Calculator() {
     }
 
     const memClearHandler = () => {
-        if (!validPreOperandDisplay()) {
+        if (display.string == "ERROR") {
             return;
         }
         const valueOnScreen = parseFloat(removeCommas(display.string))
@@ -347,7 +350,7 @@ function Calculator() {
     }
 
     const memRecallHandler = () => {
-        if (!validPreOperandDisplay()) {
+        if (display.string == "ERROR") {
             return;
         }
         let stringPrefix = prefixIfPriorIsOperand(calc.string);
@@ -381,17 +384,18 @@ function Calculator() {
 
     //only clear most recent entry
     const clearEntryClickHandler = () => {
-        if (!validPreOperandDisplay()) {
+        if (display.string === "ERROR") {
             return;
         }
-        let digits = calc.num;
-        if (digits[0] == '0' && digits[1] == '.') {
-            digits = digits.substring(1); //truncate the first 0 from the string, because calc.string doesn't store the first 0
+        let lastEntry = calc.num;
+        if (lastEntry[0] === '0' && lastEntry[1] === '.') {
+            lastEntry = lastEntry.substring(1); //truncate the first 0 from the string, because calc.string doesn't store the first 0
         }
         setCalc({
             ...calc,
             num: 0,
-            string: calc.string.substring(0, calc.string.length - digits.length),
+            string: calc.string.substring(0, calc.string.length - lastEntry.length),
+            parenStarted: (lastEntry === "(") ? false : calc.parenStarted,
             //remove the length of num from the END of the string
         });
     }

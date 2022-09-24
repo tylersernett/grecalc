@@ -61,6 +61,19 @@ describe("TestCalc", () => {
         expect(display).toHaveTextContent(`7`);
         userEvent.click(clear);
 
+        //Parentheses
+        userEvent.click(clear);
+        userEvent.click(parenleft);
+        userEvent.click(one);
+        userEvent.click(plus);
+        userEvent.click(two);
+        userEvent.click(parenright);
+        userEvent.click(times);
+        userEvent.click(three);
+        userEvent.click(equals);
+        expect(display).toHaveTextContent(`9`);
+        userEvent.click(clear);
+
         //div by 0
         userEvent.click(clear);
         userEvent.click(one);
@@ -189,7 +202,11 @@ describe("TestCalc", () => {
         expect(display).toHaveTextContent(`0.`);
     });
 
-//
+    it("should display NOT display leading 0s for integers", () => {
+        render(<TestCalc />);
+        userEvent.keyboard("00012");
+        expect(display).toHaveTextContent(/^12.$/);
+    });
 
     it("should display leading 0s after decimals", () => {
         render(<TestCalc />);
@@ -247,14 +264,41 @@ describe("TestCalc", () => {
 
     it("should return ERROR after division by 0 (typed)", () => {
         render(<TestCalc />);
-        userEvent.keyboard("7/0=")
+        userEvent.keyboard("7/0=");
         expect(display).toHaveTextContent("ERROR");
+    });
+
+    it("should require a CLEAR after ERROR", () => {
+        render(<TestCalc />);
+        userEvent.keyboard("7/0=");
+        expect(display).toHaveTextContent("ERROR");
+        userEvent.keyboard("(1+2*3-4)/567890");
+        expect(display).toHaveTextContent("ERROR");
+        userEvent.keyboard("c");
+        expect(display).toHaveTextContent("0.");
     });
 
     it("should only apply the most recent operand", () => {
         render(<TestCalc />);
-        userEvent.keyboard("7/-*+3=")
+        userEvent.keyboard("7/-*+3=");
         expect(display).toHaveTextContent("10");
+    });
+
+    it("should use the previous result when starting a sequential operation", () => {
+        render(<TestCalc />);
+        userEvent.keyboard("2+3=*4=");
+        expect(display).toHaveTextContent("20");
+    });
+
+    it("should CLEAR ENTRY for the most recent parentheses, but not allow operand change", () => {
+        render(<TestCalc />);
+        const clearEntry = screen.getByText(/^CE$/i);
+        userEvent.keyboard("9*(");
+        expect(display).toHaveTextContent("(");
+        userEvent.click(clearEntry);
+        expect(display).toHaveTextContent("0");
+        userEvent.keyboard("3=");
+        expect(display).toHaveTextContent("27.");
     });
 
 });
