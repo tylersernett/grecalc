@@ -17,7 +17,7 @@ function TestCalc() {
 
 describe("TestCalc", () => {
 
-    it("click tests", () => {
+    it("should handle click inputs", () => {
         render(<TestCalc />);
         let display = screen.getByText(/0./i);
 
@@ -119,7 +119,7 @@ describe("TestCalc", () => {
         userEvent.click(clear);
     });
 
-    it("plusminus check", () => {
+    it("should handle plus/minus changes", () => {
         render(<TestCalc />);
         const plusminus = screen.getByText(/±/i);
         const times = screen.getByText(/×/i);
@@ -165,91 +165,93 @@ describe("TestCalc", () => {
 
     });
 
-    it("PEMDAS check", () => {
+    it("should handle expressions, rather than one-step calculation", () => {
         render(<TestCalc />);
         userEvent.keyboard("1+2*3=");
         expect(display).toHaveTextContent(`7`);
     });
 
-    it("parentheses", () => {
+    it("should handle parentheses", () => {
         render(<TestCalc />);
         userEvent.keyboard("(1+2)*3=");
         expect(display).toHaveTextContent(`9`);
     });
 
-    it("parentheses lock", () => {
+    it("should not accept operands after parentheses", () => {
         render(<TestCalc />);
         userEvent.keyboard("(*+/-");
         expect(display).toHaveTextContent(`(`);
     });
 
-    it("clear to 0", () => {
+    it("should return 0 after Clear is input", () => {
         render(<TestCalc />);
         userEvent.keyboard("(1+2)*3=c");
         expect(display).toHaveTextContent(`0.`);
     });
 
-    it("leading 0 decimal", () => {
+//
+
+    it("should display leading 0s after decimals", () => {
         render(<TestCalc />);
         userEvent.keyboard("0.00");
         expect(display).toHaveTextContent(`0.00`);
     });
 
-    it("8 digit display cap: leading 0 decimal ", () => {
+    it("should have an 8 digit display cap: leading 0 decimal ", () => {
         render(<TestCalc />);
         userEvent.keyboard("0.0000007123");
         expect(display).toHaveTextContent(/^0.0000007$/);
     });
 
-    it("8 digit display cap: integer", () => {
+    it("should have an 8 digit display cap: integer input", () => {
         render(<TestCalc />);
         userEvent.keyboard("1234567890");
         expect(display).toHaveTextContent(/^12,345,678.$/);
     });
 
-    it("8 digit display cap: mixed", () => {
+    it("should have an 8 digit display cap: mixed", () => {
         render(<TestCalc />);
         userEvent.keyboard("12345.67890");
         expect(display).toHaveTextContent(/^12,345.678$/);
     });
 
-    it("8 digit display cap: exceeded via operation (positive)", () => {
+    it("should have an 8 digit display cap: exceeded via operation (positive)", () => {
         render(<TestCalc />);
         userEvent.keyboard("88888888*2=");
         expect(display).toHaveTextContent(/^ERROR$/);
     });
 
-    it("8 digit display cap: exceeded via operation (negative)", () => {
+    it("should have an 8 digit display cap: exceeded via operation (negative)", () => {
         render(<TestCalc />);
         userEvent.keyboard("0-88888888=-22222222=");
         expect(display).toHaveTextContent(/^ERROR$/);
     });
 
-    it("8 digit display cap: ensure decimals are lossy", () => {
+    it("should have an 8 digit display cap: ensure decimals are lossy", () => {
         render(<TestCalc />);
         userEvent.keyboard("1/7=*7=");
         expect(display).toHaveTextContent(/^0.9999997$/);
     });
 
-    it("8 digit display cap: lose decimal when non-decimal figure added", () => {
+    it("should have an 8 digit display cap: lose decimal when non-decimal figure added", () => {
         render(<TestCalc />);
         userEvent.keyboard("9.0000001+3=");
         expect(display).toHaveTextContent(/^12.$/);
     });
 
-    it("accept 0 as initial entry", () => {
+    it("should accept 0 as an initial entry", () => {
         render(<TestCalc />);
         userEvent.keyboard("0-5=");
         expect(display).toHaveTextContent(/^-5.$/);
     });
 
-    it("div by 0 (typed)", () => {
+    it("should return ERROR after division by 0 (typed)", () => {
         render(<TestCalc />);
         userEvent.keyboard("7/0=")
         expect(display).toHaveTextContent("ERROR");
     });
 
-    it("only use most recent operand", () => {
+    it("should only apply the most recent operand", () => {
         render(<TestCalc />);
         userEvent.keyboard("7/-*+3=")
         expect(display).toHaveTextContent("10");
