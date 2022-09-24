@@ -46,7 +46,7 @@ function Calculator() {
     React.useEffect(() => {
         //assign to num or result, then add a period if necessary
         let preString = calc.num ? calc.num.toString() : calc.result.toString();
-        if (!(preString === "(" || preString == "ERROR")) {
+        if (!(preString === "(" || preString === "ERROR")) {
             preString = format(preString);
             if (!preString.includes(".")) {
                 preString += "."
@@ -71,7 +71,7 @@ function Calculator() {
             maximumFractionDigits: 7
         }).format(removeCommas(num));
 
-        if (num == "-0") {
+        if (num === "-0") {
             return "0"
         }
 
@@ -103,27 +103,27 @@ function Calculator() {
     }
 
     const prefixIfPriorIsOperand = (string) => {
-        if (string == "") {
+        if (string === "") {
             return string;
         }
         let lastEntry = string[string.length - 1];
         let stringPrefix = "";
         //only change the stringPrefix for operators. this prevents appending the memory value to a previous string of #s
-        if (isOperand(lastEntry) || lastEntry == "(") {
+        if (isOperand(lastEntry) || lastEntry === "(") {
             stringPrefix = string;
         }
         return stringPrefix;
     }
 
     const isOperand = (string) => {
-        if (string == "+" || string == "-" || string == "*" || string == "/") {
+        if (string === "+" || string === "-" || string === "*" || string === "/") {
             return true;
         }
         return false;
     }
 
     const validPreOperandDisplay = () => {
-        if (display.string == "(" || display.string == "ERROR") {
+        if (display.string === "(" || display.string === "ERROR") {
             return false;
         }
         return true;
@@ -133,7 +133,7 @@ function Calculator() {
         if (!validPreOperandDisplay()) {
             return;
         }
-        if (calc.parenStarted == false) {
+        if (calc.parenStarted === false) {
             let stringPrefix = prefixIfPriorIsOperand(calc.string);
             setCalc({
                 ...calc,
@@ -147,7 +147,7 @@ function Calculator() {
     }
 
     const parenRightClickHandler = () => {
-        if (calc.parenStarted == true) {
+        if (calc.parenStarted === true) {
             if (!(calc.num == 0 && calc.result == 0)) {
                 setCalc({
                     ...calc,
@@ -161,7 +161,7 @@ function Calculator() {
     }
 
     const numberClickHandler = (num) => {
-        if (display.string == "ERROR") {
+        if (display.string === "ERROR") {
             return;
         }
         const keyPressed = num.toString();
@@ -192,7 +192,7 @@ function Calculator() {
         if (!calc.num.toString().includes('.')) {
             setCalc({
                 ...calc,
-                num: (calc.num == 0 || calc.num == "(") ? "0." : calc.num + ".",//add leading 0 for proper decimals, else just add on "."
+                num: (calc.num == 0 || calc.num === "(") ? "0." : calc.num + ".",//add leading 0 for proper decimals, else just add on "."
                 string: memory.justRecalled ? "0." : calc.string + '.',
             })
         }
@@ -228,11 +228,12 @@ function Calculator() {
         }
         if (!(calc.num == 0 && calc.result == 0)) {
             //match last # after operand...
-            const regex = /([0-9.]+(?![\*\+\/-]))$/;
+            // const regex = /([0-9.]+(?![\*\+\/-]))$/;
+            const regex = /([0-9.]+(?![*+/-]))$/;
             const operationString = calc.string;
-            const matches = operationString.match(/([0-9.]+(?![\*\+\/-]))$/);
             let lastNumber;
             let newop = "-";
+            const matches = operationString.match(regex);
             if (matches !== null) {
                 lastNumber = matches[0];
             } else {
@@ -244,9 +245,9 @@ function Calculator() {
 
             //correct for adjacent +,- (*- and /- is okay)
             const lastop = prefix[prefix.length - 1];
-            if (lastop == "+") {
+            if (lastop === "+") {
                 prefix = prefix.slice(0, prefix.length - 1);
-            } else if (lastop == "-") {
+            } else if (lastop === "-") {
                 prefix = prefix.slice(0, prefix.length - 1);
                 newop = "+";
             }
@@ -258,7 +259,6 @@ function Calculator() {
                     string: prefix + newop + lastNumber,
                 });
             } else {
-
                 setCalc({
                     ...calc,
                     num: calc.num * -1,
@@ -337,7 +337,7 @@ function Calculator() {
     }
 
     const memClearHandler = () => {
-        if (display.string == "ERROR") {
+        if (display.string === "ERROR") {
             return;
         }
         const valueOnScreen = parseFloat(removeCommas(display.string))
@@ -357,7 +357,7 @@ function Calculator() {
     }
 
     const memRecallHandler = () => {
-        if (display.string == "ERROR") {
+        if (display.string === "ERROR") {
             return;
         }
         let stringPrefix = prefixIfPriorIsOperand(calc.string);
@@ -374,8 +374,6 @@ function Calculator() {
             string: stringPrefix + memory.mem,
             //string: calc.parenStarted ? calc.string + memory.mem : "",//"",//stringPrefix + memory.mem
         })
-
-
     }
 
     //reset everything
@@ -426,17 +424,8 @@ function Calculator() {
                 case 'c':
                     clearClickHandler();
                     break;
-                case '+':
-                    operandClickHandler("+");
-                    break;
-                case '-':
-                    operandClickHandler("-");
-                    break;
-                case '/':
-                    operandClickHandler("/");
-                    break;
-                case '*':
-                    operandClickHandler("*");
+                case '+': case '-': case '/': case '*':
+                    operandClickHandler(key);
                     break;
                 case '(':
                     parenLeftClickHandler();
