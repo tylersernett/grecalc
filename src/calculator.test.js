@@ -297,7 +297,7 @@ describe("TestCalc", () => {
         expect(display).toHaveTextContent("(");
         userEvent.click(clearEntry);
         expect(display).toHaveTextContent("0");
-        userEvent.keyboard("3=");
+        userEvent.keyboard("+3=");
         expect(display).toHaveTextContent("27.");
     });
 

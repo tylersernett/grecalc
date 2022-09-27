@@ -148,7 +148,7 @@ function Calculator() {
 
     const parenRightClickHandler = () => {
         if (calc.parenStarted === true) {
-            if (!(calc.num == 0 && calc.result == 0)) {
+            if (!(calc.num === 0 && calc.result === 0)) {
                 setCalc({
                     ...calc,
                     string: calc.string + ")",
@@ -172,14 +172,14 @@ function Calculator() {
         const digitCount = (str.match(regex) || []).length;
         if (digitCount < 8) {
 
-            if (!(calc.num === "0" && keyPressed == '0')) { //no leading 0s
+            if (!(calc.num === 0 && keyPressed === 0)) { //no leading 0s ???keyPressed SHOULD BE FALSE cause it's a string???
                 setCalc({
                     ...calc,
                     num: (calc.num === 0 || calc.num === '(' || calc.num === '0') ? keyPressed : //needs ===, as 0. == 0
                         (keyPressed === "0") ? calc.num + '0' : //special exception for adding 0s after decimal
                             (calc.num) + keyPressed,
                     result: (!calc.operand) ? 0 : calc.result, //reset result to 0 when clicking a # after equalsHandling
-                    string: (memory.justRecalled || calc.string == "0") ? keyPressed : calc.string + keyPressed, //if a # is hit right after recalling, reset the string to just the #. 
+                    string: (memory.justRecalled || calc.string === "0") ? keyPressed : calc.string + keyPressed, //if a # is hit right after recalling, reset the string to just the #. 
                 });
 
                 resetLastPressed();
@@ -192,7 +192,7 @@ function Calculator() {
         if (!calc.num.toString().includes('.')) {
             setCalc({
                 ...calc,
-                num: (calc.num == 0 || calc.num === "(") ? "0." : calc.num + ".",//add leading 0 for proper decimals, else just add on "."
+                num: (calc.num === 0 || calc.num === "(") ? "0." : calc.num + ".",//add leading 0 for proper decimals, else just add on "."
                 string: memory.justRecalled ? "0." : calc.string + '.',
             })
         }
@@ -226,7 +226,7 @@ function Calculator() {
         if (!validPreOperandDisplay()) {
             return;
         }
-        if (!(calc.num == 0 && calc.result == 0)) {
+        if (!(calc.num === 0 && calc.result === 0)) {
             //match last # after operand...
             // const regex = /([0-9.]+(?![\*\+\/-]))$/;
             const regex = /([0-9.]+(?![*+/-]))$/;
@@ -299,7 +299,7 @@ function Calculator() {
         let evalString = calc.string;
         if (evalString !== "") {
             //add closing parentheses if it's currently missing
-            if (calc.parenStarted == true) {
+            if (calc.parenStarted === true) {
                 evalString += (")")
             }
             const res = eval((evalString));//(eval(calc.string.replace(/,/g, '')))

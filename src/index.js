@@ -3,11 +3,15 @@ import ReactDOM from 'react-dom/client';
 import './index.css';
 // import App from './App';
 import Calculator from './calculator';
+import Timer from './timer';
 import reportWebVitals from './reportWebVitals';
 
 function App() {
   return (
+    <div>
+      <Timer />
       <Calculator />
+    </div>
   )
 }
 
@@ -36,6 +40,7 @@ ReactDOM.createRoot(root).render(<App />);
 //CHECK: behavior when ERROR is in display. must you hit C to move on?
 //ERROR-LOCK  you MUST hit C to continue 
 //CSS: everything gets darker on click, and gets BOX highlight on hover
+
 
 // If you want to start measuring performance in your app, pass a function
 // to log results (for example: reportWebVitals(console.log))
