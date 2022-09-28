@@ -21,6 +21,15 @@ function Timer() {
         setRun(false);
         setSeconds(defaultTime);
     };
+    const assignTimer = () => {
+        setRun(false);
+        //display input
+        const newTime = prompt('Please enter # seconds')
+        //then setSeconds to received input
+        if (newTime !== null) {
+            setSeconds(newTime);
+        }
+    };
 
     useEffect(() => {
         let interval;
@@ -71,6 +80,9 @@ function Timer() {
                 </button>
                 <button onClick={stopTimer}>
                     Stop
+                </button>
+                <button onClick={assignTimer}>
+                    Set
                 </button>
             </div>
         </div>
