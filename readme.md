@@ -22,3 +22,17 @@ Number Formatting:
         return num;
     }
 ```
+
+Using react portal for modal:
+```javascript
+import ReactDOM from 'react-dom'
+
+    return ReactDOM.createPortal(
+        <>
+        </>,
+        document.getElementById('portal')
+    )
+```
+and add 
+<div id="portal"></div>
+to HTML file
