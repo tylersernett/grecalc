@@ -9,13 +9,13 @@ const Modal_Wrapper = {
 
 function Timer() {
 
-    let defaultTime = 305;
+    let defaultTime = 3602;
     const [seconds, setSeconds] = useState(defaultTime);
     const [run, setRun] = useState(false);
     const [display, setDisplay] = useState({
         hours: Math.floor(seconds / 3600),
         minutes: Math.floor(seconds % 3600 / 60),
-        seconds: Math.floor(seconds % 3600 % 60 / 60),
+        seconds: Math.floor(seconds % 3600 % 60),
     })
 
     const startTimer = () => {
@@ -84,26 +84,31 @@ function Timer() {
             <div className='timer-banner'>
                 <span className='timer-display'>{seconds < 0 ? "Time expired" : display.hours + ":" + display.minutes + ":" + display.seconds}</span>
                 {/* <div> */}
-                    <button onClick={startTimer}>
-                        Play
+                <button onClick={startTimer}>
+                    Play
+                </button>
+                <button onClick={pauseTimer}>
+                    Pause
+                </button>
+                <button onClick={stopTimer}>
+                    Reset
+                </button>
+                <button onClick={assignTimer}>
+                    Set
+                </button>
+                <span style={Modal_Wrapper}>
+                    <button onClick={() => setIsOpen(true)}>
+                        Open
                     </button>
-                    <button onClick={pauseTimer}>
-                        Pause
-                    </button>
-                    <button onClick={stopTimer}>
-                        Stop
-                    </button>
-                    <button onClick={assignTimer}>
-                        Set
-                    </button>
-                    <span style={Modal_Wrapper}>
-                        <button onClick={() => setIsOpen(true)}>
-                            Open
-                        </button>
-                        <Modal open={isOpen} onClose={() => setIsOpen(false)}>
-                            Enter time here MM:SS
-                        </Modal>
-                    </span>
+                    <Modal open={isOpen} onClose={() => setIsOpen(false)}>
+                        Enter time here HH:MM:SS
+                        <div>
+                            <input className='timer-input' type='text' maxlength='2' placeholder='00'></input>:
+                            <input className='timer-input' type='text' maxlength='2' placeholder='00'></input>:
+                            <input className='timer-input' type='text' maxlength='2' placeholder='00'></input>
+                        </div>
+                    </Modal>
+                </span>
                 {/* </div> */}
             </div>
         </div>

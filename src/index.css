@@ -19,12 +19,21 @@
 .timer-banner{
   background-color: rgb(238 225 227);
   height: 32px;
-  text-align: right;
-  /* border-bottom: 2px solid rgb(136 47 92); */
+  display: flex;
+  justify-content: right;
+
 }
 
 .timer-display{
-  text-align: right;
+  width: 80px;
+  font-weight: bold;
+  color: rgb(51 51 51);
+  /* text-align: left; */
+  /* text-decoration:  */
+}
+
+.timer-input{
+  width:40px;
 }
 
 #displayL, #displayR
