@@ -1,4 +1,4 @@
-import React from 'react';
+import {React, useState} from 'react';
 import ReactDOM from 'react-dom/client';
 import './index.css';
 // import App from './App';
@@ -7,10 +7,12 @@ import Timer from './timer';
 import reportWebVitals from './reportWebVitals';
 
 function App() {
+  const [timerInputIsOpen, setTimerInputIsOpen] = useState(false);
+
   return (
     <div>
-      <Timer />
-      <Calculator />
+      <Timer timerInputIsOpen={timerInputIsOpen} setTimerInputIsOpen={setTimerInputIsOpen}/>
+      <Calculator timerInputIsOpen={timerInputIsOpen} />
     </div>
   )
 }

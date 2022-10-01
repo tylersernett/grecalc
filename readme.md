@@ -36,3 +36,32 @@ import ReactDOM from 'react-dom'
 and add 
 <div id="portal"></div>
 to HTML file
+
+Problem: calculator needs to access a piece of state from the timer. Right now, #s entered into the time input box are also updating the calculator display.
+Solution: move the state up into the parent component (index.js or App.js), so both timer.js and calculator.js can access.
+```javascript
+function App() {
+  const [timerInputIsOpen, setTimerInputIsOpen] = useState(false);
+```
+```javascript
+And now pass the relevant pieces of state to the components:
+  return (
+    <div>
+      <Timer timerInputIsOpen={timerInputIsOpen} setTimerInputIsOpen={setTimerInputIsOpen}/>
+      <Calculator timerInputIsOpen={timerInputIsOpen} />
+    </div>
+  )
+  ```
+
+And update the component functinos to accept these parameters:
+(in timer.js)
+```javascript
+function Timer({timerInputIsOpen, setTimerInputIsOpen}) {
+    ...
+```
+
+in calculator.js:
+```javascript
+function Calculator({timerInputIsOpen}) {
+    ...
+    ```

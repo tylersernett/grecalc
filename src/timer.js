@@ -7,7 +7,7 @@ const Modal_Wrapper = {
     zIndex: 1
 }
 
-function Timer() {
+function Timer({timerInputIsOpen, setTimerInputIsOpen}) {
 
     let defaultTime = 3602;
     const [seconds, setSeconds] = useState(defaultTime);
@@ -76,7 +76,7 @@ function Timer() {
         })
     };
 
-    const [timerInputIsOpen, setTimerInputIsOpen] = useState(false);
+    // const [timerInputIsOpen, setTimerInputIsOpen] = useState(false);
 
     return (
         <div className="wrapper">
@@ -103,9 +103,9 @@ function Timer() {
                     <Modal open={timerInputIsOpen} onClose={() => setTimerInputIsOpen(false)}>
                         Enter time here HH:MM:SS
                         <div>
-                            <input className='timer-input' type='text' maxlength='2' placeholder='00'></input>:
-                            <input className='timer-input' type='text' maxlength='2' placeholder='00'></input>:
-                            <input className='timer-input' type='text' maxlength='2' placeholder='00'></input>
+                            <input className='timer-input' type='text' maxLength='2' placeholder='00'></input>:
+                            <input className='timer-input' type='text' maxLength='2' placeholder='00'></input>:
+                            <input className='timer-input' type='text' maxLength='2' placeholder='00'></input>
                         </div>
                     </Modal>
                 </span>

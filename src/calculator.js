@@ -1,6 +1,6 @@
 import React from 'react';
 
-function Calculator() {
+function Calculator({ timerInputIsOpen }) {
     // {display, id}
     const btns = [
         ["MR", "memrecall"], ["MC", "memclear"], ["M+", "memadd"], ["(", "parenleft"], [")", "parenright"],
@@ -410,32 +410,36 @@ function Calculator() {
     //listen for keyboard presses
     React.useEffect(() => {
         function handleKeydown(e) {
-            const key = e.key
-            switch (key) {
-                case '1': case '2': case '3': case '4': case '5': case '6': case '7': case '8': case '9': case '0':
-                    numberClickHandler((key));
-                    break;
-                case 'Enter': case '=':
-                    equalsClickHandler();
-                    break;
-                case '.':
-                    decimalClickHandler();
-                    break;
-                case 'c':
-                    clearClickHandler();
-                    break;
-                case '+': case '-': case '/': case '*':
-                    operandClickHandler(key);
-                    break;
-                case '(':
-                    parenLeftClickHandler();
-                    break;
-                case ')':
-                    parenRightClickHandler();
-                    break;
-                default:
+            console.log('check timerInput', timerInputIsOpen)
+            if (!timerInputIsOpen) {
+                const key = e.key
+                switch (key) {
+                    case '1': case '2': case '3': case '4': case '5': case '6': case '7': case '8': case '9': case '0':
+                        numberClickHandler((key));
+                        break;
+                    case 'Enter': case '=':
+                        equalsClickHandler();
+                        break;
+                    case '.':
+                        decimalClickHandler();
+                        break;
+                    case 'c':
+                        clearClickHandler();
+                        break;
+                    case '+': case '-': case '/': case '*':
+                        operandClickHandler(key);
+                        break;
+                    case '(':
+                        parenLeftClickHandler();
+                        break;
+                    case ')':
+                        parenRightClickHandler();
+                        break;
+                    default:
+                }
             }
         }
+
 
         document.addEventListener("keydown", handleKeydown)
         //remove eventListener in the return, or you get weird repeating states for keyboard entry
