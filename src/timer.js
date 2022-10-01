@@ -76,7 +76,7 @@ function Timer() {
         })
     };
 
-    const [isOpen, setIsOpen] = useState(false);
+    const [timerInputIsOpen, setTimerInputIsOpen] = useState(false);
 
     return (
         <div className="wrapper">
@@ -97,10 +97,10 @@ function Timer() {
                     Set
                 </button>
                 <span style={Modal_Wrapper}>
-                    <button onClick={() => setIsOpen(true)}>
+                    <button onClick={() => setTimerInputIsOpen(true)}>
                         Open
                     </button>
-                    <Modal open={isOpen} onClose={() => setIsOpen(false)}>
+                    <Modal open={timerInputIsOpen} onClose={() => setTimerInputIsOpen(false)}>
                         Enter time here HH:MM:SS
                         <div>
                             <input className='timer-input' type='text' maxlength='2' placeholder='00'></input>:
