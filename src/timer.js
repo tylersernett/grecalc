@@ -13,8 +13,9 @@ function Timer() {
     const [seconds, setSeconds] = useState(defaultTime);
     const [run, setRun] = useState(false);
     const [display, setDisplay] = useState({
-        minutes: Math.floor(seconds / 60),
-        seconds: seconds % 60,
+        hours: Math.floor(seconds / 3600),
+        minutes: Math.floor(seconds % 3600 / 60),
+        seconds: Math.floor(seconds % 3600 % 60 / 60),
     })
 
     const startTimer = () => {
@@ -48,7 +49,7 @@ function Timer() {
 
     useEffect(() => {
         getReturnValues(seconds);
-        console.log(seconds, display.minutes, display.seconds);
+        console.log(seconds, display.hours, display.minutes, display.seconds);
     }, [seconds])
 
     const getReturnValues = (seconds) => {
@@ -61,12 +62,15 @@ function Timer() {
             }
             return time;
         }
-        let displayMinutes = Math.floor(seconds / 60);
-        let displaySeconds = seconds % 60;
+        let displayHours = Math.floor(seconds / 3600);
+        let displayMinutes = Math.floor(seconds % 3600 / 60);
+        let displaySeconds = Math.floor(seconds % 3600 % 60);
+        displayHours = addZeroIfUnderTen(displayHours);
         displayMinutes = addZeroIfUnderTen(displayMinutes);
         displaySeconds = addZeroIfUnderTen(displaySeconds);
 
         setDisplay({
+            hours: displayHours,
             minutes: displayMinutes,
             seconds: displaySeconds
         })
@@ -76,28 +80,31 @@ function Timer() {
 
     return (
         <div className="wrapper">
-            <h3>{seconds < 0 ? "Time expired" : display.minutes + ":" + display.seconds}</h3>
-            <div>
-                <button onClick={startTimer}>
-                    Play
-                </button>
-                <button onClick={pauseTimer}>
-                    Pause
-                </button>
-                <button onClick={stopTimer}>
-                    Stop
-                </button>
-                <button onClick={assignTimer}>
-                    Set
-                </button>
-                <div style={Modal_Wrapper}>
-                    <button onClick={() => setIsOpen(true)}>
-                        Open
+            <div className='top-banner'></div>
+            <div className='timer-banner'>
+                <span className='timer-display'>{seconds < 0 ? "Time expired" : display.hours + ":" + display.minutes + ":" + display.seconds}</span>
+                {/* <div> */}
+                    <button onClick={startTimer}>
+                        Play
                     </button>
-                    <Modal open={isOpen} onClose={() => setIsOpen(false)}>
-                        Enter time here MM:SS
-                    </Modal>
-                </div>
+                    <button onClick={pauseTimer}>
+                        Pause
+                    </button>
+                    <button onClick={stopTimer}>
+                        Stop
+                    </button>
+                    <button onClick={assignTimer}>
+                        Set
+                    </button>
+                    <span style={Modal_Wrapper}>
+                        <button onClick={() => setIsOpen(true)}>
+                            Open
+                        </button>
+                        <Modal open={isOpen} onClose={() => setIsOpen(false)}>
+                            Enter time here MM:SS
+                        </Modal>
+                    </span>
+                {/* </div> */}
             </div>
         </div>
     );

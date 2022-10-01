@@ -10,6 +10,23 @@
   padding: 1px;
 }
 
+.top-banner{
+  background-color: rgb(58 54 55);
+  height: 64px;
+  border-bottom: 2px solid rgb(136 47 92);
+}
+
+.timer-banner{
+  background-color: rgb(238 225 227);
+  height: 32px;
+  text-align: right;
+  /* border-bottom: 2px solid rgb(136 47 92); */
+}
+
+.timer-display{
+  text-align: right;
+}
+
 #displayL, #displayR
 {
   /* display: inline; */
