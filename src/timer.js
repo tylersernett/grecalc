@@ -1,5 +1,5 @@
 import React from 'react';
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useRef } from 'react';
 import Modal from './Modal';
 
 const Modal_Wrapper = {
@@ -16,7 +16,10 @@ function Timer({timerInputIsOpen, setTimerInputIsOpen}) {
         hours: Math.floor(seconds / 3600),
         minutes: Math.floor(seconds % 3600 / 60),
         seconds: Math.floor(seconds % 3600 % 60),
-    })
+    });
+    const hh = useRef('0');
+    const mm = useRef('0');
+    const ss = useRef('0');
 
     const startTimer = () => {
         setRun(true);
@@ -34,7 +37,7 @@ function Timer({timerInputIsOpen, setTimerInputIsOpen}) {
         if (newTime !== null) {
             setSeconds(newTime);
         }
-    };
+    }; 
 
     useEffect(() => {
         let interval;
@@ -77,6 +80,24 @@ function Timer({timerInputIsOpen, setTimerInputIsOpen}) {
     };
 
     // const [timerInputIsOpen, setTimerInputIsOpen] = useState(false);
+    const handleSubmit = () => {
+        setRun(false);
+        let secs = 0;
+        if (hh.current.value === "" ) {
+            hh.current.value = '0';
+        }
+        if (mm.current.value === "" ) {
+            mm.current.value = '0';
+        }
+        if (ss.current.value === "" ) {
+            ss.current.value = '0';
+        }
+        secs += parseInt(hh.current.value)*3600;
+        secs += parseInt(mm.current.value)*60;
+        secs += parseInt(ss.current.value);
+        setTimerInputIsOpen(false);
+        setSeconds(secs);
+    }
 
     return (
         <div className="wrapper">
@@ -103,9 +124,11 @@ function Timer({timerInputIsOpen, setTimerInputIsOpen}) {
                     <Modal open={timerInputIsOpen} onClose={() => setTimerInputIsOpen(false)}>
                         Enter time here HH:MM:SS
                         <div>
-                            <input className='timer-input' type='text' maxLength='2' placeholder='00'></input>:
-                            <input className='timer-input' type='text' maxLength='2' placeholder='00'></input>:
-                            <input className='timer-input' type='text' maxLength='2' placeholder='00'></input>
+                            {/* TODO: only allow digit [0-9] entry */}
+                            <input className='timer-input' type='text' maxLength='2' placeholder='00' ref={hh} ></input>:
+                            <input className='timer-input' type='text' maxLength='2' placeholder='00' ref={mm} ></input>:
+                            <input className='timer-input' type='text' maxLength='2' placeholder='00' ref={ss} ></input>
+                            <button onClick={handleSubmit}>Submit</button>
                         </div>
                     </Modal>
                 </span>
