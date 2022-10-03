@@ -32,9 +32,27 @@
   /* text-decoration:  */
 }
 
-.timer-input{
-  width:40px;
+.timer-input-wrapper{
+  width: 200px;
+  text-align: center;
 }
+
+.timer-input-box{
+  /* width: 200px; */
+  display: grid;
+  grid-template-columns: 1fr 12px 1fr 12px 1fr;
+  grid-template-rows: 1fr 1fr;
+}
+
+.timer-input{
+  width: calc(100%);
+  text-align: center;
+  box-sizing: border-box;
+}
+
+/* #cancel, #set-time{
+  width: calc(100%);
+} */
 
 #displayL, #displayR
 {

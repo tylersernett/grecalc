@@ -7,7 +7,7 @@ const Modal_Wrapper = {
     zIndex: 1
 }
 
-function Timer({timerInputIsOpen, setTimerInputIsOpen}) {
+function Timer({ timerInputIsOpen, setTimerInputIsOpen }) {
 
     let defaultTime = 3602;
     const [seconds, setSeconds] = useState(defaultTime);
@@ -37,7 +37,7 @@ function Timer({timerInputIsOpen, setTimerInputIsOpen}) {
         if (newTime !== null) {
             setSeconds(newTime);
         }
-    }; 
+    };
 
     useEffect(() => {
         let interval;
@@ -83,17 +83,17 @@ function Timer({timerInputIsOpen, setTimerInputIsOpen}) {
     const handleSubmit = () => {
         setRun(false);
         let secs = 0;
-        if (hh.current.value === "" ) {
+        if (hh.current.value === "") {
             hh.current.value = '0';
         }
-        if (mm.current.value === "" ) {
+        if (mm.current.value === "") {
             mm.current.value = '0';
         }
-        if (ss.current.value === "" ) {
+        if (ss.current.value === "") {
             ss.current.value = '0';
         }
-        secs += parseInt(hh.current.value)*3600;
-        secs += parseInt(mm.current.value)*60;
+        secs += parseInt(hh.current.value) * 3600;
+        secs += parseInt(mm.current.value) * 60;
         secs += parseInt(ss.current.value);
         setTimerInputIsOpen(false);
         setSeconds(secs);
@@ -122,17 +122,28 @@ function Timer({timerInputIsOpen, setTimerInputIsOpen}) {
                         Open
                     </button>
                     <Modal open={timerInputIsOpen} >
-                        Enter time below:
-                        <p/> 
-                        HH:MM:SS
-                        <form onSubmit={handleSubmit}>
-                            <input className='timer-input' type='text' maxLength='2' placeholder='00' pattern="\d*" ref={hh} ></input>:
-                            <input className='timer-input' type='text' maxLength='2' placeholder='00' pattern="\d*" ref={mm} ></input>:
-                            <input className='timer-input' type='text' maxLength='2' placeholder='00' pattern="\d*" ref={ss} ></input>
-                            <br></br>
-                            <button onClick={() => setTimerInputIsOpen(false)}>Cancel</button>
-                            <input type='submit' value='Set Time'></input>
-                        </form>
+                    <div className='timer-input-wrapper'>
+                        Enter time below
+                        <p />
+                        
+                            <form  onSubmit={handleSubmit} autocomplete="off">
+                                <div className='timer-input-box'>
+                                <input className='timer-input' type='text' maxLength='2' placeholder='00' pattern="\d*" id='HH' ref={hh} />
+                                <div>:</div>
+                                <input className='timer-input' type='text' maxLength='2' placeholder='00' pattern="\d*" id='MM' ref={mm} />
+                                <div>:</div>
+                                <input className='timer-input' type='text' maxLength='2' placeholder='00' pattern="\d*" id='SS' ref={ss} />
+                                <label for="HH">HH</label>
+                                &nbsp;
+                                <label for="MM">MM</label>
+                                &nbsp;
+                                <label for="SS">SS</label>
+                                </div>
+                                <button id='cancel' onClick={() => setTimerInputIsOpen(false)}>Cancel</button>
+                                <input type='submit' id='set-time' value='Set Time'></input>
+                            </form>
+
+                        </div>
                     </Modal>
                 </span>
                 {/* </div> */}
@@ -142,3 +153,5 @@ function Timer({timerInputIsOpen, setTimerInputIsOpen}) {
 };
 
 export default Timer;
+//TODO: combine play/pause into single button
+//move buttons into black banner
