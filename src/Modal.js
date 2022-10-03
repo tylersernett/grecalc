@@ -3,7 +3,7 @@ import ReactDOM from 'react-dom'
 
 const MODAL_STYLES = {
     position: 'fixed',
-    top: '50%',
+    top: '30%',
     left: '50%',
     transform: 'translate(-50%, -50%)',
     backgroundColor: '#FFF',
@@ -24,14 +24,13 @@ const OVERLAY_STYLES = {
 //open: var to determine if we display or not, passed in within <Modal> tag
 //children: what's inbetween the <Modal> tags where it's called
 //onClose -- function being passed in within <Modal> tag
-export default function Modal({ open, children, onClose }) {
+export default function Modal({ open, children }) {
     if (!open) return null
 
     return ReactDOM.createPortal(
         <>
         <div style={OVERLAY_STYLES} />
-            <div style={MODAL_STYLES}>
-                <button onClick={onClose}>Close Modal</button>
+            <div style={MODAL_STYLES}>                
                 {children}
             </div>
         </>,

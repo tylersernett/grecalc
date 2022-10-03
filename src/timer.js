@@ -121,15 +121,17 @@ function Timer({timerInputIsOpen, setTimerInputIsOpen}) {
                     <button onClick={() => setTimerInputIsOpen(true)}>
                         Open
                     </button>
-                    <Modal open={timerInputIsOpen} onClose={() => setTimerInputIsOpen(false)}>
-                        Enter time here HH:MM:SS
+                    <Modal open={timerInputIsOpen} >
+                        Enter time below:
+                        <p/> 
+                        HH:MM:SS
                         <form onSubmit={handleSubmit}>
-                            {/* TODO: only allow digit [0-9] entry */}
                             <input className='timer-input' type='text' maxLength='2' placeholder='00' pattern="\d*" ref={hh} ></input>:
                             <input className='timer-input' type='text' maxLength='2' placeholder='00' pattern="\d*" ref={mm} ></input>:
                             <input className='timer-input' type='text' maxLength='2' placeholder='00' pattern="\d*" ref={ss} ></input>
-                            {/* <button onClick={handleSubmit}>Submit</button> */}
-                            <input type='submit'></input>
+                            <br></br>
+                            <button onClick={() => setTimerInputIsOpen(false)}>Cancel</button>
+                            <input type='submit' value='Set Time'></input>
                         </form>
                     </Modal>
                 </span>
