@@ -43,6 +43,7 @@ Solution: move the state up into the parent component (index.js or App.js), so b
 function App() {
   const [timerInputIsOpen, setTimerInputIsOpen] = useState(false);
 ```
+
 ```javascript
 And now pass the relevant pieces of state to the components:
   return (
@@ -51,7 +52,7 @@ And now pass the relevant pieces of state to the components:
       <Calculator timerInputIsOpen={timerInputIsOpen} />
     </div>
   )
-  ```
+```
 
 And update the component functinos to accept these parameters:
 (in timer.js)
@@ -64,4 +65,9 @@ in calculator.js:
 ```javascript
 function Calculator({timerInputIsOpen}) {
     ...
-    ```
+```
+
+useRef: when you don't need to update the render
+
+Issue: timerInput can accept letters and non-digits, resulting in NaN display.
+Solution: add attribute: {pattern="\d*"} to input tag.
