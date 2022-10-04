@@ -105,39 +105,41 @@ function Timer({ timerInputIsOpen, setTimerInputIsOpen }) {
             <div className='timer-banner'>
                 <span className='timer-display'>{seconds < 0 ? "Time expired" : display.hours + ":" + display.minutes + ":" + display.seconds}</span>
                 {/* <div> */}
-                <button onClick={startTimer}>
-                    Play
-                </button>
-                <button onClick={pauseTimer}>
-                    Pause
-                </button>
+                {!run ?
+                    <button onClick={startTimer}><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-play-fill" viewBox="0 0 16 16">
+                        <path d="m11.596 8.697-6.363 3.692c-.54.313-1.233-.066-1.233-.697V4.308c0-.63.692-1.01 1.233-.696l6.363 3.692a.802.802 0 0 1 0 1.393z" />
+                    </svg></button>
+                    : <button onClick={pauseTimer}><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-pause-fill" viewBox="0 0 16 16">
+                        <path d="M5.5 3.5A1.5 1.5 0 0 1 7 5v6a1.5 1.5 0 0 1-3 0V5a1.5 1.5 0 0 1 1.5-1.5zm5 0A1.5 1.5 0 0 1 12 5v6a1.5 1.5 0 0 1-3 0V5a1.5 1.5 0 0 1 1.5-1.5z" />
+                    </svg></button>}
                 <button onClick={stopTimer}>
                     Reset
                 </button>
                 <button onClick={assignTimer}>
                     Set
                 </button>
+                <button onClick={() => setTimerInputIsOpen(true)}>
+                    Open
+                </button>
                 <span style={Modal_Wrapper}>
-                    <button onClick={() => setTimerInputIsOpen(true)}>
-                        Open
-                    </button>
+
                     <Modal open={timerInputIsOpen} >
-                    <div className='timer-input-wrapper'>
-                        Enter time below
-                        <p />
-                        
-                            <form  onSubmit={handleSubmit} autocomplete="off">
+                        <div className='timer-input-wrapper'>
+                            Enter time below
+                            <p />
+
+                            <form onSubmit={handleSubmit} autocomplete="off">
                                 <div className='timer-input-box'>
-                                <input className='timer-input' type='text' maxLength='2' placeholder='00' pattern="\d*" id='HH' ref={hh} />
-                                <div>:</div>
-                                <input className='timer-input' type='text' maxLength='2' placeholder='00' pattern="\d*" id='MM' ref={mm} />
-                                <div>:</div>
-                                <input className='timer-input' type='text' maxLength='2' placeholder='00' pattern="\d*" id='SS' ref={ss} />
-                                <label for="HH">HH</label>
-                                &nbsp;
-                                <label for="MM">MM</label>
-                                &nbsp;
-                                <label for="SS">SS</label>
+                                    <input className='timer-input' type='text' maxLength='2' placeholder='00' pattern="\d*" id='HH' ref={hh} />
+                                    <div>:</div>
+                                    <input className='timer-input' type='text' maxLength='2' placeholder='00' pattern="\d*" id='MM' ref={mm} />
+                                    <div>:</div>
+                                    <input className='timer-input' type='text' maxLength='2' placeholder='00' pattern="\d*" id='SS' ref={ss} />
+                                    <label for="HH">HH</label>
+                                    &nbsp;
+                                    <label for="MM">MM</label>
+                                    &nbsp;
+                                    <label for="SS">SS</label>
                                 </div>
                                 <button id='cancel' onClick={() => setTimerInputIsOpen(false)}>Cancel</button>
                                 <input type='submit' id='set-time' value='Set Time'></input>
