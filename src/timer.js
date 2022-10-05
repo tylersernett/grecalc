@@ -9,7 +9,8 @@ const Modal_Wrapper = {
 
 function Timer({ timerInputIsOpen, setTimerInputIsOpen }) {
 
-    let defaultTime = 35 * 60;
+    // let defaultTime = 35 * 60;
+    const [defaultTime, setDefaultTime] = useState(35*60);
     const [seconds, setSeconds] = useState(defaultTime);
     const [run, setRun] = useState(false);
     const [hide, setHide] = useState(false);
@@ -101,6 +102,7 @@ function Timer({ timerInputIsOpen, setTimerInputIsOpen }) {
         secs += parseInt(mm.current.value) * 60;
         secs += parseInt(ss.current.value);
         setTimerInputIsOpen(false);
+        setDefaultTime(secs);
         setSeconds(secs);
     }
 
