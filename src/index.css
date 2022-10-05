@@ -1,24 +1,12 @@
-.display-box{
-  display: grid;
-  grid-template-columns: 1fr 1fr 1fr 1fr 1fr;
-  grid-template-rows: 1fr;
-  /* grid-column-start: 1; */
-  /* grid-column-end: 6; */
-  background-color: white;
-  border-radius: 6px;
-  border: 0px ;
-  padding: 1px;
-}
-
 .top-banner{
   display: grid;
   grid-template-columns: 1fr 1fr;
   /* display: flex;
   flex-wrap: wrap; */
   background-color: rgb(58 54 55);
-  min-height: 32px;
+  /* min-height: 32px; */
   border-bottom: 2px solid rgb(136 47 92);
-  padding: 20px;
+  padding: .75rem;
   justify-content: right;
 }
 
@@ -28,7 +16,6 @@
   /* border: solid 1px red; */
   /* text-align: left; */
 }
-
 .title svg{
   vertical-align: -2px;
 }
@@ -57,9 +44,11 @@
 
 .timer-banner{
   background-color: rgb(238 225 227);
-  height: 32px;
+  min-height: 32px;
   display: flex;
   justify-content: right;
+  padding: .5em;
+  font-size: 1em;
 }
 
 .timer-display{
@@ -72,15 +61,11 @@
 
 .hide-display{
   padding-right: 10px;
+  cursor: pointer;
 }
 
 .hide-display svg{ 
     vertical-align: -3px;
-}
-
-
-svg {
-  /* vertical-align:baseline */
 }
 
 .timer-input-wrapper{
@@ -112,11 +97,24 @@ input:focus{
   width: calc(100%);
 } */
 
+/* /////// CALCULATOR STUFF \\\\\\\ */
+
+.display-box{
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr 1fr 1fr;
+  grid-template-rows: 1fr;
+  /* grid-column-start: 1; */
+  /* grid-column-end: 6; */
+  background-color: white;
+  border-radius: 6px;
+  border: 0px ;
+  padding: 1px;
+}
+
 #displayL, #displayR
 {
   /* display: inline; */
   cursor: auto;
-  
 }
 
 #displayL {
