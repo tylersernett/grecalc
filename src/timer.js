@@ -154,8 +154,8 @@ function Timer({ timerInputIsOpen, setTimerInputIsOpen }) {
                                     &nbsp;
                                     <label for="SS">SS</label>
                                 </div>
-                                <button id='cancel' onClick={() => setTimerInputIsOpen(false)}>Cancel</button>
-                                <input type='submit' id='set-time' value='Set Time'></input>
+                                <button className='timer-btn fs-5' id='cancel' onClick={() => setTimerInputIsOpen(false)}>Cancel</button>
+                                <input className='timer-btn fs-5' type='submit' id='set-time' value='Set Time'></input>
                             </form>
 
                         </div>

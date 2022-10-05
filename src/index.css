@@ -43,6 +43,7 @@
   color: rgb(255 255 255); 
   border: 1px solid rgb(156 134 149);
   box-shadow:inset 0px 0px 0px 1px rgba(0,0,0,0.25);
+  padding-bottom: 2px;
 }
 
 .timer-btn:hover{
@@ -81,6 +82,13 @@
   width: calc(100%);
   text-align: center;
   box-sizing: border-box;
+  border-radius: 6px;
+  /* border: 1px solid; */
+  border-style: solid;
+}
+
+input:focus{
+  outline: rgb(136 47 92) solid 1px;
 }
 
 /* #cancel, #set-time{
