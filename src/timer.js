@@ -12,6 +12,7 @@ function Timer({ timerInputIsOpen, setTimerInputIsOpen }) {
     let defaultTime = 35 * 60;
     const [seconds, setSeconds] = useState(defaultTime);
     const [run, setRun] = useState(false);
+    const [hide, setHide] = useState(false);
     const [display, setDisplay] = useState({
         hours: Math.floor(seconds / 3600),
         minutes: Math.floor(seconds % 3600 / 60),
@@ -79,6 +80,10 @@ function Timer({ timerInputIsOpen, setTimerInputIsOpen }) {
         })
     };
 
+    const toggleHide = () => {
+        setHide(!hide)
+    }
+
     // const [timerInputIsOpen, setTimerInputIsOpen] = useState(false);
     const handleSubmit = () => {
         setRun(false);
@@ -98,6 +103,24 @@ function Timer({ timerInputIsOpen, setTimerInputIsOpen }) {
         setTimerInputIsOpen(false);
         setSeconds(secs);
     }
+
+    const HideTimeDisplay = () => {
+        return (
+                <span><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-dash-circle" viewBox="0 0 16 16">
+                <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z"/>
+                <path d="M4 8a.5.5 0 0 1 .5-.5h7a.5.5 0 0 1 0 1h-7A.5.5 0 0 1 4 8z"/>
+              </svg> Hide Time</span>
+        );
+    };
+
+    const ShowTimeDisplay = () => {
+        return (
+                <span><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-clock" viewBox="0 0 16 16">
+                <path d="M8 3.5a.5.5 0 0 0-1 0V9a.5.5 0 0 0 .252.434l3.5 2a.5.5 0 0 0 .496-.868L8 8.71V3.5z"/>
+                <path d="M8 16A8 8 0 1 0 8 0a8 8 0 0 0 0 16zm7-8A7 7 0 1 1 1 8a7 7 0 0 1 14 0z"/>
+              </svg> Show Time</span>
+        );
+    };
 
     return (
         <div className="wrapper">
@@ -131,7 +154,8 @@ function Timer({ timerInputIsOpen, setTimerInputIsOpen }) {
                 </div>
             </div>
             <div className='timer-banner'>
-                <span className='timer-display'>{seconds < 0 ? "Time expired" : display.hours + ":" + display.minutes + ":" + display.seconds}</span>
+                <span className='timer-display'>{hide? "" : seconds < 0 ? "Time expired" : display.hours + ":" + display.minutes + ":" + display.seconds}</span>
+                <span className='hide-display' onClick={toggleHide}>{hide ? ShowTimeDisplay() : HideTimeDisplay()}</span>
                 {/* <div> */}
 
                 <span style={Modal_Wrapper}>
@@ -168,5 +192,121 @@ function Timer({ timerInputIsOpen, setTimerInputIsOpen }) {
 };
 
 export default Timer;
-//TODO: combine play/pause into single button
-//move buttons into black banner
+//TODO: add hide/show time button [time text anchored in some position]
+//add drag and drop to calc
+//modal ESC
+//default time update
+
+/*
+import React, { useCallback, useRef, useState } from "react";
+import styled, { css } from "styled-components/macro";
+
+const Component: React.FC = () => {
+  const [position, setPosition] = useState({ x: 0, y: 0 });
+  const elementRef = useRef<HTMLDivElement>(null);
+
+  const onMouseDown = useCallback(
+    (event) => {
+      const onMouseMove = (event: MouseEvent) => {
+        position.x += event.movementX;
+        position.y += event.movementY;
+        const element = elementRef.current;
+        if (element) {
+          element.style.transform = `translate(${position.x}px, ${position.y}px)`;
+        }
+        setPosition(position);
+      };
+      const onMouseUp = () => {
+        document.removeEventListener("mousemove", onMouseMove);
+        document.removeEventListener("mouseup", onMouseUp);
+      };
+      document.addEventListener("mousemove", onMouseMove);
+      document.addEventListener("mouseup", onMouseUp);
+    },
+    [position, setPosition, elementRef]
+  );
+
+  return (
+    <Container>
+      <DraggableItem ref={elementRef} onMouseDown={onMouseDown}>
+      </DraggableItem>
+    </Container>
+  );
+};
+
+const Container = styled.div`
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  top: 0;
+  left: 0;
+  overflow: hidden;
+`;
+
+const DraggableItem = styled.div`
+  position: absolute;
+  z-index: 1;
+  left: 20px;
+  top: 20px;
+  width: 100px;
+  height: 100px;
+  background-color: green;
+`;
+*/
+//from https://stackoverflow.com/questions/20926551/recommended-way-of-making-react-component-div-draggable
+
+/*import React, { useCallback, useRef, useState } from "react";
+// import styled, { css } from "styled-components/macro";
+
+const Component: React.FC = () => {
+  const [position, setPosition] = useState({ x: 0, y: 0 });
+  const elementRef = useRef<HTMLDivElement>(null);
+
+  const onMouseDown = useCallback(
+    (event) => {
+      const onMouseMove = (event: MouseEvent) => {
+        position.x += event.movementX;
+        position.y += event.movementY;
+        const element = elementRef.current;
+        if (element) {
+          element.style.transform = `translate(${position.x}px, ${position.y}px)`;
+        }
+        setPosition(position);
+      };
+      const onMouseUp = () => {
+        document.removeEventListener("mousemove", onMouseMove);
+        document.removeEventListener("mouseup", onMouseUp);
+      };
+      document.addEventListener("mousemove", onMouseMove);
+      document.addEventListener("mouseup", onMouseUp);
+    },
+    [position, setPosition, elementRef]
+  );
+
+  return (
+    <Container>
+      <DraggableItem ref={elementRef} onMouseDown={onMouseDown}>
+      </DraggableItem>
+    </Container>
+  );
+};
+
+const Container = {
+  position: 'absolute',
+  width: '100%',
+  height: '100%',
+  top: 0,
+  left: 0,
+  overflow: 'hidden',
+};
+
+const DraggableItem = {
+  position: 'absolute',
+  zIndex: 1,
+  left: '20px',
+  top: '20px',
+  width: '100px',
+  height: '100px',
+  backgroundColor: 'green'
+};
+*/

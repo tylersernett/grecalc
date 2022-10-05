@@ -29,6 +29,10 @@
   /* text-align: left; */
 }
 
+.title svg{
+  vertical-align: -2px;
+}
+
 .timer-buttons{
   /* border: solid 1px green; */
   text-align: right;
@@ -64,6 +68,19 @@
   color: rgb(51 51 51);
   /* text-align: left; */
   /* text-decoration:  */
+}
+
+.hide-display{
+  padding-right: 10px;
+}
+
+.hide-display svg{ 
+    vertical-align: -3px;
+}
+
+
+svg {
+  /* vertical-align:baseline */
 }
 
 .timer-input-wrapper{
