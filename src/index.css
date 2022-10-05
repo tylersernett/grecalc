@@ -47,8 +47,8 @@
 }
 
 .timer-btn:hover{
-  background-color: rgb(80, 62, 76);
-  border: 1px solid rgb(156 134 149);
+  background-color: rgb(117 87 108);
+  border: 1px solid rgb(214 186 205);
 }
 
 .timer-banner{
@@ -156,7 +156,6 @@ input:focus{
 
 #zero, #one, #two, #three, #four, #five, #six, #seven, #eight, #nine, #decimal {
   color: rgb(57 55 54);
-
 }
 
 #paren-inactive{
@@ -173,6 +172,21 @@ input:focus{
   background-color: rgb(35 71 96);
 }
 
-/* #equals:hover{
-  background-color: rgb(226, 124, 0);
-} */
+.calc-btn:hover {
+  box-shadow:inset 0px 0px 0px 1px #fff;
+}
+
+.calc-btn:active {
+  /* background: #e5e5e5; */
+  /* outline: 1px red; */
+  /* border: 1px inset white; */
+  /* -webkit-box-shadow: inset 0px 0px 5px #c1c1c1;
+     -moz-box-shadow: inset 0px 0px 5px #c1c1c1;
+          box-shadow: inset 0px 0px 5px #c1c1c1; */
+
+    /* -webkit-box-shadow:inset 0px 0px 0px .5px #fff;
+    -moz-box-shadow:inset 0px 0px 0px .5px #fff;
+    box-shadow:inset 0px 0px 0px 1px #fff; */
+    background-image: linear-gradient(rgb(0, 0, 0, 0.4) 0 0);
+    /* background-color: rgba(0,0,0,0.5); */
+}
