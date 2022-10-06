@@ -109,8 +109,8 @@ function Timer({ timerInputIsOpen, setTimerInputIsOpen }) {
     const HideTimeDisplay = () => {
         return (
                 <span><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-dash-circle" viewBox="-1 -1 18 18">
-                <path stroke="currentColor" stroke-width="1" d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z"/>
-                <path stroke="currentColor" stroke-width="1" d="M4 8a.5.5 0 0 1 .5-.5h7a.5.5 0 0 1 0 1h-7A.5.5 0 0 1 4 8z"/>
+                <path stroke="currentColor" strokeWidth="1" d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z"/>
+                <path stroke="currentColor" strokeWidth="1" d="M4 8a.5.5 0 0 1 .5-.5h7a.5.5 0 0 1 0 1h-7A.5.5 0 0 1 4 8z"/>
               </svg> Hide Time</span>
         );
     };
@@ -118,8 +118,8 @@ function Timer({ timerInputIsOpen, setTimerInputIsOpen }) {
     const ShowTimeDisplay = () => {
         return (
                 <span><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-clock" viewBox="-1 -1 18 18">
-                <path stroke="currentColor" stroke-width="1" d="M8 3.5a.5.5 0 0 0-1 0V9a.5.5 0 0 0 .252.434l3.5 2a.5.5 0 0 0 .496-.868L8 8.71V3.5z"/>
-                <path stroke="currentColor" stroke-width="1" d="M8 16A8 8 0 1 0 8 0a8 8 0 0 0 0 16zm7-8A7 7 0 1 1 1 8a7 7 0 0 1 14 0z"/>
+                <path stroke="currentColor" strokeWidth="1" d="M8 3.5a.5.5 0 0 0-1 0V9a.5.5 0 0 0 .252.434l3.5 2a.5.5 0 0 0 .496-.868L8 8.71V3.5z"/>
+                <path stroke="currentColor" strokeWidth="1" d="M8 16A8 8 0 1 0 8 0a8 8 0 0 0 0 16zm7-8A7 7 0 1 1 1 8a7 7 0 0 1 14 0z"/>
               </svg> Show Time</span>
         );
     };
@@ -146,8 +146,8 @@ function Timer({ timerInputIsOpen, setTimerInputIsOpen }) {
                     <button className='timer-btn fs-4' onClick={stopTimer}>
                         {/* RESET */}
                         <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" class="bi bi-arrow-clockwise" viewBox="0 0 16 16">
-                            <path fill-rule="evenodd" d="M8 3a5 5 0 1 0 4.546 2.914.5.5 0 0 1 .908-.417A6 6 0 1 1 8 2v1z" stroke="currentColor" stroke-width="0.75"/>
-                            <path d="M8 4.466V.534a.25.25 0 0 1 .41-.192l2.36 1.966c.12.1.12.284 0 .384L8.41 4.658A.25.25 0 0 1 8 4.466z" stroke="currentColor" stroke-width="0.5" />
+                            <path fillRule="evenodd" d="M8 3a5 5 0 1 0 4.546 2.914.5.5 0 0 1 .908-.417A6 6 0 1 1 8 2v1z" stroke="currentColor" strokeWidth="0.75"/>
+                            <path d="M8 4.466V.534a.25.25 0 0 1 .41-.192l2.36 1.966c.12.1.12.284 0 .384L8.41 4.658A.25.25 0 0 1 8 4.466z" stroke="currentColor" strokeWidth="0.5" />
                         </svg>
                     </button>
                     <button className='timer-btn fs-4' onClick={() => setTimerInputIsOpen(true)}>
@@ -199,117 +199,3 @@ export default Timer;
 //add drag and drop to calc
 //modal ESC
 //default time update
-
-/*
-import React, { useCallback, useRef, useState } from "react";
-import styled, { css } from "styled-components/macro";
-
-const Component: React.FC = () => {
-  const [position, setPosition] = useState({ x: 0, y: 0 });
-  const elementRef = useRef<HTMLDivElement>(null);
-
-  const onMouseDown = useCallback(
-    (event) => {
-      const onMouseMove = (event: MouseEvent) => {
-        position.x += event.movementX;
-        position.y += event.movementY;
-        const element = elementRef.current;
-        if (element) {
-          element.style.transform = `translate(${position.x}px, ${position.y}px)`;
-        }
-        setPosition(position);
-      };
-      const onMouseUp = () => {
-        document.removeEventListener("mousemove", onMouseMove);
-        document.removeEventListener("mouseup", onMouseUp);
-      };
-      document.addEventListener("mousemove", onMouseMove);
-      document.addEventListener("mouseup", onMouseUp);
-    },
-    [position, setPosition, elementRef]
-  );
-
-  return (
-    <Container>
-      <DraggableItem ref={elementRef} onMouseDown={onMouseDown}>
-      </DraggableItem>
-    </Container>
-  );
-};
-
-const Container = styled.div`
-  position: absolute;
-  width: 100%;
-  height: 100%;
-  top: 0;
-  left: 0;
-  overflow: hidden;
-`;
-
-const DraggableItem = styled.div`
-  position: absolute;
-  z-index: 1;
-  left: 20px;
-  top: 20px;
-  width: 100px;
-  height: 100px;
-  background-color: green;
-`;
-*/
-//from https://stackoverflow.com/questions/20926551/recommended-way-of-making-react-component-div-draggable
-
-/*import React, { useCallback, useRef, useState } from "react";
-// import styled, { css } from "styled-components/macro";
-
-const Component: React.FC = () => {
-  const [position, setPosition] = useState({ x: 0, y: 0 });
-  const elementRef = useRef<HTMLDivElement>(null);
-
-  const onMouseDown = useCallback(
-    (event) => {
-      const onMouseMove = (event: MouseEvent) => {
-        position.x += event.movementX;
-        position.y += event.movementY;
-        const element = elementRef.current;
-        if (element) {
-          element.style.transform = `translate(${position.x}px, ${position.y}px)`;
-        }
-        setPosition(position);
-      };
-      const onMouseUp = () => {
-        document.removeEventListener("mousemove", onMouseMove);
-        document.removeEventListener("mouseup", onMouseUp);
-      };
-      document.addEventListener("mousemove", onMouseMove);
-      document.addEventListener("mouseup", onMouseUp);
-    },
-    [position, setPosition, elementRef]
-  );
-
-  return (
-    <Container>
-      <DraggableItem ref={elementRef} onMouseDown={onMouseDown}>
-      </DraggableItem>
-    </Container>
-  );
-};
-
-const Container = {
-  position: 'absolute',
-  width: '100%',
-  height: '100%',
-  top: 0,
-  left: 0,
-  overflow: 'hidden',
-};
-
-const DraggableItem = {
-  position: 'absolute',
-  zIndex: 1,
-  left: '20px',
-  top: '20px',
-  width: '100px',
-  height: '100px',
-  backgroundColor: 'green'
-};
-*/

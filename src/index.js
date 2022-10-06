@@ -1,4 +1,4 @@
-import {React, useState} from 'react';
+import { React, useState, useCallback, useRef } from 'react';
 import ReactDOM from 'react-dom/client';
 import './index.css';
 // import App from './App';
@@ -6,16 +6,91 @@ import Calculator from './calculator';
 import Timer from './timer';
 import reportWebVitals from './reportWebVitals';
 
+// const Container = {
+//   position: 'absolute',
+//   width: '100%',
+//   height: '100%',
+//   top: 0,
+//   left: 0,
+//   overflow: 'hidden',
+// };
+
+const par = {
+  // position: 'absolute',
+  backgroundColor: 'red',
+  //height: '500px',
+  minHeight: 'calc(100vh)',
+  width: '100%',
+};
+
+const DraggableItem = {
+  // position: 'absolute',
+  // zIndex: 1,
+  // left: '20px',
+  // top: '20px',
+  width: '300px',
+  // height: '100px',
+  backgroundColor: 'green'
+};
+
 function App() {
+  //declare here, becuase both Timer and Calculator use it
   const [timerInputIsOpen, setTimerInputIsOpen] = useState(false);
 
+  //drag code mod'd from //from https://stackoverflow.com/questions/20926551/recommended-way-of-making-react-component-div-draggable
+  const [position, setPosition] = useState({ x: 0, y: 0 });
+  const elementRef = useRef(null);
+
+  const onMouseDown = useCallback(
+    (event) => {
+      const onMouseMove = (MouseEvent) => {
+        const element = elementRef.current;
+        let maxWidth = element.parentElement.clientWidth;
+        let maxHeight = element.parentElement.clientHeight;
+        let xSum = position.x + MouseEvent.movementX;
+        let ySum = position.y + MouseEvent.movementY;
+        let calcWidth = 256;
+        let calcHeight = 260;
+        let bannerHeight = 130;
+        if (xSum > 0 && xSum + calcWidth < maxWidth) {
+          position.x = xSum;
+        }
+        if (ySum > 0 && ySum + calcHeight + bannerHeight < maxHeight) {
+          position.y = ySum;
+        }
+        console.log(position.x, position.y, maxHeight);
+
+        if (element) {
+          element.style.transform = `translate(${position.x}px, ${position.y}px)`;
+        }
+        setPosition(position);
+      };
+      const onMouseUp = () => {
+        document.removeEventListener("mousemove", onMouseMove);
+        document.removeEventListener("mouseup", onMouseUp);
+      };
+      document.addEventListener("mousemove", onMouseMove);
+      document.addEventListener("mouseup", onMouseUp);
+    },
+    [position, setPosition, elementRef]
+  );
+
   return (
-    <div>
-      <Timer timerInputIsOpen={timerInputIsOpen} setTimerInputIsOpen={setTimerInputIsOpen}/>
-      <Calculator timerInputIsOpen={timerInputIsOpen} />
-    </div>
-  )
-}
+    <>
+      <Timer timerInputIsOpen={timerInputIsOpen} setTimerInputIsOpen={setTimerInputIsOpen} />
+      <div style={par}>
+        <div ref={elementRef} style={DraggableItem} onMouseDown={onMouseDown}>
+          <Calculator timerInputIsOpen={timerInputIsOpen} />
+        </div>
+      </div>
+    </>
+  );
+};
+
+
+
+
+
 
 const root = document.getElementById('root');
 ReactDOM.createRoot(root).render(<App />);
