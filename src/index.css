@@ -2,14 +2,8 @@ html,
 body {
   margin: 0;
   height: 100%;
-  overflow: hidden; 
-  box-sizing: border-box;
-}
-
-body {
-  /* min-height: 100vh; */
-  display: flex;
-  flex-direction: column;
+  overflow: hidden;
+  user-select: none;
 }
 
 .top-banner {
@@ -26,9 +20,6 @@ body {
 
 .title {
   color: white;
-  /* font-size: larger; */
-  /* border: solid 1px red; */
-  /* text-align: left; */
 }
 
 .title svg {
@@ -112,6 +103,9 @@ input:focus {
 } */
 
 /* /////// CALCULATOR STUFF \\\\\\\ */
+.calc-top {
+  height: 32px;
+}
 
 .display-box {
   display: grid;

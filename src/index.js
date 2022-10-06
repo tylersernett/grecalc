@@ -50,7 +50,8 @@ function App() {
         let xSum = position.x + MouseEvent.movementX;
         let ySum = position.y + MouseEvent.movementY;
         let calcWidth = 256;
-        let calcHeight = 260;
+        let calcHeight = 300;
+        //TODO: document.getElementById('masonryParent').children[0].style.height
         let bannerHeight = 130;
         if (xSum > 0 && xSum + calcWidth < maxWidth) {
           position.x = xSum;

@@ -449,6 +449,7 @@ function Calculator({ timerInputIsOpen }) {
     return (
         <div className="container">
             <div className="calc-body mt-3">
+                <div className='calc-top'></div>
                 {/* what appears at the top: display num unless it's 0 -- else display result */}
                 <div id="display" className='display-box m-1'>
                     <div id='displayL' className="fs-3">{memory.memset ? "M" : ""}</div>
