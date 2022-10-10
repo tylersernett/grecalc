@@ -10,7 +10,7 @@ const Modal_Wrapper = {
 function Timer({ timerInputIsOpen, setTimerInputIsOpen }) {
 
     // let defaultTime = 35 * 60;
-    const [defaultTime, setDefaultTime] = useState(35*60);
+    const [defaultTime, setDefaultTime] = useState(35 * 60);
     const [seconds, setSeconds] = useState(defaultTime);
     const [run, setRun] = useState(false);
     const [hide, setHide] = useState(false);
@@ -33,14 +33,8 @@ function Timer({ timerInputIsOpen, setTimerInputIsOpen }) {
         setRun(false);
         setSeconds(defaultTime);
     };
-    const assignTimer = () => {
-        setRun(false);
-        const newTime = prompt('Please enter # seconds')
-        if (newTime !== null) {
-            setSeconds(newTime);
-        }
-    };
 
+    //set interval everytime "run" status changes
     useEffect(() => {
         let interval;
         if (run === true) {
@@ -52,9 +46,10 @@ function Timer({ timerInputIsOpen, setTimerInputIsOpen }) {
         return () => clearInterval(interval);
     }, [run]);
 
+    //get new return value everytime "seconds" changes
     useEffect(() => {
         getReturnValues(seconds);
-        console.log(seconds, display.hours, display.minutes, display.seconds);
+        // console.log(seconds, display.hours, display.minutes, display.seconds);
     }, [seconds])
 
     const getReturnValues = (seconds) => {
@@ -86,43 +81,69 @@ function Timer({ timerInputIsOpen, setTimerInputIsOpen }) {
     }
 
     // const [timerInputIsOpen, setTimerInputIsOpen] = useState(false);
-    const handleSubmit = () => {
-        setRun(false);
+    
+    const handleSubmit = React.useCallback(() => {
         let secs = 0;
         if (hh.current.value === "") {
-            hh.current.value = '0';
+            hh.current.value = '00';
         }
         if (mm.current.value === "") {
-            mm.current.value = '0';
+            mm.current.value = '00';
         }
         if (ss.current.value === "") {
-            ss.current.value = '0';
+            ss.current.value = '00';
         }
         secs += parseInt(hh.current.value) * 3600;
         secs += parseInt(mm.current.value) * 60;
         secs += parseInt(ss.current.value);
-        setTimerInputIsOpen(false);
-        setDefaultTime(secs);
-        setSeconds(secs);
-    }
+        console.log(secs);
+        if (secs > 0) {
+            setRun(false);
+            setTimerInputIsOpen(false);
+            setDefaultTime(secs);
+            setSeconds(secs);
+        }
+    }, [setTimerInputIsOpen])
 
     const HideTimeDisplay = () => {
         return (
-                <span><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-dash-circle" viewBox="-1 -1 18 18">
-                <path stroke="currentColor" strokeWidth="1" d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z"/>
-                <path stroke="currentColor" strokeWidth="1" d="M4 8a.5.5 0 0 1 .5-.5h7a.5.5 0 0 1 0 1h-7A.5.5 0 0 1 4 8z"/>
-              </svg> Hide Time</span>
+            <span><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-dash-circle" viewBox="-1 -1 18 18">
+                <path stroke="currentColor" strokeWidth="1" d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z" />
+                <path stroke="currentColor" strokeWidth="1" d="M4 8a.5.5 0 0 1 .5-.5h7a.5.5 0 0 1 0 1h-7A.5.5 0 0 1 4 8z" />
+            </svg> Hide Time</span>
         );
     };
 
     const ShowTimeDisplay = () => {
         return (
-                <span><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-clock" viewBox="-1 -1 18 18">
-                <path stroke="currentColor" strokeWidth="1" d="M8 3.5a.5.5 0 0 0-1 0V9a.5.5 0 0 0 .252.434l3.5 2a.5.5 0 0 0 .496-.868L8 8.71V3.5z"/>
-                <path stroke="currentColor" strokeWidth="1" d="M8 16A8 8 0 1 0 8 0a8 8 0 0 0 0 16zm7-8A7 7 0 1 1 1 8a7 7 0 0 1 14 0z"/>
-              </svg> Show Time</span>
+            <span><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-clock" viewBox="-1 -1 18 18">
+                <path stroke="currentColor" strokeWidth="1" d="M8 3.5a.5.5 0 0 0-1 0V9a.5.5 0 0 0 .252.434l3.5 2a.5.5 0 0 0 .496-.868L8 8.71V3.5z" />
+                <path stroke="currentColor" strokeWidth="1" d="M8 16A8 8 0 1 0 8 0a8 8 0 0 0 0 16zm7-8A7 7 0 1 1 1 8a7 7 0 0 1 14 0z" />
+            </svg> Show Time</span>
         );
     };
+
+    React.useEffect(() => {
+        function handleKeydown(e) {
+            if (timerInputIsOpen) {
+                const key = e.key
+                switch (key) {
+                    case 'Enter':
+                        e.preventDefault(); //prevent auto form submission
+                        handleSubmit();
+                        break;
+                    case 'Escape':
+                        setTimerInputIsOpen(false);
+                        break;
+                    default:
+                }
+            }
+        }
+
+        document.addEventListener("keydown", handleKeydown)
+        return () => document.removeEventListener("keydown", handleKeydown)
+    }, [timerInputIsOpen, setTimerInputIsOpen, handleSubmit]); //use dependency, or you only get 1 number in display at a time for keyboard entry
+
 
     return (
         <div className="wrapper">
@@ -146,7 +167,7 @@ function Timer({ timerInputIsOpen, setTimerInputIsOpen }) {
                     <button className='timer-btn fs-4' onClick={stopTimer}>
                         {/* RESET */}
                         <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" class="bi bi-arrow-clockwise" viewBox="0 0 16 16">
-                            <path fillRule="evenodd" d="M8 3a5 5 0 1 0 4.546 2.914.5.5 0 0 1 .908-.417A6 6 0 1 1 8 2v1z" stroke="currentColor" strokeWidth="0.75"/>
+                            <path fillRule="evenodd" d="M8 3a5 5 0 1 0 4.546 2.914.5.5 0 0 1 .908-.417A6 6 0 1 1 8 2v1z" stroke="currentColor" strokeWidth="0.75" />
                             <path d="M8 4.466V.534a.25.25 0 0 1 .41-.192l2.36 1.966c.12.1.12.284 0 .384L8.41 4.658A.25.25 0 0 1 8 4.466z" stroke="currentColor" strokeWidth="0.5" />
                         </svg>
                     </button>
@@ -157,7 +178,7 @@ function Timer({ timerInputIsOpen, setTimerInputIsOpen }) {
             </div>
 
             <div className='timer-banner'>
-                <span className='timer-display'>{hide? "" : seconds < 0 ? "Time expired" : display.hours + ":" + display.minutes + ":" + display.seconds}</span>
+                <span className='timer-display'>{hide ? "" : seconds < 0 ? "Time expired" : display.hours + ":" + display.minutes + ":" + display.seconds}</span>
                 <span className='hide-display' onClick={toggleHide}>{hide ? ShowTimeDisplay() : HideTimeDisplay()}</span>
                 {/* <div> */}
 
@@ -167,19 +188,19 @@ function Timer({ timerInputIsOpen, setTimerInputIsOpen }) {
                         <div className='timer-input-wrapper'>
                             Enter time below
                             <p />
-
-                            <form onSubmit={handleSubmit} autocomplete="off">
+                            {/* preventDefault: prevent page refresh */}
+                            <form onSubmit={e => { e.preventDefault(); handleSubmit()}} autoComplete="off">
                                 <div className='timer-input-box'>
                                     <input className='timer-input' type='text' maxLength='2' placeholder='00' pattern="\d*" id='HH' ref={hh} />
                                     <div>:</div>
                                     <input className='timer-input' type='text' maxLength='2' placeholder='00' pattern="\d*" id='MM' ref={mm} />
                                     <div>:</div>
                                     <input className='timer-input' type='text' maxLength='2' placeholder='00' pattern="\d*" id='SS' ref={ss} />
-                                    <label for="HH">HH</label>
+                                    <label htmlFor="HH">HH</label>
                                     &nbsp;
-                                    <label for="MM">MM</label>
+                                    <label htmlFor="MM">MM</label>
                                     &nbsp;
-                                    <label for="SS">SS</label>
+                                    <label htmlFor="SS">SS</label>
                                 </div>
                                 <button className='timer-btn fs-5' id='cancel' onClick={() => setTimerInputIsOpen(false)}>Cancel</button>
                                 <input className='timer-btn fs-5' type='submit' id='set-time' value='Set Time'></input>
