@@ -58,7 +58,7 @@ function App() {
           if (xSum > 0 && xSum + calcWidth < maxWidth) {
             position.x = xSum;
           }
-          if (ySum > 0 && ySum + calcHeight + bannerHeight < maxHeight) {
+          if (ySum > -120 && ySum + calcHeight + bannerHeight < maxHeight) {
             position.y = ySum;
           }
           console.log(position.x, position.y, maxHeight);
