@@ -105,6 +105,24 @@ input:focus {
 /* /////// CALCULATOR STUFF \\\\\\\ */
 .calc-top {
   height: 32px;
+  /* text-align: right; */
+}
+
+.close {
+  color: rgb(68 68 69);
+  background-color: rgb(211 211 211);
+  position: relative;
+  top: 0px;
+  right: -214px;
+  font-size: 30px;
+  width: 25px;
+  /* adjust vertical position */
+  line-height: 20px;
+  border: 1px solid #333;
+  border-radius: 6px;
+  padding: 2px;
+  margin: 4px;
+  cursor: pointer;
 }
 
 .display-box {
@@ -161,6 +179,7 @@ input:focus {
   margin: 1px;
   background-color: rgb(235 240 246);
   color: rgb(255 255 255);
+  /* font-size: 20px; */
   /**/
   /* border: 1px outset rgba(0,0,0, 0.25); */
   box-shadow: inset 0px 0px 0px 1px rgba(0, 0, 0, 0.25);
