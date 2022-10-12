@@ -105,6 +105,7 @@ input:focus {
 /* /////// CALCULATOR STUFF \\\\\\\ */
 .calc-top {
   height: 32px;
+  cursor: move;
   /* text-align: right; */
 }
 
