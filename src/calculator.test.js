@@ -10,7 +10,7 @@ import userEvent from '@testing-library/user-event';
 
 function TestCalc() {
     return (
-        <Calculator />
+        <Calculator timerInputIsOpen={false} calcIsOpen={true} setCalcIsOpen={null} />
     );
 
 }
