@@ -218,7 +218,9 @@ function Calculator({ timerInputIsOpen, calcIsOpen, setCalcIsOpen }) {
         if (!validPreOperandDisplay()) {
             return;
         }
-        if (!(calc.num === 0 && calc.result === 0)) {
+
+        //just use == below to prevent negative appending to 0.0 or 0.000 etc. needs actual value.
+        if (!(calc.num == 0 && calc.result == 0)) {
             //match last # after operand...
             // const regex = /([0-9.]+(?![\*\+\/-]))$/;
             const regex = /([0-9.]+(?![*+/-]))$/;
@@ -508,5 +510,4 @@ function Calculator({ timerInputIsOpen, calcIsOpen, setCalcIsOpen }) {
 
 export default Calculator;
 
-//TODO: negative should have no effect on 0, 0.0, 0.000 until a nonzero digit is present
-  //result + (-) + # BUG
+//TODO: result + (-) + # BUG.  5 + neg 3 = 53...
