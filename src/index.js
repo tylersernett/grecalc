@@ -15,18 +15,22 @@ import reportWebVitals from './reportWebVitals';
 //   overflow: 'hidden',
 // };
 
-const par = {
+const parent = {
   // position: 'absolute',
   // backgroundColor: 'red',
   //height: '500px',
   minHeight: 'calc(100vh)',
   width: '100%',
+  display: 'grid',
+  // gridTemplateColumns: '1fr 1fr 1fr',
+  justifyContent: 'right',
+  paddingRight: '5px',
 };
 
 const DraggableItem = {
-  // position: 'absolute',
-  // zIndex: 1,
-  // left: '20px',
+  // position: 'relative',
+  // // zIndex: 1,
+  // left: '200px',
   // top: '20px',
   // width: '300px',
   // height: '50px',
@@ -56,9 +60,9 @@ function App() {
           let calcHeight = 300;
           //TODO: document.getElementById('masonryParent').children[0].style.height
           let bannerHeight = 130;
-          if (xSum > 2 && xSum + calcWidth < maxWidth) {
+          // if (xSum > 2 && xSum + calcWidth < maxWidth) {
             position.x = xSum;
-          }
+          // }
           if (ySum > -120 && ySum + calcHeight + bannerHeight < maxHeight) {
             position.y = ySum;
           }
@@ -84,7 +88,7 @@ function App() {
   return (
     <>
       <Timer timerInputIsOpen={timerInputIsOpen} setTimerInputIsOpen={setTimerInputIsOpen} calcIsOpen={calcIsOpen} setCalcIsOpen={setCalcIsOpen} />
-      <div style={par}>
+      <div style={parent}>
         <div ref={elementRef} style={DraggableItem} onMouseDown={dragAndDrop}>
           <Calculator timerInputIsOpen={timerInputIsOpen} calcIsOpen={calcIsOpen} setCalcIsOpen={setCalcIsOpen} />
         </div>
