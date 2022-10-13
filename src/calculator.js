@@ -1,15 +1,7 @@
 import React from 'react';
 
 function Calculator({ timerInputIsOpen, calcIsOpen, setCalcIsOpen }) {
-    // {display, id}
-    const btns = [
-        ["MR", "memrecall"], ["MC", "memclear"], ["M+", "memadd"], ["(", "parenleft"], [")", "parenright"],
-        [7, "seven"], [8, "eight"], [9, "nine"], ["÷", "/"], ["C", "clear"],
-        [4, "four"], [5, "five"], [6, "six"], ["×", "*"], ["CE", "clear-entry"],
-        [1, "one"], [2, "two"], [3, "three"], ["–", "-"], ["√", "squareroot"],
-        ["±", "negative"], [0, "zero"], [".", "decimal"], ["＋", "+"],
-        ["=", "equals"]];
-
+  
     const [calc, setCalc] = React.useState({
         num: 0,
         operand: "",
@@ -31,7 +23,6 @@ function Calculator({ timerInputIsOpen, calcIsOpen, setCalcIsOpen }) {
     React.useEffect(() => {
         console.log(calc);
         console.log(memory);
-        console.log(calcIsOpen);
         // console.log(display);
     }, [calc, memory])
 
@@ -447,6 +438,38 @@ function Calculator({ timerInputIsOpen, calcIsOpen, setCalcIsOpen }) {
         return () => document.removeEventListener("keydown", handleKeydown)
     }, [numberClickHandler]); //use dependency, or you only get 1 number in display at a time for keyboard entry
 
+    const buttonMap = [
+        {display: "MR", name: "memrecall",      function: memRecallHandler}, 
+        {display: "MC", name: "memclear",       function: memClearHandler}, 
+        {display: "M+", name: "memadd",         function: memAddHandler}, 
+        {display: "(",  name: !calc.parenStarted ? "parenleft" : "paren-inactive",      function: parenLeftClickHandler}, 
+        {display: ")",  name: calc.parenStarted ? "parenright" : "paren-inactive",     function: parenRightClickHandler},
+
+        {display: 7,    name: "seven",          function: () => numberClickHandler(7)}, 
+        {display: 8,    name: "eight",          function: () => numberClickHandler(8)}, 
+        {display: 9,    name: "nine",           function: () => numberClickHandler(9)}, 
+        {display: "÷",  name: "/",              function: () => operandClickHandler("/")}, 
+        {display: "C",  name: "clear",          function: clearClickHandler},
+
+        {display: 4,    name: "four",           function: () => numberClickHandler(4)}, 
+        {display: 5,    name: "five",           function: () => numberClickHandler(5)}, 
+        {display: 6,    name: "six",            function: () => numberClickHandler(6)}, 
+        {display: "×",  name: "*",              function: () => operandClickHandler('*')}, 
+        {display: "CE", name: "clear-entry",    function: clearEntryClickHandler},
+
+        {display: 1,    name: "one",            function: () => numberClickHandler(1)}, 
+        {display: 2,    name: "two",            function: () => numberClickHandler(2)}, 
+        {display: 3,    name: "three",          function: () => numberClickHandler(3)}, 
+        {display: "–",  name:  "-",             function: () => operandClickHandler('-')}, 
+        {display: "√",  name: "squareroot",     function: squarerootClickHandler},
+
+        {display: "±",  name: "negative",       function: negativeClickHandler}, 
+        {display: 0,    name: "zero",           function: () => numberClickHandler(0)}, 
+        {display: ".",  name:  "decimal",       function: decimalClickHandler}, 
+        {display: "＋", name:  "+",             function: () => operandClickHandler('+')},
+        {display: "=",  name: "equals",         function: equalsClickHandler}
+    ];
+
     return (
         <>
         
@@ -466,37 +489,13 @@ function Calculator({ timerInputIsOpen, calcIsOpen, setCalcIsOpen }) {
                 </div>
 
                 <div className="button-box m-1">
-
-                    {btns.map((item) =>
-
-                        (item[1] === "parenright") ? <div className="calc-btn text-center fs-2"
-                            id={calc.parenStarted ? item[1] : "paren-inactive"}
-                            key={item[1]}
-                            onClick={parenRightClickHandler}>{item[0]}</div> :
-
-                            (item[1] === "parenleft") ? <div className="calc-btn text-center fs-2"
-                                id={!calc.parenStarted ? item[1] : "paren-inactive"}
-                                key={item[1]}
-                                onClick={parenLeftClickHandler}>{item[0]}</div> :
-
-                                <div className="calc-btn text-center fs-2" role='button'
-                                    id={item[1]}
-                                    key={item[1]}
-                                    onClick={(item[1] === "negative") ? negativeClickHandler :
-                                        (item[1] === "decimal") ? decimalClickHandler :
-                                            (item[1] === "clear") ? clearClickHandler :
-                                                (item[1] === "clear-entry") ? clearEntryClickHandler :
-                                                    (item[1] === "squareroot") ? squarerootClickHandler :
-                                                        (item[1] === "memrecall") ? memRecallHandler :
-                                                            (item[1] === "memclear") ? memClearHandler :
-                                                                (item[1] === "memadd") ? memAddHandler :
-                                                                    // (item[1] === "parenleft") ? parenLeftClickHandler :
-                                                                    //     (item[1] === "parenright") ? parenRightClickHandler :
-                                                                    (item[1] === "+" || item[1] === "-" || item[1] === "*" || item[1] === "/") ? () => operandClickHandler(item[1]) :
-                                                                        (item[1] === "equals") ? () => equalsClickHandler() : () => numberClickHandler(item[0])}>
-                                    {/* anonymous arrow function needed on equals Handler because it has a default parameter */}
-                                    {item[0]}
-                                </div>
+                    {buttonMap.map((item) => 
+                        <div className="calc-btn text-center fs-2" 
+                        id={item.name} 
+                        key={item.name} 
+                        onClick={item.function}>
+                            {item.display}
+                        </div>
                     )}
                 </div>
             </div >
@@ -509,6 +508,5 @@ function Calculator({ timerInputIsOpen, calcIsOpen, setCalcIsOpen }) {
 
 export default Calculator;
 
-  //INVESTIGATE: plus-minus handling. 1(-)23 = -123? 1(-)23(-)45 = 12345?
-  //negative should have no effect on 0, 0.0, 0.000 until a nonzero digit is present
+//TODO: negative should have no effect on 0, 0.0, 0.000 until a nonzero digit is present
   //result + (-) + # BUG
