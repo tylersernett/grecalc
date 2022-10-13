@@ -28,8 +28,8 @@ const DraggableItem = {
   // zIndex: 1,
   // left: '20px',
   // top: '20px',
-  width: '300px',
-  height: '50px',
+  // width: '300px',
+  // height: '50px',
   // height: '100px',
   // backgroundColor: 'green'
 };
@@ -37,6 +37,7 @@ const DraggableItem = {
 function App() {
   //declare timerInputIsOpen here, becuase both Timer and Calculator use it
   const [timerInputIsOpen, setTimerInputIsOpen] = useState(false);
+  const [calcIsOpen, setCalcIsOpen] = useState(true);
 
   //drag code mod'd from //from https://stackoverflow.com/questions/20926551/recommended-way-of-making-react-component-div-draggable
   const [position, setPosition] = useState({ x: 0, y: 0 });
@@ -51,11 +52,11 @@ function App() {
           let maxHeight = element.parentElement.clientHeight;
           let xSum = position.x + MouseEvent.movementX;
           let ySum = position.y + MouseEvent.movementY;
-          let calcWidth = 256 + 10;
+          let calcWidth = 256 + 0;
           let calcHeight = 300;
           //TODO: document.getElementById('masonryParent').children[0].style.height
           let bannerHeight = 130;
-          if (xSum > 0 && xSum + calcWidth < maxWidth) {
+          if (xSum > 2 && xSum + calcWidth < maxWidth) {
             position.x = xSum;
           }
           if (ySum > -120 && ySum + calcHeight + bannerHeight < maxHeight) {
@@ -82,10 +83,10 @@ function App() {
 
   return (
     <>
-      <Timer timerInputIsOpen={timerInputIsOpen} setTimerInputIsOpen={setTimerInputIsOpen} />
+      <Timer timerInputIsOpen={timerInputIsOpen} setTimerInputIsOpen={setTimerInputIsOpen} calcIsOpen={calcIsOpen} setCalcIsOpen={setCalcIsOpen} />
       <div style={par}>
         <div ref={elementRef} style={DraggableItem} onMouseDown={dragAndDrop}>
-          <Calculator timerInputIsOpen={timerInputIsOpen} />
+          <Calculator timerInputIsOpen={timerInputIsOpen} calcIsOpen={calcIsOpen} setCalcIsOpen={setCalcIsOpen} />
         </div>
       </div>
     </>

@@ -141,7 +141,7 @@ input:focus {
 #displayL,
 #displayR {
   /* display: inline; */
-  cursor: auto;
+  /* cursor: auto; */
 }
 
 #displayL {

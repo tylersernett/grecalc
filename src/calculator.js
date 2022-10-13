@@ -1,6 +1,6 @@
 import React from 'react';
 
-function Calculator({ timerInputIsOpen }) {
+function Calculator({ timerInputIsOpen, calcIsOpen, setCalcIsOpen }) {
     // {display, id}
     const btns = [
         ["MR", "memrecall"], ["MC", "memclear"], ["M+", "memadd"], ["(", "parenleft"], [")", "parenright"],
@@ -31,6 +31,7 @@ function Calculator({ timerInputIsOpen }) {
     React.useEffect(() => {
         console.log(calc);
         console.log(memory);
+        console.log(calcIsOpen);
         // console.log(display);
     }, [calc, memory])
 
@@ -447,10 +448,13 @@ function Calculator({ timerInputIsOpen }) {
     }, [numberClickHandler]); //use dependency, or you only get 1 number in display at a time for keyboard entry
 
     return (
-        <div className="container">
+        <>
+        
+        {/* <div className="container"> */}
+        {calcIsOpen ? 
             <div className="calc-body mt-3">
                 <div className='calc-top'>
-                    <div className="close" onClick={''}>
+                    <div className="close" onClick={() => setCalcIsOpen(false)}>
                         <span aria-hidden="true">&times;</span>
                     </div>
                 </div>
@@ -496,7 +500,10 @@ function Calculator({ timerInputIsOpen }) {
                     )}
                 </div>
             </div >
-        </div>
+            : <></>}
+        {/* </div> */}
+        
+        </>
     )
 }
 

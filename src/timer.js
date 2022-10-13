@@ -7,7 +7,7 @@ const Modal_Wrapper = {
     zIndex: 1
 }
 
-function Timer({ timerInputIsOpen, setTimerInputIsOpen }) {
+function Timer({ timerInputIsOpen, setTimerInputIsOpen, calcIsOpen, setCalcIsOpen }) {
 
     // let defaultTime = 35 * 60;
     const [defaultTime, setDefaultTime] = useState(35 * 60);
@@ -81,7 +81,7 @@ function Timer({ timerInputIsOpen, setTimerInputIsOpen }) {
     }
 
     // const [timerInputIsOpen, setTimerInputIsOpen] = useState(false);
-    
+
     const handleSubmit = React.useCallback(() => {
         let secs = 0;
         if (hh.current.value === "") {
@@ -155,6 +155,8 @@ function Timer({ timerInputIsOpen, setTimerInputIsOpen }) {
                     </svg>
                 </div>
                 <div className='timer-buttons'>
+                    {/* CALC TOGGLE*/}
+                    <button className='timer-btn fs-4' onClick={()=>setCalcIsOpen(!calcIsOpen)}>Calc</button>
                     {!run ?
                         // PLAY
                         <button className='timer-btn fs-4' onClick={startTimer}><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" class="bi bi-play-fill" viewBox="0 1 16 16">
@@ -189,7 +191,7 @@ function Timer({ timerInputIsOpen, setTimerInputIsOpen }) {
                             Enter time below
                             <p />
                             {/* preventDefault: prevent page refresh */}
-                            <form onSubmit={e => { e.preventDefault(); handleSubmit()}} autoComplete="off">
+                            <form onSubmit={e => { e.preventDefault(); handleSubmit() }} autoComplete="off">
                                 <div className='timer-input-box'>
                                     <input className='timer-input' type='text' maxLength='2' placeholder='00' pattern="\d*" id='HH' ref={hh} />
                                     <div>:</div>
@@ -216,7 +218,4 @@ function Timer({ timerInputIsOpen, setTimerInputIsOpen }) {
 };
 
 export default Timer;
-//TODO: add hide/show time button [time text anchored in some position]
-//add drag and drop to calc
-//modal ESC
-//default time update
+//TODO: make drag & drop only possible on uppermost part of calculator
