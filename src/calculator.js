@@ -219,10 +219,14 @@ function Calculator({ timerInputIsOpen, calcIsOpen, setCalcIsOpen }) {
             return;
         }
 
-        //just use == below to prevent negative appending to 0.0 or 0.000 etc. needs actual value.
+        //exit if final character is an operand
+        if (isOperand( calc.string.slice(-1))) {
+            return;
+        }
+
+        //only use '==' below to prevent negative appending to 0.0 or 0.000 etc. requires nonzero value.
         if (!(calc.num == 0 && calc.result == 0)) {
             //match last # after operand...
-            // const regex = /([0-9.]+(?![\*\+\/-]))$/;
             const regex = /([0-9.]+(?![*+/-]))$/;
             const operationString = calc.string;
             let lastNumber;
@@ -234,6 +238,7 @@ function Calculator({ timerInputIsOpen, calcIsOpen, setCalcIsOpen }) {
                 lastNumber = "";
                 newop = "";
             }
+
             //slice from start to final operand
             let prefix = operationString.slice(0, calc.string.length - lastNumber.length);
 
@@ -480,7 +485,7 @@ function Calculator({ timerInputIsOpen, calcIsOpen, setCalcIsOpen }) {
             <div className="calc-body mt-3">
                 <div className='calc-top'>
                     <div className="close" onClick={() => setCalcIsOpen(false)}>
-                        <span aria-hidden="true">&times;</span>
+                        <span aria-hidden="true">✕</span>
                     </div>
                 </div>
 
