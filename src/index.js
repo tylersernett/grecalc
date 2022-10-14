@@ -6,38 +6,6 @@ import Calculator from './calculator';
 import Timer from './timer';
 import reportWebVitals from './reportWebVitals';
 
-// const Container = {
-//   position: 'absolute',
-//   width: '100%',
-//   height: '100%',
-//   top: 0,
-//   left: 0,
-//   overflow: 'hidden',
-// };
-
-const parent = {
-  // position: 'absolute',
-  // backgroundColor: 'red',
-  //height: '500px',
-  minHeight: 'calc(100vh)',
-  width: '100%',
-  display: 'grid',
-  // gridTemplateColumns: '1fr 1fr 1fr',
-  justifyContent: 'right',
-  paddingRight: '5px',
-};
-
-const DraggableItem = {
-  // position: 'relative',
-  // // zIndex: 1,
-  // left: '200px',
-  // top: '20px',
-  // width: '300px',
-  // height: '50px',
-  // height: '100px',
-  // backgroundColor: 'green'
-};
-
 function App() {
   //declare timerInputIsOpen here, becuase both Timer and Calculator use it
   const [timerInputIsOpen, setTimerInputIsOpen] = useState(false);
@@ -88,19 +56,14 @@ function App() {
   return (
     <>
       <Timer timerInputIsOpen={timerInputIsOpen} setTimerInputIsOpen={setTimerInputIsOpen} calcIsOpen={calcIsOpen} setCalcIsOpen={setCalcIsOpen} />
-      <div style={parent}>
-        <div ref={elementRef} style={DraggableItem} onMouseDown={dragAndDrop}>
+      <div className='white-body'>
+        <div ref={elementRef} onMouseDown={dragAndDrop}>
           <Calculator timerInputIsOpen={timerInputIsOpen} calcIsOpen={calcIsOpen} setCalcIsOpen={setCalcIsOpen} />
         </div>
       </div>
     </>
   );
 };
-
-
-
-
-
 
 const root = document.getElementById('root');
 ReactDOM.createRoot(root).render(<App />);
