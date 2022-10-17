@@ -119,9 +119,16 @@ input:focus {
   width: 100%;
   display: grid;
   /* gridTemplateColumns: '1fr 1fr 1fr', */
-  justify-content: right;
+  /* justify-content: right; */
   padding-right: 5px;
   border: 3px double black;
+}
+
+.calc-container{
+  display: grid;
+  /* gridTemplateColumns: '1fr 1fr 1fr', */
+  justify-content: right;
+  padding-right: 5px;
 }
 
 @media screen and (max-width: 460px) {
@@ -169,6 +176,10 @@ input:focus {
   margin: 4px;
   cursor: pointer;
   text-align: center;
+}
+
+.close:hover {
+  background-color: rgb(231, 231, 231);
 }
 
 .display-box {
