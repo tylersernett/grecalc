@@ -34,7 +34,6 @@ body {
 .timer-btn {
   border-radius: 6px;
   cursor: pointer;
-  /* border: 1px; */
   margin: 2px;
   background-color: rgb(95 74 90);
   color: rgb(255 255 255);
@@ -46,6 +45,13 @@ body {
 .timer-btn:hover {
   background-color: rgb(117 87 108);
   border: 1px solid rgb(214 186 205);
+}
+
+.timer-btn:disabled {
+  background-color: rgb(33, 26, 31);
+  color: rgb(69, 68, 68);
+  border: 1px solid rgb(33, 26, 31);
+  cursor: default;
 }
 
 #calc-toggle {
