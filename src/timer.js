@@ -29,7 +29,8 @@ function Timer({ timerInputIsOpen, setTimerInputIsOpen, calcIsOpen, setCalcIsOpe
     const pauseTimer = () => {
         setRun(false);
     };
-    const stopTimer = () => {
+    const resetTimer = () => {
+        setHide(false);
         setRun(false);
         setSeconds(defaultTime);
     };
@@ -39,7 +40,7 @@ function Timer({ timerInputIsOpen, setTimerInputIsOpen, calcIsOpen, setCalcIsOpe
         let interval;
         if (run === true) {
             interval = setInterval(() => {
-                setSeconds((seconds) => seconds - 1);
+                setSeconds((currentSeconds) => currentSeconds - 1);
             }, 1000);
         }
 
@@ -166,7 +167,7 @@ function Timer({ timerInputIsOpen, setTimerInputIsOpen, calcIsOpen, setCalcIsOpe
                         : <button className='timer-btn fs-4' disabled={seconds < 0} onClick={pauseTimer}><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" className="bi bi-pause-fill" viewBox="0 1 16 16">
                             <path d="M5.5 3.5A1.5 1.5 0 0 1 7 5v6a1.5 1.5 0 0 1-3 0V5a1.5 1.5 0 0 1 1.5-1.5zm5 0A1.5 1.5 0 0 1 12 5v6a1.5 1.5 0 0 1-3 0V5a1.5 1.5 0 0 1 1.5-1.5z" />
                         </svg></button>}
-                    <button className='timer-btn fs-4' onClick={stopTimer} disabled={ (seconds === defaultTime && !run)} >
+                    <button className='timer-btn fs-4' onClick={resetTimer} disabled={ (seconds === defaultTime && !run)} >
                         {/* RESET */}
                         <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" className="bi bi-arrow-clockwise" viewBox="0 0 16 16">
                             <path fillRule="evenodd" d="M8 3a5 5 0 1 0 4.546 2.914.5.5 0 0 1 .908-.417A6 6 0 1 1 8 2v1z" stroke="currentColor" strokeWidth="0.75" />
@@ -180,8 +181,8 @@ function Timer({ timerInputIsOpen, setTimerInputIsOpen, calcIsOpen, setCalcIsOpe
             </div>
 
             <div className='timer-banner'>
-                <span className='timer-display'>{hide ? "" : seconds < 0 ? "Time expired" : display.hours + ":" + display.minutes + ":" + display.seconds}</span>
-                <span className='hide-display' onClick={toggleHide}>{hide ? ShowTimeDisplay() : HideTimeDisplay()}</span>
+                <span className='timer-display'>{(hide && seconds >= 0) ? "" : seconds < 0 ? "Time expired" : display.hours + ":" + display.minutes + ":" + display.seconds}</span>
+                <span className='hide-display' onClick={toggleHide}>{(hide && seconds >= 0) ? ShowTimeDisplay() : HideTimeDisplay()}</span>
                 {/* <div> */}
 
                 <span style={Modal_Wrapper}>
