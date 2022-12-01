@@ -181,6 +181,9 @@ function Calculator({ timerInputIsOpen, calcIsOpen, setCalcIsOpen }) {
 
     const decimalClickHandler = () => {
         //prevent adding multiple decimals
+        if (display.string === "ERROR") {
+            return false;
+        }
         if (!calc.num.toString().includes('.')) {
             setCalc({
                 ...calc,
