@@ -148,7 +148,19 @@ input:focus {
     align-items: center;
   }
   .white-body{
+  }
+  .calc-container{
     justify-content: center;
+  }
+  .calc-mover {
+
+  }
+  .calc-body {
+    width: 90vw;
+  }
+  .calc-btn {
+    height: 10vh;
+    line-height: 10vh;
   }
 }
 
@@ -225,7 +237,7 @@ input:focus {
 }
 
 .calc-body {
-  max-width: 250px;
+  /* max-width: 250px; */
   border: 1px solid rgb(187 187 188);
   background-color: rgb(211 211 211);
 }
