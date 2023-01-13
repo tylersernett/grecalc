@@ -1,5 +1,8 @@
+# GRE Calculator Dashboard
+An emulation of the GRE calculator & timer.
 
-Number Formatting:
+## Things Learned
+#### Number Formatting:
 
 ```javascript
     const formatter = new Intl.NumberFormat('en-US', {
@@ -23,7 +26,7 @@ Number Formatting:
     }
 ```
 
-Using react portal for modal:
+#### Using react portal for modal:
 ```javascript
 import ReactDOM from 'react-dom'
 
@@ -37,6 +40,7 @@ and add
 <div id="portal"></div>
 to HTML file
 
+#### State Management
 Problem: calculator needs to access a piece of state from the timer. Right now, #s entered into the time input box are also updating the calculator display.
 Solution: move the state up into the parent component (index.js or App.js), so both timer.js and calculator.js can access.
 ```javascript
@@ -54,7 +58,7 @@ And now pass the relevant pieces of state to the components:
   )
 ```
 
-And update the component functinos to accept these parameters:
+And update the component functions to accept these parameters:
 (in timer.js)
 ```javascript
 function Timer({timerInputIsOpen, setTimerInputIsOpen}) {
@@ -66,8 +70,13 @@ in calculator.js:
 function Calculator({timerInputIsOpen}) {
     ...
 ```
-
+#### UseRef Best Practices
 useRef: when you don't need to update the render
 
+#### Input Limitations
 Issue: timerInput can accept letters and non-digits, resulting in NaN display.
 Solution: add attribute: {pattern="\d*"} to input tag.
+
+#### Styling
+adjust vertical position:
+    css: line-height
