@@ -54,7 +54,7 @@ function App() {
   );
 
   return (
-    <>
+    <div className='app-container'>
       <Timer timerInputIsOpen={timerInputIsOpen} setTimerInputIsOpen={setTimerInputIsOpen} calcIsOpen={calcIsOpen} setCalcIsOpen={setCalcIsOpen} />
       <div className='white-body'>
         {/* <iframe title ='a' src="https://www.w3schools.com"></iframe> */}
@@ -63,11 +63,11 @@ function App() {
             <Calculator timerInputIsOpen={timerInputIsOpen} calcIsOpen={calcIsOpen} setCalcIsOpen={setCalcIsOpen} />
           </div>
         </div>
-        <div className='footer'>
-          ©<a href="https://github.com/tylersernett/">Tyler Sernett</a>
-        </div>
       </div>
-    </>
+      <footer className='footer'>
+        ©<a href="https://github.com/tylersernett/">Tyler Sernett</a>
+      </footer>
+    </div>
   );
 };
 
