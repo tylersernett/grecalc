@@ -1,0 +1,15 @@
+{
+  "files": {
+    "main.css": "/grecalc/static/css/main.f803a131.css",
+    "main.js": "/grecalc/static/js/main.06b947a8.js",
+    "static/js/787.96160cb8.chunk.js": "/grecalc/static/js/787.96160cb8.chunk.js",
+    "index.html": "/grecalc/index.html",
+    "main.f803a131.css.map": "/grecalc/static/css/main.f803a131.css.map",
+    "main.06b947a8.js.map": "/grecalc/static/js/main.06b947a8.js.map",
+    "787.96160cb8.chunk.js.map": "/grecalc/static/js/787.96160cb8.chunk.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.f803a131.css",
+    "static/js/main.06b947a8.js"
+  ]
+}
