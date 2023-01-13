@@ -324,3 +324,15 @@ input:focus {
   background-image: linear-gradient(rgb(0, 0, 0, 0.4) 0 0);
   /* background-color: rgba(0,0,0,0.5); */
 }
+
+.footer {
+  text-align: center;
+}
+
+a:link {
+  color: #000;
+}
+
+a:visited {
+  color: #333;
+}

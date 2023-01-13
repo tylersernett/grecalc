@@ -63,6 +63,9 @@ function App() {
             <Calculator timerInputIsOpen={timerInputIsOpen} calcIsOpen={calcIsOpen} setCalcIsOpen={setCalcIsOpen} />
           </div>
         </div>
+        <div className='footer'>
+          ©<a href="https://github.com/tylersernett/">Tyler Sernett</a>
+        </div>
       </div>
     </>
   );
