@@ -65,16 +65,31 @@ header {
   cursor: default;
 }
 
-#calc-toggle {
+.timer-btn:active{
+  background-image: linear-gradient(rgb(0, 0, 0, 0.4) 0 0);
+}
+
+.calc-toggle-btn {
   margin-right: 12px;
   background-color: rgb(78 79 79);
   border: 1px solid rgb(154 153 154);
-  /* font-size: 8px; */
 }
 
-#calc-toggle:hover {
+.calc-toggle-btn:hover {
   background-color: rgb(100 101 100);
   border: 1px solid rgb(222 223 223);
+}
+
+.calc-toggle-btn-inactive {
+  margin-right: 12px;
+  background-color: rgb(58, 58, 58);
+  color: #999;
+  border: 1px solid rgb(154 153 154);
+}
+
+.calc-toggle-btn-inactive:hover {
+  background-color: rgb(74, 74, 74);
+  border: 1px solid rgb(187, 187, 187);
 }
 
 .timer-banner {
@@ -123,13 +138,9 @@ header {
   border-style: solid;
 }
 
-input:focus {
-  outline: rgb(136 47 92) solid 1px;
+*:focus {
+  outline: 2px solid rgb(222, 79, 151);
 }
-
-/* #cancel, #set-time{
-  width: calc(100%);
-} */
 
 .white-body{
   flex: 1 1 auto;
@@ -216,12 +227,6 @@ input:focus {
   border-radius: 6px;
   border: 0px;
   padding: 1px;
-}
-
-#displayL,
-#displayR {
-  /* display: inline; */
-  /* cursor: auto; */
 }
 
 #displayL {

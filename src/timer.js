@@ -157,7 +157,7 @@ function Timer({ timerInputIsOpen, setTimerInputIsOpen, calcIsOpen, setCalcIsOpe
                 </div>
                 <div className='timer-buttons'>
                     {/* CALC TOGGLE*/}
-                    <button className='timer-btn fs-4' id='calc-toggle' onClick={()=>setCalcIsOpen(!calcIsOpen)} >Calc</button>
+                    <button className={calcIsOpen?'timer-btn calc-toggle-btn-inactive fs-4':'timer-btn calc-toggle-btn fs-4'} id='calc-toggle' onClick={()=>setCalcIsOpen(!calcIsOpen)} >Calc</button>
                     {!run ?
                         // PLAY
                         <button className='timer-btn fs-4' disabled={seconds < 0} onClick={startTimer}><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" className="bi bi-play-fill" viewBox="0 1 16 16">
