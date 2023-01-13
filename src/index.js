@@ -29,11 +29,11 @@ function App() {
           //TODO: document.getElementById('masonryParent').children[0].style.height
           let bannerHeight = 130;
           // if (xSum > 2 && xSum + calcWidth < maxWidth) {
-            position.x = xSum;
+          position.x = xSum;
           // }
-          if (ySum > -120 && ySum + calcHeight + bannerHeight < maxHeight) {
-            position.y = ySum;
-          }
+          // if (ySum > -120 && ySum + calcHeight + bannerHeight < maxHeight) {
+          position.y = ySum;
+          // }
           console.log(position.x, position.y, maxHeight);
 
           if (element) {
@@ -57,8 +57,11 @@ function App() {
     <>
       <Timer timerInputIsOpen={timerInputIsOpen} setTimerInputIsOpen={setTimerInputIsOpen} calcIsOpen={calcIsOpen} setCalcIsOpen={setCalcIsOpen} />
       <div className='white-body'>
-        <div ref={elementRef} onMouseDown={dragAndDrop}>
-          <Calculator timerInputIsOpen={timerInputIsOpen} calcIsOpen={calcIsOpen} setCalcIsOpen={setCalcIsOpen} />
+        {/* <iframe title ='a' src="https://www.w3schools.com"></iframe> */}
+        <div className='calc-container' >
+          <div className='calc-mover' ref={elementRef} onMouseDown={dragAndDrop}>
+            <Calculator timerInputIsOpen={timerInputIsOpen} calcIsOpen={calcIsOpen} setCalcIsOpen={setCalcIsOpen} />
+          </div>
         </div>
       </div>
     </>
