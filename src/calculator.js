@@ -500,12 +500,12 @@ function Calculator({ timerInputIsOpen, calcIsOpen, setCalcIsOpen }) {
 
                 <div className="button-box m-1">
                     {buttonMap.map((item) => 
-                        <div className="calc-btn text-center fs-2" 
+                        <button className="calc-btn text-center fs-5" 
                         id={item.name} 
                         key={item.name} 
                         onClick={item.function}>
                             {item.display}
-                        </div>
+                        </button>
                     )}
                 </div>
             </div >

@@ -181,8 +181,12 @@ header {
     width: 90vw;
   }
   .calc-btn {
-    height: 10vh;
-    line-height: 10vh;
+    /* width: 10vw; */
+    /* height: 10vh; */
+    /* line-height: 10vh; */
+    /* width: auto; */
+    /* height: auto; */
+    width: 80px;
   }
 }
 
@@ -269,6 +273,8 @@ header {
   /**/
   /* border: 1px outset rgba(0,0,0, 0.25); */
   box-shadow: inset 0px 0px 0px 1px rgba(0, 0, 0, 0.25);
+  width: 40px;
+  height: 40px;
 }
 
 #clear,
