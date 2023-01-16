@@ -487,9 +487,9 @@ function Calculator({ timerInputIsOpen, calcIsOpen, setCalcIsOpen }) {
         {calcIsOpen ? 
             <div className="calc-body mt-3">
                 <div className='calc-top'>
-                    <div className="close" onClick={() => setCalcIsOpen(false)}>
+                    <button className="close" onClick={() => setCalcIsOpen(false)}>
                         <span aria-hidden="true">✕</span>
-                    </div>
+                    </button>
                 </div>
 
                 {/* what appears at the top: display num unless it's 0 -- else display result */}
@@ -500,7 +500,7 @@ function Calculator({ timerInputIsOpen, calcIsOpen, setCalcIsOpen }) {
 
                 <div className="button-box m-1">
                     {buttonMap.map((item) => 
-                        <button className="calc-btn text-center fs-5" 
+                        <button className="calc-btn" 
                         id={item.name} 
                         key={item.name} 
                         onClick={item.function}>

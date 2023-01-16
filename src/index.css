@@ -159,37 +159,6 @@ header {
   padding-right: 5px;
 }
 
-@media screen and (max-width: 460px) {
-  .top-banner {
-    display: flex;
-    flex-flow: column;
-    background-color: rgb(58 54 55);
-    border-bottom: 2px solid rgb(136 47 92);
-    padding: .75rem;
-    justify-content: center;
-    align-items: center;
-  }
-  .white-body{
-    border-bottom: none;
-    border-left: none;
-    border-right: none;
-  }
-  .calc-container{
-    justify-content: center;
-  }
-  .calc-body {
-    width: 90vw;
-  }
-  .calc-btn {
-    /* width: 10vw; */
-    /* height: 10vh; */
-    /* line-height: 10vh; */
-    /* width: auto; */
-    /* height: auto; */
-    width: 80px;
-  }
-}
-
 /* /////// CALCULATOR STUFF \\\\\\\ */
 .calc-top {
   height: 32px;
@@ -210,15 +179,21 @@ header {
   /* adjust vertical position */
   line-height: 20px;
   border: 1px solid #333;
-  border-radius: 6px;
+  border-radius: 4px;
   padding: 2px;
   margin: 4px;
   cursor: pointer;
   text-align: center;
+  /* box-sizing: border-box; */
 }
 
 .close:hover {
   background-color: rgb(231, 231, 231);
+}
+
+.close:focus {
+  outline: 2px solid #4679be;
+  outline-offset: 1px;
 }
 
 .display-box {
@@ -263,19 +238,34 @@ header {
 }
 
 .calc-btn {
-  border-radius: 6px;
+  border-radius: 4px;
   cursor: pointer;
-  border: 1px;
+  border: 1px solid rgba(0,0,0,0);
+  /* border: 2px rgba(0,0,0, 0.25); */
+  /* outline: 1px solid rgba(0,0,0,0.15); */
+  /* outline-offset: -1px; */
   margin: 1px;
   background-color: rgb(235 240 246);
   color: rgb(255 255 255);
-  /* font-size: 20px; */
-  /**/
-  /* border: 1px outset rgba(0,0,0, 0.25); */
-  box-shadow: inset 0px 0px 0px 1px rgba(0, 0, 0, 0.25);
+  box-shadow: -1px -1px 0px 0px rgba(0, 0, 0, 0.25) inset ;
   width: 40px;
   height: 40px;
+  font-size: 21px;
+  /* box-sizing: border-box; */
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
+
+.calc-btn:focus{
+  outline:  2px solid yellow;
+  outline-offset: -3px;
+}
+
+#one:focus, #two:focus, #three:focus, #four:focus, #five:focus, #six:focus, #seven:focus, #eight:focus, #nine:focus, #zero:focus, #decimal:focus {
+  outline: 2px solid #2f3192;
+  outline-offset: -3px;
+} 
 
 #clear,
 #clear-entry {
@@ -360,4 +350,40 @@ a:link {
 
 a:visited {
   color: #333;
+}
+
+@media screen and (max-width: 460px) {
+  .top-banner {
+    display: flex;
+    flex-flow: column;
+    background-color: rgb(58 54 55);
+    border-bottom: 2px solid rgb(136 47 92);
+    padding: .75rem;
+    justify-content: center;
+    align-items: center;
+  }
+  .white-body{
+    border-bottom: none;
+    border-left: none;
+    border-right: none;
+  }
+  .calc-container{
+    justify-content: center;
+  }
+  .calc-body {
+    width: 90vw;
+  }
+  .calc-btn {
+    height: 10vh;
+    width: auto;
+    font-size: 28px;
+  }
+}
+
+@media screen and (max-width: 320px) {
+  .calc-btn {
+    height: 10vh;
+    width: auto;
+    font-size: 24px;
+  }
 }
