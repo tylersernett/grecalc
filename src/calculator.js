@@ -448,46 +448,46 @@ function Calculator({ timerInputIsOpen, calcIsOpen, setCalcIsOpen }) {
         return () => document.removeEventListener("keydown", handleKeydown)
     }, [numberClickHandler]); //use dependency, or you only get 1 number in display at a time for keyboard entry
 
+    // prettier-ignore
     const buttonMap = [
-        {display: "MR", name: "memrecall",      function: memRecallHandler}, 
-        {display: "MC", name: "memclear",       function: memClearHandler}, 
-        {display: "M+", name: "memadd",         function: memAddHandler}, 
-        {display: "(",  name: !calc.parenStarted ? "parenleft" : "paren-inactive",      function: parenLeftClickHandler}, 
-        {display: ")",  name: calc.parenStarted ? "parenright" : "paren-inactive",     function: parenRightClickHandler},
+        {display: "MR", name: "memrecall",      function: memRecallHandler,                 label:"Memory Recall"}, 
+        {display: "MC", name: "memclear",       function: memClearHandler,                  label:"Memory Clear"}, 
+        {display: "M+", name: "memadd",         function: memAddHandler,                    label:"Memory Plus"},
+        {display: "(",  name: !calc.parenStarted ? "parenleft" : "paren-inactive",      function: parenLeftClickHandler,    label:"Open Parenthesis"}, 
+        {display: ")",  name: calc.parenStarted ? "parenright" : "paren-inactive",     function: parenRightClickHandler,    label:"Close Parenthesis"},
 
         {display: 7,    name: "seven",          function: () => numberClickHandler(7)}, 
         {display: 8,    name: "eight",          function: () => numberClickHandler(8)}, 
         {display: 9,    name: "nine",           function: () => numberClickHandler(9)}, 
-        {display: "÷",  name: "/",              function: () => operandClickHandler("/")}, 
-        {display: "C",  name: "clear",          function: clearClickHandler},
+        {display: "÷",  name: "/",              function: () => operandClickHandler("/"),   label:"Division Sign"}, 
+        {display: "C",  name: "clear",          function: clearClickHandler,                label:"Clear All"},
 
         {display: 4,    name: "four",           function: () => numberClickHandler(4)}, 
         {display: 5,    name: "five",           function: () => numberClickHandler(5)}, 
         {display: 6,    name: "six",            function: () => numberClickHandler(6)}, 
-        {display: "×",  name: "*",              function: () => operandClickHandler('*')}, 
-        {display: "CE", name: "clear-entry",    function: clearEntryClickHandler},
+        {display: "×",  name: "*",              function: () => operandClickHandler('*'),   label:"Multiplication Sign"}, 
+        {display: "CE", name: "clear-entry",    function: clearEntryClickHandler,           label:"Clear Entry"},
 
         {display: 1,    name: "one",            function: () => numberClickHandler(1)}, 
         {display: 2,    name: "two",            function: () => numberClickHandler(2)}, 
         {display: 3,    name: "three",          function: () => numberClickHandler(3)}, 
-        {display: "–",  name:  "-",             function: () => operandClickHandler('-')}, 
-        {display: "√",  name: "squareroot",     function: squarerootClickHandler},
+        {display: "–",  name:  "-",             function: () => operandClickHandler('-'),   label:"Subtraction Sign"}, 
+        {display: `√`,  name: "squareroot",     function: squarerootClickHandler,           label:"Square Root"},
 
-        {display: "±",  name: "negative",       function: negativeClickHandler}, 
+        {display: "±",  name: "negative",       function: negativeClickHandler,             label:"Plus Minus Sign"}, 
         {display: 0,    name: "zero",           function: () => numberClickHandler(0)}, 
-        {display: ".",  name:  "decimal",       function: decimalClickHandler}, 
-        {display: "＋", name:  "+",             function: () => operandClickHandler('+')},
-        {display: "=",  name: "equals",         function: equalsClickHandler}
+        {display: ".",  name:  "decimal",       function: decimalClickHandler,              label:"Decimal Point"}, 
+        {display: "＋", name:  "+",             function: () => operandClickHandler('+'),   label:"Addition Sign"},
+        {display: "=",  name: "equals",         function: equalsClickHandler,               label:"Equals Sign"}
     ];
 
     return (
         <>
         
-        {/* <div className="container"> */}
         {calcIsOpen ? 
             <div className="calc-body mt-3">
                 <div className='calc-top'>
-                    <button className="close" onClick={() => setCalcIsOpen(false)}>
+                    <button className="close" aria-label="Close calculator" onClick={() => setCalcIsOpen(false)}>
                         <span aria-hidden="true">✕</span>
                     </button>
                 </div>
@@ -502,7 +502,8 @@ function Calculator({ timerInputIsOpen, calcIsOpen, setCalcIsOpen }) {
                     {buttonMap.map((item) => 
                         <button className="calc-btn" 
                         id={item.name} 
-                        key={item.name} 
+                        key={item.name}
+                        aria-label={item.label}
                         onClick={item.function}>
                             {item.display}
                         </button>
@@ -510,7 +511,6 @@ function Calculator({ timerInputIsOpen, calcIsOpen, setCalcIsOpen }) {
                 </div>
             </div >
             : <></>}
-        {/* </div> */}
         
         </>
     )
