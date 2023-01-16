@@ -371,7 +371,7 @@ function Calculator({ timerInputIsOpen, calcIsOpen, setCalcIsOpen }) {
 
         setCalc({
             ...calc,
-            result: memory.mem,
+            result: Math.abs(memory.mem) <= 99999999 ? (removeCommas(format(memory.mem.toString()))) : "ERROR",
             num: 0,
             string: stringPrefix + memory.mem,
             //string: calc.parenStarted ? calc.string + memory.mem : "",//"",//stringPrefix + memory.mem
