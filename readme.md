@@ -37,7 +37,9 @@ import ReactDOM from 'react-dom'
     )
 ```
 and add 
+```HTML
 <div id="portal"></div>
+```
 to HTML file
 
 #### State Management
@@ -80,3 +82,31 @@ Solution: add attribute: {pattern="\d*"} to input tag.
 #### Styling
 adjust vertical position:
     css: line-height
+
+proper footer position:
+https://stackoverflow.com/questions/90178/make-a-div-fill-the-height-of-the-remaining-screen-space
+all the "top-level" tags must have height 100%
+```css
+html, body, #root { height: 100%}
+```
+
+Then set footer:
+```css
+footer {
+  flex: 0 1 40px;
+  text-align: center;
+}
+```
+
+
+#### Media query not working?
+Make sure it's at the end of the css file!
+
+#### Overflow text not centering?
+```css
+{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+```
