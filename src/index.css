@@ -388,6 +388,17 @@ a:visited {
     width: auto;
     font-size: 28px;
   }
+  .display-box {
+    height: 10vh;
+  }
+  #displayL{
+    font-size: 28px;
+    margin-top: 10px;
+  }
+  #displayR{
+    font-size: 32px;
+    margin-top: 6px;
+  }
 }
 
 @media screen and (max-width: 320px) {
@@ -395,5 +406,13 @@ a:visited {
     height: 10vh;
     width: auto;
     font-size: 24px;
+  }
+  #displayL{
+    font-size: 26px;
+    margin-top: 14px;
+  }
+  #displayR{
+    font-size: 28px;
+    margin-top: 12px;
   }
 }
