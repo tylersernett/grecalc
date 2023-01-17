@@ -109,6 +109,7 @@ header {
 }
 
 .hide-display {
+  all: unset; /*remove bootstrap button styling*/
   padding-right: 10px;
   cursor: pointer;
 }

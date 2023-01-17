@@ -184,7 +184,7 @@ function Timer({ timerInputIsOpen, setTimerInputIsOpen, calcIsOpen, setCalcIsOpe
 
             <div className='timer-banner'>
                 <span className='timer-display'>{(hide && seconds >= 0) ? "" : seconds < 0 ? "Time expired" : display.hours + ":" + display.minutes + ":" + display.seconds}</span>
-                <span className='hide-display' onClick={toggleHide}>{(hide && seconds >= 0) ? ShowTimeDisplay() : HideTimeDisplay()}</span>
+                <button className='hide-display' onClick={toggleHide}>{(hide && seconds >= 0) ? ShowTimeDisplay() : HideTimeDisplay()}</button>
 
                 <span style={Modal_Wrapper}>
                     {/*TODO: cleanup prop drilling... */}
