@@ -346,9 +346,9 @@ function Calculator({ timerInputIsOpen, calcIsOpen, setCalcIsOpen }) {
 
         setCalc({
             ...calc,
-            num: valueOnScreen,
-            result: 0,
-            string: valueOnScreen.toString(),
+            num: 0,
+            result: valueOnScreen,
+            string: valueOnScreen.toString()+calc.operand,
 
         })
         setMemory({
