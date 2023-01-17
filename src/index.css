@@ -206,6 +206,7 @@ header {
   border-radius: 6px;
   border: 0px;
   padding: 1px;
+  height: 40px;
 }
 
 #displayL {
@@ -214,7 +215,11 @@ header {
   grid-row-start: 1;
   grid-row-end: 2;
   text-align: center;
-  color: black;
+  color: #333;
+  font-size: 21px;
+  display: flex;
+  justify-content: center;
+  margin-top: 4px;
 }
 
 #displayR {
@@ -222,6 +227,11 @@ header {
   grid-column-end: 6;
   text-align: right;
   color: black;
+  font-weight: 700;
+  font-size: 21px;
+  display: flex;
+  justify-content: right;
+  margin-top: 4px;
 }
 
 .button-box {

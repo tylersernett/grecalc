@@ -448,7 +448,6 @@ function Calculator({ timerInputIsOpen, calcIsOpen, setCalcIsOpen }) {
         return () => document.removeEventListener("keydown", handleKeydown)
     }, [numberClickHandler]); //use dependency, or you only get 1 number in display at a time for keyboard entry
 
-    // prettier-ignore
     const buttonMap = [
         {display: "MR", name: "memrecall",      function: memRecallHandler,                 label:"Memory Recall"}, 
         {display: "MC", name: "memclear",       function: memClearHandler,                  label:"Memory Clear"}, 
@@ -494,8 +493,8 @@ function Calculator({ timerInputIsOpen, calcIsOpen, setCalcIsOpen }) {
 
                 {/* what appears at the top: display num unless it's 0 -- else display result */}
                 <div id="display" className='display-box m-1'>
-                    <div id='displayL' className="fs-3">{memory.memset ? "M" : ""}</div>
-                    <div id='displayR' className="fs-3 px-1">{display.string}</div>
+                    <div id='displayL' className="">{memory.memset ? "M" : ""}</div>
+                    <div id='displayR' className="px-1">{display.string}</div>
                 </div>
 
                 <div className="button-box m-1">
