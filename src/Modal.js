@@ -1,5 +1,8 @@
 import React from 'react';
-import ReactDOM from 'react-dom';
+import ReactModal from 'react-modal';
+
+//required by ReactModal to identify the 'non-modal' elements:
+ReactModal.setAppElement('#root');
 
 const MODAL_STYLES = {
     position: 'fixed',
@@ -22,19 +25,15 @@ const OVERLAY_STYLES = {
     zIndex: 999
 }
 
-//open: var to determine if we display or not, passed in within <Modal> tag
+//timerInputIsOpen: var to determine if we display or not, passed in from <Modal> tag
 //children: what's inbetween the <Modal> tags where it's called
-//onClose -- function being passed in within <Modal> tag
-export default function Modal({ open, children }) {
-    if (!open) return null
-
-    return ReactDOM.createPortal(
-        <>
-        <div style={OVERLAY_STYLES} />
-            <div style={MODAL_STYLES}>                
-                {children}
-            </div>
-        </>,
-        document.getElementById('portal')
+export default function Modal({ timerInputIsOpen, setTimerInputIsOpen, children }) {
+    return (
+        <ReactModal isOpen={timerInputIsOpen} className='modal-reset'
+            style={{ overlay: OVERLAY_STYLES, content: MODAL_STYLES }}
+            onRequestClose={() => setTimerInputIsOpen(false)}
+        >
+            {children}
+        </ReactModal>
     )
 }

@@ -124,6 +124,8 @@ function Timer({ timerInputIsOpen, setTimerInputIsOpen, calcIsOpen, setCalcIsOpe
         );
     };
 
+    //TODO: remove Escape key redundancy (handled by ReactModal now.)
+    //Can likely clean up Enter handling as well.
     React.useEffect(() => {
         function handleKeydown(e) {
             if (timerInputIsOpen) {
@@ -147,14 +149,14 @@ function Timer({ timerInputIsOpen, setTimerInputIsOpen, calcIsOpen, setCalcIsOpe
 
 
     return (
-        <header>
+        <>
             <div className='top-banner'>
-                <div className='title fs-2'><i>GRE Calc</i>
+                <header className='title fs-2'><i>GRE Calc</i>
                     <svg xmlns="http://www.w3.org/2000/svg" width="28" height="24" fill="currentColor" className="bi bi-calculator" viewBox="0 0 16 16">
                         <path d="M12 1a1 1 0 0 1 1 1v12a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1h8zM4 0a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2H4z" />
                         <path d="M4 2.5a.5.5 0 0 1 .5-.5h7a.5.5 0 0 1 .5.5v2a.5.5 0 0 1-.5.5h-7a.5.5 0 0 1-.5-.5v-2zm0 4a.5.5 0 0 1 .5-.5h1a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-1a.5.5 0 0 1-.5-.5v-1zm0 3a.5.5 0 0 1 .5-.5h1a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-1a.5.5 0 0 1-.5-.5v-1zm0 3a.5.5 0 0 1 .5-.5h1a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-1a.5.5 0 0 1-.5-.5v-1zm3-6a.5.5 0 0 1 .5-.5h1a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-1a.5.5 0 0 1-.5-.5v-1zm0 3a.5.5 0 0 1 .5-.5h1a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-1a.5.5 0 0 1-.5-.5v-1zm0 3a.5.5 0 0 1 .5-.5h1a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-1a.5.5 0 0 1-.5-.5v-1zm3-6a.5.5 0 0 1 .5-.5h1a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-1a.5.5 0 0 1-.5-.5v-1zm0 3a.5.5 0 0 1 .5-.5h1a.5.5 0 0 1 .5.5v4a.5.5 0 0 1-.5.5h-1a.5.5 0 0 1-.5-.5v-4z" />
                     </svg>
-                </div>
+                </header>
                 <div className='timer-buttons'>
                     {/* CALC TOGGLE*/}
                     <button className={calcIsOpen?'timer-btn calc-toggle-btn-inactive fs-4':'timer-btn calc-toggle-btn fs-4'} id='calc-toggle' onClick={()=>setCalcIsOpen(!calcIsOpen)} >Calc</button>
@@ -183,11 +185,10 @@ function Timer({ timerInputIsOpen, setTimerInputIsOpen, calcIsOpen, setCalcIsOpe
             <div className='timer-banner'>
                 <span className='timer-display'>{(hide && seconds >= 0) ? "" : seconds < 0 ? "Time expired" : display.hours + ":" + display.minutes + ":" + display.seconds}</span>
                 <span className='hide-display' onClick={toggleHide}>{(hide && seconds >= 0) ? ShowTimeDisplay() : HideTimeDisplay()}</span>
-                {/* <div> */}
 
                 <span style={Modal_Wrapper}>
-
-                    <Modal open={timerInputIsOpen} >
+                    {/*TODO: cleanup prop drilling... */}
+                    <Modal timerInputIsOpen={timerInputIsOpen} setTimerInputIsOpen={setTimerInputIsOpen}>
                         <div className='timer-input-wrapper'>
                             Enter time below
                             <p />
@@ -212,9 +213,8 @@ function Timer({ timerInputIsOpen, setTimerInputIsOpen, calcIsOpen, setCalcIsOpe
                         </div>
                     </Modal>
                 </span>
-                {/* </div> */}
             </div>
-        </header>
+        </>
     );
 };
 
