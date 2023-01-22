@@ -3,8 +3,6 @@ body, #root {
   height: 100%;
   margin: 0;
   overflow-x:hidden;
-  /* prevent text selection: */
-  user-select: none;
 }
 
 .app-container {
@@ -243,6 +241,7 @@ header {
 }
 
 .calc-body {
+  user-select: none; /* prevent text selection: */
   /* max-width: 250px; */
   border: 1px solid rgb(187 187 188);
   background-color: rgb(211 211 211);
@@ -401,7 +400,7 @@ a:visited {
     margin-top: 6px;
   }
 }
-
+/* 
 @media screen and (max-width: 320px) {
   .calc-btn {
     height: 10vh;
@@ -422,4 +421,4 @@ a:visited {
   .calc-btn {
     font-size: 18px;
   }
-}
+} */
