@@ -97,6 +97,13 @@ footer {
   text-align: center;
 }
 ```
+And content above footer should have: (you can use a spacer)
+```css
+.spacer{
+  flex: 1 1 auto;
+}
+```
+
 
 
 #### Media query not working?
