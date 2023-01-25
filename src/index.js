@@ -21,20 +21,24 @@ function App() {
         const onMouseMove = (MouseEvent) => {
           const element = elementRef.current;
           let maxWidth = element.parentElement.clientWidth;
-          let maxHeight = element.parentElement.clientHeight;
+          //let maxHeight = element.parentElement.clientHeight;
           let xSum = position.x + MouseEvent.movementX;
           let ySum = position.y + MouseEvent.movementY;
           let calcWidth = 256 + 0;
           let calcHeight = 300;
-          //TODO: document.getElementById('masonryParent').children[0].style.height
+          //TODO: document.getElementById('white-body').children[0].style.height
+          //console.log(document.getElementsByClassName('white-body'))
+          let appHeight = document.getElementsByClassName('app-container')[0].clientHeight
           let bannerHeight = 130;
           // if (xSum > 2 && xSum + calcWidth < maxWidth) {
           position.x = xSum;
-          // }
-          // if (ySum > -120 && ySum + calcHeight + bannerHeight < maxHeight) {
-          position.y = ySum;
-          // }
-          console.log(position.x, position.y, maxHeight);
+          // } 
+          //ySum > -120 &&
+          if ( ySum > -134 && ySum + calcHeight + bannerHeight < appHeight) {
+            position.y = ySum;
+          }
+          //console.log(appHeight)
+          //console.log(position.x, position.y, maxHeight);
 
           if (element) {
             element.style.transform = `translate(${position.x}px, ${position.y}px)`;
