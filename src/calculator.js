@@ -484,7 +484,7 @@ function Calculator({ timerInputIsOpen, calcIsOpen, setCalcIsOpen }) {
         <>
         
         {calcIsOpen ? 
-            <div className="calc-body mt-3">
+            <div className="calc-body mt-3" id='calc-body'>
                 <div className='calc-top'>
                     <button className="close" aria-label="Close calculator" onClick={() => setCalcIsOpen(false)}>
                         <span aria-hidden="true">✕</span>
@@ -516,5 +516,3 @@ function Calculator({ timerInputIsOpen, calcIsOpen, setCalcIsOpen }) {
 }
 
 export default Calculator;
-
-//TODO: result + (-) + # BUG.  5 + neg 3 = 53...

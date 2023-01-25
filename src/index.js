@@ -17,28 +17,34 @@ function App() {
 
   const clamp = (num, min, max) => Math.min(Math.max(num, min), max);
 
+//TODO - window resize clamper
+//TODO - force mobile/force desktop view(style) options
+
   const dragAndDrop = useCallback(
     (event) => {
       if (event.target.className === "calc-top") { //only allow dragging on uppermost part of calculator
         const onMouseMove = (MouseEvent) => {
           const element = elementRef.current;
-          let xSum = position.x + MouseEvent.movementX;
-          let ySum = position.y + MouseEvent.movementY;
-
-          let appWidth = document.getElementsByClassName('app-container')[0].clientWidth
-          let appHeight = document.getElementsByClassName('white-body')[0].clientHeight
-          let calcWidth = 221 + 0;
-          let calcHeight = 298;
-          // let bannerHeight = 130;
           let coords = element.getBoundingClientRect();
-          console.log(coords)
+          //establish bounds:
+          let appWidth = document.getElementsByClassName('app-container')[0].offsetWidth;
+          let appHeight = document.getElementsByClassName('white-body')[0].scrollHeight
+          let calcElem = document.getElementById('calc-body'); 
+          let calcWidth = calcElem.offsetWidth;  //221 ;
+          let calcHeight = calcElem.offsetHeight; //298;
 
           let minWidth = -appWidth + calcWidth + 10;
           let maxWidth = appWidth - coords.x - calcWidth;
-          let minHeight = -134;
-          //let maxHeight = appHeight - calcHeight - bannerHeight;
-          let maxHeight = appHeight - calcHeight - 12;
 
+          //account for calc body top margin:
+          let marginString = getComputedStyle(calcElem).marginTop
+          let marginInt = parseInt(marginString); //crop the 'px' from the string & convert to integer
+          let bannersElem = document.getElementById('banners');
+          let minHeight = -(bannersElem.offsetHeight + marginInt); //-134
+          let maxHeight = appHeight - calcHeight - marginInt;
+          
+          let xSum = position.x + MouseEvent.movementX;
+          let ySum = position.y + MouseEvent.movementY;
           position.x = clamp(xSum, minWidth, maxWidth );
           position.y = clamp(ySum, minHeight, maxHeight);
 

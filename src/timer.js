@@ -149,7 +149,7 @@ function Timer({ timerInputIsOpen, setTimerInputIsOpen, calcIsOpen, setCalcIsOpe
 
 
     return (
-        <>
+        <div className='banners' id='banners'>
             <div className='top-banner'>
                 <header className='title fs-2'><i>GRE Calc</i>
                     <svg xmlns="http://www.w3.org/2000/svg" width="28" height="24" fill="currentColor" className="bi bi-calculator" viewBox="0 0 16 16">
@@ -214,9 +214,8 @@ function Timer({ timerInputIsOpen, setTimerInputIsOpen, calcIsOpen, setCalcIsOpe
                     </Modal>
                 </span>
             </div>
-        </>
+        </div>
     );
 };
 
 export default Timer;
-//TODO: make drag & drop only possible on uppermost part of calculator
