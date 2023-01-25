@@ -15,30 +15,32 @@ function App() {
   const [position, setPosition] = useState({ x: 0, y: 0 });
   const elementRef = useRef(null);
 
+  const clamp = (num, min, max) => Math.min(Math.max(num, min), max);
+
   const dragAndDrop = useCallback(
     (event) => {
       if (event.target.className === "calc-top") { //only allow dragging on uppermost part of calculator
         const onMouseMove = (MouseEvent) => {
           const element = elementRef.current;
-          let maxWidth = element.parentElement.clientWidth;
-          //let maxHeight = element.parentElement.clientHeight;
           let xSum = position.x + MouseEvent.movementX;
           let ySum = position.y + MouseEvent.movementY;
-          let calcWidth = 256 + 0;
-          let calcHeight = 300;
-          //TODO: document.getElementById('white-body').children[0].style.height
-          //console.log(document.getElementsByClassName('white-body'))
-          let appHeight = document.getElementsByClassName('app-container')[0].clientHeight
-          let bannerHeight = 130;
-          // if (xSum > 2 && xSum + calcWidth < maxWidth) {
-          position.x = xSum;
-          // } 
-          //ySum > -120 &&
-          if ( ySum > -134 && ySum + calcHeight + bannerHeight < appHeight) {
-            position.y = ySum;
-          }
-          //console.log(appHeight)
-          //console.log(position.x, position.y, maxHeight);
+
+          let appWidth = document.getElementsByClassName('app-container')[0].clientWidth
+          let appHeight = document.getElementsByClassName('white-body')[0].clientHeight
+          let calcWidth = 221 + 0;
+          let calcHeight = 298;
+          // let bannerHeight = 130;
+          let coords = element.getBoundingClientRect();
+          console.log(coords)
+
+          let minWidth = -appWidth + calcWidth + 10;
+          let maxWidth = appWidth - coords.x - calcWidth;
+          let minHeight = -134;
+          //let maxHeight = appHeight - calcHeight - bannerHeight;
+          let maxHeight = appHeight - calcHeight - 12;
+
+          position.x = clamp(xSum, minWidth, maxWidth );
+          position.y = clamp(ySum, minHeight, maxHeight);
 
           if (element) {
             element.style.transform = `translate(${position.x}px, ${position.y}px)`;
