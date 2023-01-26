@@ -124,8 +124,7 @@ function Timer({ timerInputIsOpen, setTimerInputIsOpen, calcIsOpen, setCalcIsOpe
         );
     };
 
-    //TODO: remove Escape key redundancy (handled by ReactModal now.)
-    //Can likely clean up Enter handling as well.
+    //TODO: integrate Enter handling w/ react Modal?
     React.useEffect(() => {
         function handleKeydown(e) {
             if (timerInputIsOpen) {
@@ -135,9 +134,6 @@ function Timer({ timerInputIsOpen, setTimerInputIsOpen, calcIsOpen, setCalcIsOpe
                         e.preventDefault(); //prevent auto form submission
                         handleSubmit();
                         break;
-                    case 'Escape':
-                        setTimerInputIsOpen(false);
-                        break;
                     default:
                 }
             }
@@ -145,7 +141,7 @@ function Timer({ timerInputIsOpen, setTimerInputIsOpen, calcIsOpen, setCalcIsOpe
 
         document.addEventListener("keydown", handleKeydown)
         return () => document.removeEventListener("keydown", handleKeydown)
-    }, [timerInputIsOpen, setTimerInputIsOpen, handleSubmit]); //use dependency, or you only get 1 number in display at a time for keyboard entry
+    }, [timerInputIsOpen, handleSubmit]); //use dependency, or you only get 1 number in display at a time for keyboard entry
 
 
     return (
