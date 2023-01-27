@@ -72,6 +72,40 @@ in calculator.js:
 function Calculator({timerInputIsOpen}) {
     ...
 ```
+
+#### Drag and Drop
+Issue: client can drag calculator all the way off screen
+Solution: clamp the values to the visible area
+
+```Javascript
+const clamp = (num, min, max) => Math.min(Math.max(num, min), max);
+let appWidth = document.getElementsByClassName('app-container')[0].offsetWidth;
+let appHeight = document.getElementsByClassName('white-body')[0].scrollHeight
+let calcElem = document.getElementById('calc-body'); 
+let calcWidth = calcElem.offsetWidth; 
+let calcHeight = calcElem.offsetHeight; 
+
+let minWidth = -appWidth + calcWidth + 10;
+let maxWidth = appWidth - coords.x - calcWidth;
+
+//account for calc body top margin:
+let marginString = getComputedStyle(calcElem).marginTop
+let marginInt = parseInt(marginString); //crop the 'px' from the string & convert to integer
+let bannersElem = document.getElementById('banners');
+let minHeight = -(bannersElem.offsetHeight + marginInt); //-134
+let maxHeight = appHeight - calcHeight - marginInt;
+
+let xSum = position.x + MouseEvent.movementX;
+let ySum = position.y + MouseEvent.movementY;
+position.x = clamp(xSum, minWidth, maxWidth );
+position.y = clamp(ySum, minHeight, maxHeight);
+
+if (element) {
+  element.style.transform = `translate(${position.x}px, ${position.y}px)`;
+}
+setPosition(position);
+```
+
 #### UseRef Best Practices
 useRef: when you don't need to update the render
 
@@ -103,8 +137,6 @@ And content above footer should have: (you can use a spacer)
   flex: 1 1 auto;
 }
 ```
-
-
 
 #### Media query not working?
 Make sure it's at the end of the css file!
