@@ -17,9 +17,6 @@ function App() {
 
   const clamp = (num, min, max) => Math.min(Math.max(num, min), max);
 
-//TODO - window resize clamper
-//TODO - force mobile/force desktop view(style) options
-
   const dragAndDrop = useCallback(
     (event) => {
       if (event.target.className === "calc-top") { //only allow dragging on uppermost part of calculator
@@ -70,11 +67,11 @@ function App() {
       <Timer timerInputIsOpen={timerInputIsOpen} setTimerInputIsOpen={setTimerInputIsOpen} calcIsOpen={calcIsOpen} setCalcIsOpen={setCalcIsOpen} />
       <div className='white-body'>
         {/* <iframe title ='a' src="https://www.w3schools.com"></iframe> */}
-        <div className='calc-container' >
+        <section className='calc-container' >
           <div className='calc-mover' ref={elementRef} onMouseDown={dragAndDrop}>
             <Calculator timerInputIsOpen={timerInputIsOpen} calcIsOpen={calcIsOpen} setCalcIsOpen={setCalcIsOpen} />
           </div>
-        </div>
+        </section>
       </div>
       <footer className='footer'>
         ©<a href="https://github.com/tylersernett/">Tyler Sernett</a>
@@ -106,7 +103,6 @@ ReactDOM.createRoot(root).render(<App />);
 //FIXED!
 //TEST: 1/7 * 7 = 0.9999997
 //CHECK: behavior when ERROR is in display. must you hit C to move on?
-//ERROR-LOCK  you MUST hit C to continue 
 //CSS: everything gets darker on click, and gets BOX highlight on hover
 
 
