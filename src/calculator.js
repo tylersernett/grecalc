@@ -26,6 +26,7 @@ function Calculator({ timerInputIsOpen, calcIsOpen, setCalcIsOpen }) {
         // console.log(display);
     }, [calc, memory])
 
+    //FOR TESTING:
     // React.useEffect(() => {
     //     console.log(calc);
     // }, [calc])
@@ -167,8 +168,8 @@ function Calculator({ timerInputIsOpen, calcIsOpen, setCalcIsOpen }) {
             if (!(calc.num === 0 && keyPressed === 0)) { //no leading 0s ???keyPressed SHOULD BE FALSE cause it's a string???
                 setCalc({
                     ...calc,
-                    num: (calc.num === 0 || calc.num === '(' || calc.num === '0') ? keyPressed : //needs ===, as 0. == 0
-                        (keyPressed === "0") ? calc.num + '0' : //special exception for adding 0s after decimal
+                    num: (calc.num === 0 || calc.num === '(' || calc.num === '0') ? keyPressed : //use === for 0 checks, as 0. == 0
+                        (keyPressed === "0") ? calc.num + '0' : //special exception: allow adding leading 0s after decimal
                             (calc.num) + keyPressed,
                     result: (!calc.operand) ? 0 : calc.result, //reset result to 0 when clicking a # after equalsHandling
                     string: (memory.justRecalled || calc.string === "0") ? keyPressed : calc.string + keyPressed, //if a # is hit right after recalling, reset the string to just the #. 
@@ -227,7 +228,7 @@ function Calculator({ timerInputIsOpen, calcIsOpen, setCalcIsOpen }) {
             return;
         }
 
-        //only use '==' below to prevent negative appending to 0.0 or 0.000 etc. requires nonzero value.
+        //only use '==' below to prevent negative appending to 0.0 or 0.000 etc. Negative appending requires nonzero value.
         if (!(calc.num == 0 && calc.result == 0)) {
             //match last # after operand...
             const regex = /([0-9.]+(?![*+/-]))$/;
@@ -275,7 +276,7 @@ function Calculator({ timerInputIsOpen, calcIsOpen, setCalcIsOpen }) {
             return;
         }
         if (calc.num || calc.result) {
-            //if the last entry was an operator, this should be overrided by a new operand press
+            //if the last entry was an operator, this should be overridden by a new operand press
             let prefix = calc.string;
             const lastEntry = prefix[prefix.length - 1];
             if (isOperand(lastEntry)) {
