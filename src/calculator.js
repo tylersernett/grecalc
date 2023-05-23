@@ -1,8 +1,8 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 
 function Calculator({ timerInputIsOpen, calcIsOpen, setCalcIsOpen }) {
   
-    const [calc, setCalc] = React.useState({
+    const [calc, setCalc] = useState({
         num: 0,
         operand: "",
         result: 0,
@@ -10,33 +10,33 @@ function Calculator({ timerInputIsOpen, calcIsOpen, setCalcIsOpen }) {
         parenStarted: false,
     });
 
-    const [display, setDisplay] = React.useState({
+    const [display, setDisplay] = useState({
         string: "0",
     });
 
-    const [memory, setMemory] = React.useState({
+    const [memory, setMemory] = useState({
         mem: 0,
         memset: false,
         justRecalled: false, //use to prevent #s from appending to the memory value
     })
 
-    React.useEffect(() => {
+    useEffect(() => {
         console.log(calc);
         console.log(memory);
         // console.log(display);
     }, [calc, memory])
 
     //FOR TESTING:
-    // React.useEffect(() => {
+    // useEffect(() => {
     //     console.log(calc);
     // }, [calc])
 
-    // React.useEffect(() => {
+    // useEffect(() => {
     //     console.log(memory);
     // }, [memory])
 
     //side effect: code only gets called when contents of CALC get changed
-    React.useEffect(() => {
+    useEffect(() => {
         //assign to num or result, then add a period if necessary
         let preString = calc.num ? calc.num.toString() : calc.result.toString();
         if (!(preString === "(" || preString === "ERROR")) {
@@ -411,7 +411,7 @@ function Calculator({ timerInputIsOpen, calcIsOpen, setCalcIsOpen }) {
     }
 
     //listen for keyboard presses
-    React.useEffect(() => {
+    useEffect(() => {
         function handleKeydown(e) {
             console.log('check timerInput', timerInputIsOpen)
             if (!timerInputIsOpen) {

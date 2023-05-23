@@ -1,5 +1,5 @@
 import React from 'react';
-import { useEffect, useState, useRef } from 'react';
+import { useEffect, useState, useRef, useCallback } from 'react';
 import Modal from './Modal';
 
 const Modal_Wrapper = {
@@ -81,9 +81,7 @@ function Timer({ timerInputIsOpen, setTimerInputIsOpen, calcIsOpen, setCalcIsOpe
         setHide(!hide)
     }
 
-    // const [timerInputIsOpen, setTimerInputIsOpen] = useState(false);
-
-    const handleSubmit = React.useCallback(() => {
+    const handleSubmit = useCallback(() => {
         let secs = 0;
         if (hh.current.value === "") {
             hh.current.value = '00';
@@ -124,7 +122,7 @@ function Timer({ timerInputIsOpen, setTimerInputIsOpen, calcIsOpen, setCalcIsOpe
         );
     };
 
-    React.useEffect(() => {
+    useEffect(() => {
         function handleKeydown(e) {
             if (timerInputIsOpen) {
                 const key = e.key
