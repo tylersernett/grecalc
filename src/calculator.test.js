@@ -50,7 +50,26 @@ describe("TestCalc", () => {
     };
 
     describe("click inputs", () => {
-        
+
+        it("should have 0-9 and '.' keys working", () => {
+            setup();
+            userEvent.click(one);
+            userEvent.click(two);
+            userEvent.click(three);
+            userEvent.click(four);
+            userEvent.click(five);
+            userEvent.click(zero);
+            userEvent.click(plus);
+            userEvent.click(six);
+            userEvent.click(seven);
+            userEvent.click(eight);
+            userEvent.click(point);
+            userEvent.click(nine);
+            userEvent.click(equals);
+            expect(display).toHaveTextContent(`124,128.9`);
+            userEvent.click(clear);
+        });
+
         it("should handle in-line PEMDAS", () => {
             setup();
             userEvent.click(clear);
