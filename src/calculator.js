@@ -1,4 +1,46 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
+
+const format = (n) => {
+    let num = new Intl.NumberFormat('en-US', {
+        maximumSignificantDigits: 8
+    }).format(n);
+
+    num = new Intl.NumberFormat('en-US', {
+        maximumFractionDigits: 7
+    }).format(removeCommas(num));
+
+    if (num === "-0") {
+        return "0"
+    }
+
+    //include trailing 0s in decimals:\\\\\\\\\\\\\\\\\\\\\\\\\
+    if (n.includes(".")) {
+        if (!num.includes(".")) {
+            num += ".";
+        }
+        let trailingZeros = 0;
+        //start at string end & move inwards, break if not a 0
+        for (let i = n.length - 1; i > 0; i--) {
+            if (n[i] === "0") {
+                trailingZeros++;
+            } else {
+                break;
+            }
+        }
+        //append the # of trailing 0s
+        for (let i = 0; i < trailingZeros; i++) {
+            num += "0";
+        }
+    }
+
+    return num;
+}
+
+const removeCommas = (string) => {
+    return string.replace(/,/g, '');
+}
+
+
 
 function Calculator({ timerInputIsOpen, calcIsOpen, setCalcIsOpen }) {
   
@@ -53,46 +95,6 @@ function Calculator({ timerInputIsOpen, calcIsOpen, setCalcIsOpen }) {
             ...memory,
             justRecalled: false,
         })
-    }
-
-    const format = (n) => {
-        let num = new Intl.NumberFormat('en-US', {
-            maximumSignificantDigits: 8
-        }).format(n);
-
-        num = new Intl.NumberFormat('en-US', {
-            maximumFractionDigits: 7
-        }).format(removeCommas(num));
-
-        if (num === "-0") {
-            return "0"
-        }
-
-        //include trailing 0s in decimals:\\\\\\\\\\\\\\\\\\\\\\\\\
-        if (n.includes(".")) {
-            if (!num.includes(".")) {
-                num += ".";
-            }
-            let trailingZeros = 0;
-            //start at string end & move inwards, break if not a 0
-            for (let i = n.length - 1; i > 0; i--) {
-                if (n[i] === "0") {
-                    trailingZeros++;
-                } else {
-                    break;
-                }
-            }
-            //append the # of trailing 0s
-            for (let i = 0; i < trailingZeros; i++) {
-                num += "0";
-            }
-        }
-
-        return num;
-    }
-
-    const removeCommas = (string) => {
-        return string.replace(/,/g, '');
     }
 
     const prefixIfPriorIsOperand = (string) => {
@@ -447,7 +449,7 @@ function Calculator({ timerInputIsOpen, calcIsOpen, setCalcIsOpen }) {
         document.addEventListener("keydown", handleKeydown)
         //remove eventListener in the return, or you get weird repeating states for keyboard entry
         return () => document.removeEventListener("keydown", handleKeydown)
-    }, [numberClickHandler]); //use dependency, or you only get 1 number in display at a time for keyboard entry
+    },  [numberClickHandler, equalsClickHandler, decimalClickHandler, clearClickHandler, operandClickHandler, parenLeftClickHandler, parenRightClickHandler, timerInputIsOpen]); //use dependency, or you only get 1 number in display at a time for keyboard entry
 
     const buttonMap = [
         {display: "MR", name: "memrecall",      function: memRecallHandler,                 label:"Memory Recall"}, 
