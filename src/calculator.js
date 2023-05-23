@@ -40,8 +40,27 @@ const removeCommas = (string) => {
     return string.replace(/,/g, '');
 }
 
+const prefixIfPriorIsOperand = (string) => {
+    if (string === "") {
+        return string;
+    }
+    let lastEntry = string[string.length - 1];
+    let stringPrefix = "";
+    //only change the stringPrefix for operators. this prevents appending the memory value to a previous string of #s
+    if (isOperand(lastEntry) || lastEntry === "(") {
+        stringPrefix = string;
+    }
+    return stringPrefix;
+}
 
+const isOperand = (string) => {
+    if (string === "+" || string === "-" || string === "*" || string === "/") {
+        return true;
+    }
+    return false;
+}
 
+////////////////////////////////////////////////////////////////////////
 function Calculator({ timerInputIsOpen, calcIsOpen, setCalcIsOpen }) {
   
     const [calc, setCalc] = useState({
@@ -62,20 +81,13 @@ function Calculator({ timerInputIsOpen, calcIsOpen, setCalcIsOpen }) {
         justRecalled: false, //use to prevent #s from appending to the memory value
     })
 
-    useEffect(() => {
-        console.log(calc);
-        console.log(memory);
-        // console.log(display);
-    }, [calc, memory])
-
     //FOR TESTING:
     // useEffect(() => {
     //     console.log(calc);
-    // }, [calc])
-
-    // useEffect(() => {
     //     console.log(memory);
-    // }, [memory])
+    //     // console.log(display);
+    // }, [calc, memory])
+
 
     //side effect: code only gets called when contents of CALC get changed
     useEffect(() => {
@@ -90,41 +102,45 @@ function Calculator({ timerInputIsOpen, calcIsOpen, setCalcIsOpen }) {
         setDisplay({ string: preString });
     }, [calc])
 
-    const resetLastPressed = () => {
+    const resetLastPressed = useCallback(() => {
         setMemory({
             ...memory,
             justRecalled: false,
         })
-    }
+    }, [memory])
 
-    const prefixIfPriorIsOperand = (string) => {
-        if (string === "") {
-            return string;
-        }
-        let lastEntry = string[string.length - 1];
-        let stringPrefix = "";
-        //only change the stringPrefix for operators. this prevents appending the memory value to a previous string of #s
-        if (isOperand(lastEntry) || lastEntry === "(") {
-            stringPrefix = string;
-        }
-        return stringPrefix;
-    }
-
-    const isOperand = (string) => {
-        if (string === "+" || string === "-" || string === "*" || string === "/") {
-            return true;
-        }
-        return false;
-    }
-
-    const validPreOperandDisplay = () => {
+    const validPreOperandDisplay = useCallback(() => {
         if (display.string === "(" || display.string === "ERROR") {
             return false;
         }
         return true;
-    }
+    }, [display.string])
 
-    const parenLeftClickHandler = () => {
+    const equalsClickHandler = useCallback((opr = "") => {
+        if (!validPreOperandDisplay()) {
+            return;
+        }
+        let evalString = calc.string;
+        if (evalString !== "") {
+            //add closing parentheses if it's currently missing
+            if (calc.parenStarted === true) {
+                evalString += (")")
+            }
+            // eslint-disable-next-line no-eval
+            const res = eval((evalString));//(eval(calc.string.replace(/,/g, '')))
+
+            setCalc({
+                ...calc,
+                num: 0,
+                result: Math.abs(res) <= 99999999 ? (removeCommas(format(res.toString()))) : "ERROR",
+                operand: "",
+                string: "",
+                parenStarted: false,
+            })
+        }
+    }, [calc, validPreOperandDisplay]);
+
+    const parenLeftClickHandler = useCallback(() => {
         if (!validPreOperandDisplay()) {
             return;
         }
@@ -139,9 +155,9 @@ function Calculator({ timerInputIsOpen, calcIsOpen, setCalcIsOpen }) {
             });
         }
         resetLastPressed();
-    }
+    }, [calc, resetLastPressed, validPreOperandDisplay]);
 
-    const parenRightClickHandler = () => {
+    const parenRightClickHandler = useCallback(() => {
         if (calc.parenStarted === true) {
             if (!(calc.num === 0 && calc.result === 0)) {
                 setCalc({
@@ -153,9 +169,9 @@ function Calculator({ timerInputIsOpen, calcIsOpen, setCalcIsOpen }) {
             equalsClickHandler();
         }
         resetLastPressed();
-    }
+    }, [calc, equalsClickHandler, resetLastPressed])
 
-    const numberClickHandler = (num) => {
+    const numberClickHandler = useCallback((num) => {
         if (display.string === "ERROR") {
             return;
         }
@@ -180,9 +196,9 @@ function Calculator({ timerInputIsOpen, calcIsOpen, setCalcIsOpen }) {
                 resetLastPressed();
             }
         }
-    };
+    }, [calc, display.string, memory.justRecalled, resetLastPressed]);
 
-    const decimalClickHandler = () => {
+    const decimalClickHandler = useCallback(() => {
         //prevent adding multiple decimals
         if (display.string === "ERROR") {
             return false;
@@ -195,7 +211,7 @@ function Calculator({ timerInputIsOpen, calcIsOpen, setCalcIsOpen }) {
             })
         }
         resetLastPressed();
-    };
+    }, [calc, display.string, memory.justRecalled, resetLastPressed]);
 
     const squarerootClickHandler = () => {
         if (!validPreOperandDisplay()) {
@@ -209,6 +225,7 @@ function Calculator({ timerInputIsOpen, calcIsOpen, setCalcIsOpen }) {
             root = Math.sqrt(calc.num)
         }
         //NaN check (for negative roots):
+        // eslint-disable-next-line no-self-compare
         if (root !== root) {
             root = "ERROR";
         }
@@ -231,6 +248,7 @@ function Calculator({ timerInputIsOpen, calcIsOpen, setCalcIsOpen }) {
         }
 
         //only use '==' below to prevent negative appending to 0.0 or 0.000 etc. Negative appending requires nonzero value.
+        // eslint-disable-next-line eqeqeq
         if (!(calc.num == 0 && calc.result == 0)) {
             //match last # after operand...
             const regex = /([0-9.]+(?![*+/-]))$/;
@@ -273,7 +291,7 @@ function Calculator({ timerInputIsOpen, calcIsOpen, setCalcIsOpen }) {
         }
     }
 
-    const operandClickHandler = (op) => {
+    const operandClickHandler = useCallback((op) => {
         if (!validPreOperandDisplay()) {
             return;
         }
@@ -295,30 +313,7 @@ function Calculator({ timerInputIsOpen, calcIsOpen, setCalcIsOpen }) {
             resetLastPressed();
             // }
         }
-    }
-
-    const equalsClickHandler = (opr = "") => {
-        if (!validPreOperandDisplay()) {
-            return;
-        }
-        let evalString = calc.string;
-        if (evalString !== "") {
-            //add closing parentheses if it's currently missing
-            if (calc.parenStarted === true) {
-                evalString += (")")
-            }
-            const res = eval((evalString));//(eval(calc.string.replace(/,/g, '')))
-
-            setCalc({
-                ...calc,
-                num: 0,
-                result: Math.abs(res) <= 99999999 ? (removeCommas(format(res.toString()))) : "ERROR",
-                operand: "",
-                string: "",
-                parenStarted: false,
-            })
-        }
-    };
+    }, [calc, resetLastPressed, validPreOperandDisplay])
 
     //MEMORY
     const memAddHandler = () => {
@@ -382,7 +377,7 @@ function Calculator({ timerInputIsOpen, calcIsOpen, setCalcIsOpen }) {
     }
 
     //reset everything
-    const clearClickHandler = () => {
+    const clearClickHandler = useCallback(() => {
         setCalc({
             num: 0,
             operand: "",
@@ -390,7 +385,7 @@ function Calculator({ timerInputIsOpen, calcIsOpen, setCalcIsOpen }) {
             string: "",
             parenStarted: false,
         });
-    }
+    }, [])
 
     //only clear most recent entry
     const clearEntryClickHandler = () => {
@@ -444,7 +439,6 @@ function Calculator({ timerInputIsOpen, calcIsOpen, setCalcIsOpen }) {
                 }
             }
         }
-
 
         document.addEventListener("keydown", handleKeydown)
         //remove eventListener in the return, or you get weird repeating states for keyboard entry
