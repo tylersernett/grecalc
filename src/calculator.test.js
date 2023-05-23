@@ -6,16 +6,13 @@ function TestCalc() {
     return (
         <Calculator timerInputIsOpen={false} calcIsOpen={true} setCalcIsOpen={null} />
     );
-
 }
 
 describe("TestCalc", () => {
-
     let display;
     let one, two, three, four, five, six, seven, eight, nine, zero, point;
     let memrecall, memclear, memadd, parenleft, parenright;
     let plus, minus, times, divide, root, plusminus, equals, clear, clearEntry;
-
     const setup = () => {
         render(<TestCalc />);
         display = screen.getByText(/0./i);
@@ -50,7 +47,6 @@ describe("TestCalc", () => {
     };
 
     describe("click inputs", () => {
-
         it("should have 0-9 and '.' keys working", () => {
             setup();
             userEvent.click(one);
@@ -67,12 +63,10 @@ describe("TestCalc", () => {
             userEvent.click(nine);
             userEvent.click(equals);
             expect(display).toHaveTextContent(`124,128.9`);
-            userEvent.click(clear);
         });
 
         it("should handle in-line PEMDAS", () => {
             setup();
-            userEvent.click(clear);
             userEvent.click(one);
             userEvent.click(plus);
             userEvent.click(two);
@@ -80,34 +74,29 @@ describe("TestCalc", () => {
             userEvent.click(three);
             userEvent.click(equals);
             expect(display).toHaveTextContent(`7`);
-            userEvent.click(clear);
         });
 
         it("should handle parentheses PEMDAS", () => {
             setup();
-            userEvent.click(clear);
             userEvent.click(parenleft);
             userEvent.click(one);
             userEvent.click(plus);
             userEvent.click(two);
-            parenright = screen.getByText(/\)/); //call this again here because the original parenright is disabled
+            parenright = screen.getByText(/\)/); //re-assign this here because the original parenright is disabled
             userEvent.click(parenright);
             userEvent.click(times);
             userEvent.click(three);
             userEvent.click(equals);
             expect(display).toHaveTextContent(`9`);
-            userEvent.click(clear);
         });
 
         it("should produce div by 0 errors", () => {
             setup();
-            userEvent.click(clear);
             userEvent.click(one);
             userEvent.click(divide);
             userEvent.click(zero);
             userEvent.click(equals);
             expect(display).toHaveTextContent(`ERROR`);
-            userEvent.click(clear);
         });
 
         it("should handle all memory buttons", () => {
@@ -132,7 +121,6 @@ describe("TestCalc", () => {
 
         it("should handle clear entry", () => {
             setup();
-            userEvent.click(clear);
             userEvent.click(one);
             userEvent.click(zero);
             userEvent.click(zero);
@@ -148,26 +136,21 @@ describe("TestCalc", () => {
 
         it("should handle positive sq roots", () => {
             setup();
-            userEvent.click(clear);
             userEvent.click(nine);
             userEvent.click(root);
             expect(display).toHaveTextContent(`3.`);
-            userEvent.click(clear);
         });
 
         it("should error negative sq roots", () => {
             setup();
-            userEvent.click(clear);
             userEvent.click(five);
             userEvent.click(plusminus);
             userEvent.click(root);
             expect(display).toHaveTextContent(`ERROR`);
-            userEvent.click(clear);
         });
 
         it("should handle plus/minus changes", () => {
             setup();
-            userEvent.click(clear);
             userEvent.click(five);
             userEvent.click(plusminus);
             expect(display).toHaveTextContent(/-5./);
@@ -182,12 +165,10 @@ describe("TestCalc", () => {
             userEvent.click(plusminus);
             userEvent.click(equals);
             expect(display).toHaveTextContent(/30./);
-            userEvent.click(clear);
         });
 
         it("should properly handle plusminus on memory", () => {
             setup();
-            userEvent.click(clear);
             userEvent.click(nine);
             userEvent.click(memadd);
             userEvent.click(clear);
@@ -345,5 +326,4 @@ describe("TestCalc", () => {
         userEvent.keyboard("3=");
         expect(display).toHaveTextContent(/-15./);
     });
-
 });
