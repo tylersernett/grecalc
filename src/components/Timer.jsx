@@ -26,6 +26,19 @@ const ShowTimeDisplay = () => {
     );
 };
 
+const TimerDisplay = ({hide, seconds, display, toggleHide}) => {
+    return (
+        <>
+            <span className='timer-display'>
+                {(hide && seconds >= 0) ? "" : seconds < 0 ? "Time expired" : display.hours + ":" + display.minutes + ":" + display.seconds}
+            </span>
+            <button className='hide-display' onClick={toggleHide} disabled={seconds < 0}>
+                {(hide && seconds >= 0) ? <ShowTimeDisplay /> : <HideTimeDisplay />}
+            </button>
+        </>
+    )
+}
+
 function Timer({ timerInputIsOpen, setTimerInputIsOpen, calcIsOpen, setCalcIsOpen }) {
 
     const [defaultTime, setDefaultTime] = useState(35 * 60);
@@ -145,13 +158,7 @@ function Timer({ timerInputIsOpen, setTimerInputIsOpen, calcIsOpen, setCalcIsOpe
             </div>
 
             <section className='timer-banner'>
-                <span className='timer-display'>
-                    {(hide && seconds >= 0) ? "" : seconds < 0 ? "Time expired" : display.hours + ":" + display.minutes + ":" + display.seconds}
-                </span>
-                <button className='hide-display' onClick={toggleHide} disabled={seconds < 0}>
-                    {(hide && seconds >= 0) ? <ShowTimeDisplay/> : <HideTimeDisplay/>}
-                </button>
-
+                <TimerDisplay hide={hide} seconds={seconds} display={display} toggleHide={toggleHide}/>
                 <span style={Modal_Wrapper}>
                     {/*TODO: cleanup prop drilling... */}
                     <InputModal timerInputIsOpen={timerInputIsOpen} setTimerInputIsOpen={setTimerInputIsOpen} handleSubmit={handleSubmit} hh={hh} mm={mm} ss={ss} />
