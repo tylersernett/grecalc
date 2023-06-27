@@ -122,6 +122,12 @@ header {
   vertical-align: -3px;
 }
 
+.hide-display:disabled{
+  color: rgb(102, 102, 102);
+  cursor: default;
+  font-style: italic;
+}
+
 .timer-input-wrapper {
   width: 200px;
   text-align: center;
