@@ -1,7 +1,7 @@
 # GRE Calculator Dashboard
 An emulation of the GRE calculator & timer.
 
-Problem: The GRE PowerPreps are buried deep in the ETS website, requiring login and multiple steps to open, creating a barrier to quick practice. Furthermore, the GRE calculator is quite particular -- practicing with a phone calculator or other advanced calculators do not properly reflect the limitations imposed by the GRE calculator (max display: 8 chars, only 1 active parentheses set allowed, other quirks)
+Problem: The GRE PowerPreps are buried deep in the ETS website, requiring login and multiple steps to open, creating a barrier to quick practice. Furthermore, the GRE calculator is quite particular -- practicing with a phone calculator or other advanced calculators do not properly reflect the limitations imposed by the GRE calculator (max display is 8 characters, only 1 active parentheses set allowed, other quirks).
 
 Solution: The GRE Calculator Dashboard, which allows for access to the GRE calculator and timer applets in one convenient place.
 
@@ -12,8 +12,10 @@ Solution: The GRE Calculator Dashboard, which allows for access to the GRE calcu
         maximumSignificantDigits: 8,
         maximumFractionDigits: 7,
     })
-    //above doesn't work because maximumFractionDigits overrides the maximumSignificantDigits -- so run it twice instead
+```
+The above doesn't work because maximumFractionDigits overrides the maximumSignificantDigits -- so run it twice instead:
 
+```javascript
     const format = (n) => {
         let num = new Intl.NumberFormat('en-US', {
             maximumSignificantDigits: 8
@@ -53,7 +55,7 @@ function App() {
   const [timerInputIsOpen, setTimerInputIsOpen] = useState(false);
 ```
 
-And now pass the relevant pieces of state to the components:
+And now pass the relevant pieces of state as props to the components:
 ```javascript
   return (
     <div>
@@ -110,7 +112,7 @@ setPosition(position);
 ```
 
 ## Notes: useRef Best Practices
-useRef: when you don't need to update the render
+useRef: when you don't need to update the render. Allows one to avoid unnecessary re-renders.
 
 ## Notes: Input Limitations
 Issue: timerInput can accept letters and non-digits, resulting in NaN display.
