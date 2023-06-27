@@ -8,8 +8,8 @@ const PlayButton = ({ startTimer }) => (
     </button>
 );
 
-const PauseButton = ({ pauseTimer }) => (
-    <button className='timer-btn fs-4' aria-label="Pause" onClick={pauseTimer}>
+const PauseButton = ({ pauseTimer, seconds }) => (
+    <button className='timer-btn fs-4' aria-label="Pause" onClick={pauseTimer} disabled={seconds < 0}>
         <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" className="bi bi-pause-fill" viewBox="0 1 16 16">
             <path d="M5.5 3.5A1.5 1.5 0 0 1 7 5v6a1.5 1.5 0 0 1-3 0V5a1.5 1.5 0 0 1 1.5-1.5zm5 0A1.5 1.5 0 0 1 12 5v6a1.5 1.5 0 0 1-3 0V5a1.5 1.5 0 0 1 1.5-1.5z" />
         </svg>
@@ -42,7 +42,7 @@ const TimerButtons = ({ calcIsOpen, setCalcIsOpen, setTimerInputIsOpen, seconds,
                 <PlayButton startTimer={startTimer} />
             ) : (
                 // PAUSE
-                <PauseButton pauseTimer={pauseTimer} />
+                <PauseButton pauseTimer={pauseTimer} seconds={seconds} />
             )}
             <ResetButton resetTimer={resetTimer} seconds={seconds} defaultTime={defaultTime} run={run} />
             <button className='timer-btn fs-4' onClick={() => setTimerInputIsOpen(true)}>
