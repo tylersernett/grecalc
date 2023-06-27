@@ -2,9 +2,9 @@ import { React, useState, useCallback, useRef } from 'react';
 import ReactDOM from 'react-dom/client';
 import './index.css';
 // import App from './App';
-import Calculator from './components/calculator';
+import Calculator from './components/Calculator';
 import Footer from './components/Footer';
-import Timer from './components/timer';
+import Timer from './components/Timer';
 import reportWebVitals from './reportWebVitals';
 
 function App() {
