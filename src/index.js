@@ -6,6 +6,14 @@ import Calculator from './calculator';
 import Timer from './timer';
 import reportWebVitals from './reportWebVitals';
 
+const Footer = () => {
+  return (
+    <footer className='footer'>
+      ©<a href="https://github.com/tylersernett/">Tyler Sernett</a>
+    </footer>
+  )
+}
+
 function App() {
   //declare timerInputIsOpen here, becuase both Timer and Calculator use it
   const [timerInputIsOpen, setTimerInputIsOpen] = useState(false);
@@ -26,7 +34,7 @@ function App() {
           //establish bounds:
           let appWidth = document.getElementsByClassName('app-container')[0].offsetWidth;
           let appHeight = document.getElementsByClassName('white-body')[0].scrollHeight
-          let calcElem = document.getElementById('calc-body'); 
+          let calcElem = document.getElementById('calc-body');
           let calcWidth = calcElem.offsetWidth;  //221 ;
           let calcHeight = calcElem.offsetHeight; //298;
 
@@ -39,10 +47,10 @@ function App() {
           let bannersElem = document.getElementById('banners');
           let minHeight = -(bannersElem.offsetHeight + marginInt); //-134
           let maxHeight = appHeight - calcHeight - marginInt;
-          
+
           let xSum = position.x + MouseEvent.movementX;
           let ySum = position.y + MouseEvent.movementY;
-          position.x = clamp(xSum, minWidth, maxWidth );
+          position.x = clamp(xSum, minWidth, maxWidth);
           position.y = clamp(ySum, minHeight, maxHeight);
 
           if (element) {
@@ -73,9 +81,7 @@ function App() {
           </div>
         </section>
       </div>
-      <footer className='footer'>
-        ©<a href="https://github.com/tylersernett/">Tyler Sernett</a>
-      </footer>
+      <Footer />
     </div>
   );
 };
