@@ -3,16 +3,9 @@ import ReactDOM from 'react-dom/client';
 import './index.css';
 // import App from './App';
 import Calculator from './calculator';
+import Footer from './components/Footer';
 import Timer from './timer';
 import reportWebVitals from './reportWebVitals';
-
-const Footer = () => {
-  return (
-    <footer className='footer'>
-      ©<a href="https://github.com/tylersernett/">Tyler Sernett</a>
-    </footer>
-  )
-}
 
 function App() {
   //declare timerInputIsOpen here, becuase both Timer and Calculator use it
