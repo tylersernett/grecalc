@@ -1,6 +1,6 @@
 import React from 'react';
 import { useEffect, useState, useRef, useCallback } from 'react';
-import Modal from './Modal';
+import InputModal from './InputModal';
 
 const Modal_Wrapper = {
     position: 'relative',
@@ -17,6 +17,34 @@ const Title = () => {
                 </svg>
             </h1>
         </header>
+    )
+}
+
+const TimerButtons = ({ calcIsOpen, setCalcIsOpen, setTimerInputIsOpen, seconds, startTimer, pauseTimer, resetTimer, run, defaultTime }) => {
+    return (
+        <section className='timer-buttons'>
+            {/* CALC TOGGLE*/}
+            <button className={calcIsOpen ? 'timer-btn calc-toggle-btn-inactive fs-4' : 'timer-btn calc-toggle-btn fs-4'} id='calc-toggle' aria-label="Calculator" onClick={() => setCalcIsOpen(!calcIsOpen)} >Calc</button>
+            {!run ?
+                // PLAY
+                <button className='timer-btn fs-4' aria-label="Play" disabled={seconds < 0} onClick={startTimer}><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" className="bi bi-play-fill" viewBox="0 1 16 16">
+                    <path d="m11.596 8.697-6.363 3.692c-.54.313-1.233-.066-1.233-.697V4.308c0-.63.692-1.01 1.233-.696l6.363 3.692a.802.802 0 0 1 0 1.393z" />
+                </svg></button>
+                //PAUSE
+                : <button className='timer-btn fs-4' aria-label="Pause" disabled={seconds < 0} onClick={pauseTimer}><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" className="bi bi-pause-fill" viewBox="0 1 16 16">
+                    <path d="M5.5 3.5A1.5 1.5 0 0 1 7 5v6a1.5 1.5 0 0 1-3 0V5a1.5 1.5 0 0 1 1.5-1.5zm5 0A1.5 1.5 0 0 1 12 5v6a1.5 1.5 0 0 1-3 0V5a1.5 1.5 0 0 1 1.5-1.5z" />
+                </svg></button>}
+            {/* RESET */}
+            <button className='timer-btn fs-4' aria-label="Reset" onClick={resetTimer} disabled={(seconds === defaultTime && !run)} >
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" className="bi bi-arrow-clockwise" viewBox="0 0 16 16">
+                    <path fillRule="evenodd" d="M8 3a5 5 0 1 0 4.546 2.914.5.5 0 0 1 .908-.417A6 6 0 1 1 8 2v1z" stroke="currentColor" strokeWidth="0.75" />
+                    <path d="M8 4.466V.534a.25.25 0 0 1 .41-.192l2.36 1.966c.12.1.12.284 0 .384L8.41 4.658A.25.25 0 0 1 8 4.466z" stroke="currentColor" strokeWidth="0.5" />
+                </svg>
+            </button>
+            <button className='timer-btn fs-4' onClick={() => setTimerInputIsOpen(true)}>
+                Set
+            </button>
+        </section>
     )
 }
 
@@ -150,34 +178,11 @@ function Timer({ timerInputIsOpen, setTimerInputIsOpen, calcIsOpen, setCalcIsOpe
         return () => document.removeEventListener("keydown", handleKeydown)
     }, [timerInputIsOpen, handleSubmit]); //use dependency array, or you only get 1 number in display at a time for keyboard entry
 
-
     return (
         <div className='banners' id='banners'>
             <div className='top-banner'>
                 <Title />
-                <section className='timer-buttons'>
-                    {/* CALC TOGGLE*/}
-                    <button className={calcIsOpen ? 'timer-btn calc-toggle-btn-inactive fs-4' : 'timer-btn calc-toggle-btn fs-4'} id='calc-toggle' aria-label="Calculator" onClick={() => setCalcIsOpen(!calcIsOpen)} >Calc</button>
-                    {!run ?
-                        // PLAY
-                        <button className='timer-btn fs-4' aria-label="Play" disabled={seconds < 0} onClick={startTimer}><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" className="bi bi-play-fill" viewBox="0 1 16 16">
-                            <path d="m11.596 8.697-6.363 3.692c-.54.313-1.233-.066-1.233-.697V4.308c0-.63.692-1.01 1.233-.696l6.363 3.692a.802.802 0 0 1 0 1.393z" />
-                        </svg></button>
-                        //PAUSE
-                        : <button className='timer-btn fs-4' aria-label="Pause" disabled={seconds < 0} onClick={pauseTimer}><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" className="bi bi-pause-fill" viewBox="0 1 16 16">
-                            <path d="M5.5 3.5A1.5 1.5 0 0 1 7 5v6a1.5 1.5 0 0 1-3 0V5a1.5 1.5 0 0 1 1.5-1.5zm5 0A1.5 1.5 0 0 1 12 5v6a1.5 1.5 0 0 1-3 0V5a1.5 1.5 0 0 1 1.5-1.5z" />
-                        </svg></button>}
-                    {/* RESET */}
-                    <button className='timer-btn fs-4' aria-label="Reset" onClick={resetTimer} disabled={(seconds === defaultTime && !run)} >
-                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" className="bi bi-arrow-clockwise" viewBox="0 0 16 16">
-                            <path fillRule="evenodd" d="M8 3a5 5 0 1 0 4.546 2.914.5.5 0 0 1 .908-.417A6 6 0 1 1 8 2v1z" stroke="currentColor" strokeWidth="0.75" />
-                            <path d="M8 4.466V.534a.25.25 0 0 1 .41-.192l2.36 1.966c.12.1.12.284 0 .384L8.41 4.658A.25.25 0 0 1 8 4.466z" stroke="currentColor" strokeWidth="0.5" />
-                        </svg>
-                    </button>
-                    <button className='timer-btn fs-4' onClick={() => setTimerInputIsOpen(true)}>
-                        Set
-                    </button>
-                </section>
+                <TimerButtons calcIsOpen={calcIsOpen} setCalcIsOpen={setCalcIsOpen} setTimerInputIsOpen={setTimerInputIsOpen} seconds={seconds} startTimer={startTimer} pauseTimer={pauseTimer} resetTimer={resetTimer} run={run} defaultTime={defaultTime}  />
             </div>
 
             <section className='timer-banner'>
@@ -186,30 +191,7 @@ function Timer({ timerInputIsOpen, setTimerInputIsOpen, calcIsOpen, setCalcIsOpe
 
                 <span style={Modal_Wrapper}>
                     {/*TODO: cleanup prop drilling... */}
-                    <Modal timerInputIsOpen={timerInputIsOpen} setTimerInputIsOpen={setTimerInputIsOpen}>
-                        <div className='timer-input-wrapper'>
-                            Enter time below
-                            <p />
-                            {/* preventDefault: prevent page refresh */}
-                            <form onSubmit={e => { e.preventDefault(); handleSubmit() }} autoComplete="off">
-                                <div className='timer-input-box'>
-                                    <input className='timer-input' type='text' maxLength='2' placeholder='00' pattern="\d*" id='HH' ref={hh} />
-                                    <div>:</div>
-                                    <input className='timer-input' type='text' maxLength='2' placeholder='00' pattern="\d*" id='MM' ref={mm} />
-                                    <div>:</div>
-                                    <input className='timer-input' type='text' maxLength='2' placeholder='00' pattern="\d*" id='SS' ref={ss} />
-                                    <label htmlFor="HH">HH</label>
-                                    &nbsp;
-                                    <label htmlFor="MM">MM</label>
-                                    &nbsp;
-                                    <label htmlFor="SS">SS</label>
-                                </div>
-                                <button className='timer-btn fs-5' id='cancel' onClick={() => setTimerInputIsOpen(false)}>Cancel</button>
-                                <input className='timer-btn fs-5' type='submit' id='set-time' value='Set Time' ></input>
-                            </form>
-
-                        </div>
-                    </Modal>
+                    <InputModal timerInputIsOpen={timerInputIsOpen} setTimerInputIsOpen={setTimerInputIsOpen} handleSubmit={handleSubmit} hh={hh} mm={mm} ss={ss} />
                 </span>
             </section>
         </div>
