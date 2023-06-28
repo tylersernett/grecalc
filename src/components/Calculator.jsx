@@ -1,6 +1,8 @@
 import React, { useState, useEffect, useCallback } from 'react';
 
 const format = (n) => {
+    //run .NumberFormat twice in succession to prevent
+    //maximumFractionDigits (7) overriding the maximumSignificantDigits (8)
     let num = new Intl.NumberFormat('en-US', {
         maximumSignificantDigits: 8
     }).format(n);
@@ -13,7 +15,12 @@ const format = (n) => {
         return "0"
     }
 
-    //include trailing 0s in decimals:\\\\\\\\\\\\\\\\\\\\\\\\\
+    num = fixTrailingZeros(n, num);
+    return num;
+}
+
+const fixTrailingZeros = (n, num) => {
+    //include trailing 0s in decimals:
     if (n.includes(".")) {
         if (!num.includes(".")) {
             num += ".";
@@ -32,7 +39,6 @@ const format = (n) => {
             num += "0";
         }
     }
-
     return num;
 }
 
@@ -60,9 +66,25 @@ const isOperand = (string) => {
     return false;
 }
 
+const ButtonBox = ({ buttonMap }) => {
+    return (
+        <div className="button-box m-1">
+            {buttonMap.map((item) =>
+                <button className="calc-btn"
+                    id={item.name}
+                    key={item.name}
+                    aria-label={item.label}
+                    onClick={item.function}>
+                    {item.display}
+                </button>
+            )}
+        </div>
+    )
+}
+
 ////////////////////////////////////////////////////////////////////////
 function Calculator({ timerInputIsOpen, calcIsOpen, setCalcIsOpen }) {
-  
+
     const [calc, setCalc] = useState({
         num: 0,
         operand: "",
@@ -80,14 +102,6 @@ function Calculator({ timerInputIsOpen, calcIsOpen, setCalcIsOpen }) {
         memset: false,
         justRecalled: false, //use to prevent #s from appending to the memory value
     })
-
-    //FOR TESTING:
-    // useEffect(() => {
-    //     console.log(calc);
-    //     console.log(memory);
-    //     // console.log(display);
-    // }, [calc, memory])
-
 
     //side effect: code only gets called when contents of CALC get changed
     useEffect(() => {
@@ -243,11 +257,11 @@ function Calculator({ timerInputIsOpen, calcIsOpen, setCalcIsOpen }) {
         }
 
         //exit if final character is an operand
-        if (isOperand( calc.string.slice(-1))) {
+        if (isOperand(calc.string.slice(-1))) {
             return;
         }
 
-        //only use '==' below to prevent negative appending to 0.0 or 0.000 etc. Negative appending requires nonzero value.
+        // use '==' below to prevent negative appending to 0.0 or 0.000 etc. Negative appending requires nonzero value.
         // eslint-disable-next-line eqeqeq
         if (!(calc.num == 0 && calc.result == 0)) {
             //match last # after operand...
@@ -274,7 +288,6 @@ function Calculator({ timerInputIsOpen, calcIsOpen, setCalcIsOpen }) {
                 prefix = prefix.slice(0, prefix.length - 1);
                 newop = "+";
             }
-            console.log("prefix: " + prefix + " | ln: " + lastNumber);
             if (calc.num === 0 && calc.result !== 0) {
                 setCalc({
                     ...calc,
@@ -346,7 +359,7 @@ function Calculator({ timerInputIsOpen, calcIsOpen, setCalcIsOpen }) {
             ...calc,
             num: 0,
             result: valueOnScreen,
-            string: valueOnScreen.toString()+calc.operand,
+            string: valueOnScreen.toString() + calc.operand,
 
         })
         setMemory({
@@ -410,7 +423,6 @@ function Calculator({ timerInputIsOpen, calcIsOpen, setCalcIsOpen }) {
     //listen for keyboard presses
     useEffect(() => {
         function handleKeydown(e) {
-            console.log('check timerInput', timerInputIsOpen)
             if (!timerInputIsOpen) {
                 const key = e.key
                 switch (key) {
@@ -443,7 +455,7 @@ function Calculator({ timerInputIsOpen, calcIsOpen, setCalcIsOpen }) {
         document.addEventListener("keydown", handleKeydown)
         //remove eventListener in the return, or you get weird repeating states for keyboard entry
         return () => document.removeEventListener("keydown", handleKeydown)
-    },  [numberClickHandler, equalsClickHandler, decimalClickHandler, clearClickHandler, operandClickHandler, parenLeftClickHandler, parenRightClickHandler, timerInputIsOpen]); //use dependency, or you only get 1 number in display at a time for keyboard entry
+    }, [numberClickHandler, equalsClickHandler, decimalClickHandler, clearClickHandler, operandClickHandler, parenLeftClickHandler, parenRightClickHandler, timerInputIsOpen]); //use dependency, or you only get 1 number in display at a time for keyboard entry
 
     const buttonMap = [
         {display: "MR", name: "memrecall",      function: memRecallHandler,                 label:"Memory Recall"}, 
@@ -479,35 +491,23 @@ function Calculator({ timerInputIsOpen, calcIsOpen, setCalcIsOpen }) {
 
     return (
         <>
-        
-        {calcIsOpen ? 
-            <div className="calc-body mt-3" id='calc-body'>
-                <div className='calc-top'>
-                    <button className="close" aria-label="Close calculator" onClick={() => setCalcIsOpen(false)}>
-                        <span aria-hidden="true">✕</span>
-                    </button>
-                </div>
-
-                {/* what appears at the top: display num unless it's 0 -- else display result */}
-                <div id="display" className='display-box m-1'>
-                    <div id='displayL' className="">{memory.memset ? "M" : ""}</div>
-                    <div id='displayR' className="px-1">{display.string}</div>
-                </div>
-
-                <div className="button-box m-1">
-                    {buttonMap.map((item) => 
-                        <button className="calc-btn" 
-                        id={item.name} 
-                        key={item.name}
-                        aria-label={item.label}
-                        onClick={item.function}>
-                            {item.display}
+            {calcIsOpen ?
+                <div className="calc-body mt-3" id='calc-body'>
+                    <div className='calc-top'>
+                        <button className="close" aria-label="Close calculator" onClick={() => setCalcIsOpen(false)}>
+                            <span aria-hidden="true">✕</span>
                         </button>
-                    )}
-                </div>
-            </div >
-            : <></>}
-        
+                    </div>
+
+                    {/* what appears at the top: display num unless it's 0 -- else display result */}
+                    <div id="display" className='display-box m-1'>
+                        <div id='displayL' className="">{memory.memset ? "M" : ""}</div>
+                        <div id='displayR' className="px-1">{display.string}</div>
+                    </div>
+
+                    <ButtonBox buttonMap={buttonMap} />
+                </div >
+                : <></>}
         </>
     )
 }
