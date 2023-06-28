@@ -118,7 +118,7 @@ function Timer({ timerInputIsOpen, setTimerInputIsOpen, calcIsOpen, setCalcIsOpe
 
         document.addEventListener("keydown", handleKeydown)
         return () => document.removeEventListener("keydown", handleKeydown)
-    }, [timerInputIsOpen, handleSubmit]); //use dependency array, or you only get 1 number in display at a time for keyboard entry
+    }, [timerInputIsOpen, handleSubmit]);
 
     return (
         <div className='banners' id='banners'>

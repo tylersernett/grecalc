@@ -37,17 +37,19 @@ const TimerButtons = ({ calcIsOpen, setCalcIsOpen, setTimerInputIsOpen, seconds,
             >
                 Calc
             </button>
+
             {!run ? (
-                // PLAY
                 <PlayButton startTimer={startTimer} />
             ) : (
-                // PAUSE
                 <PauseButton pauseTimer={pauseTimer} seconds={seconds} />
             )}
+
             <ResetButton resetTimer={resetTimer} seconds={seconds} defaultTime={defaultTime} run={run} />
+            
             <button className='timer-btn fs-4' onClick={() => setTimerInputIsOpen(true)}>
                 Set
             </button>
+            
         </section>
     );
 };
