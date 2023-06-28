@@ -18,10 +18,7 @@ header {
 .top-banner {
   display: grid;
   grid-template-columns: 1fr 1fr;
-  /* display: flex;
-  flex-wrap: wrap; */
   background-color: rgb(58 54 55);
-  /* min-height: 32px; */
   border-bottom: 2px solid rgb(136 47 92);
   padding: .75rem ;
   justify-content: right;
@@ -42,7 +39,6 @@ header {
 }
 
 .timer-buttons {
-  /* border: solid 1px green; */
   text-align: right;
 }
 
@@ -98,7 +94,6 @@ header {
 
 .timer-banner {
   background-color: rgb(238 225 227);
-  /* min-height: 32px; */
   display: flex;
   justify-content: right;
   padding: .5em;
@@ -134,7 +129,6 @@ header {
 }
 
 .timer-input-box {
-  /* width: 200px; */
   display: grid;
   grid-template-columns: 1fr 12px 1fr 12px 1fr;
   grid-template-rows: 1fr 1fr;
@@ -145,7 +139,6 @@ header {
   text-align: center;
   box-sizing: border-box;
   border-radius: 6px;
-  /* border: 1px solid; */
   border-style: solid;
 }
 
@@ -155,17 +148,11 @@ header {
 
 .white-body{
   flex: 1 1 auto;
-  /* min-height: 70vh; */
-  /* width: 100%; */
-  /* display: grid; */
-  /* padding-right: 5px; */
   border: 3px double black;
-  /* border-bottom: none; */
 }
 
 .calc-container{
   display: grid;
-  /* gridTemplateColumns: '1fr 1fr 1fr', */
   justify-content: right;
   padding-right: 5px;
 }
@@ -174,7 +161,6 @@ header {
 .calc-top {
   height: 32px;
   cursor: move;
-  /* text-align: right; */
 }
 
 .close {
@@ -182,10 +168,8 @@ header {
   background-color: rgb(211 211 211);
   position:relative;
   top: 0px;
-  /* right: -6em; */
   left: 86%;
   font-size: 20px;
-  /* width: 25px; */
   width: 11%;
   /* adjust vertical position */
   line-height: 20px;
@@ -195,7 +179,6 @@ header {
   margin: 4px;
   cursor: pointer;
   text-align: center;
-  /* box-sizing: border-box; */
 }
 
 .close:hover {
@@ -211,8 +194,6 @@ header {
   display: grid;
   grid-template-columns: 1fr 1fr 1fr 1fr 1fr;
   grid-template-rows: 1fr;
-  /* grid-column-start: 1; */
-  /* grid-column-end: 6; */
   background-color: white;
   border-radius: 6px;
   border: 0px;
@@ -249,12 +230,10 @@ header {
   display: grid;
   grid-template-columns: 1fr 1fr 1fr 1fr 1fr;
   grid-template-rows: 1fr 1fr 1fr 1fr 1fr;
-  /* border: 1px solid black; */
 }
 
 .calc-body {
   user-select: none; /* prevent text selection: */
-  /* max-width: 250px; */
   border: 1px solid rgb(187 187 188);
   background-color: rgb(211 211 211);
 }
@@ -264,9 +243,6 @@ header {
   border-radius: 4px;
   cursor: pointer;
   border: 1px solid rgba(0,0,0,0);
-  /* border: 2px rgba(0,0,0, 0.25); */
-  /* outline: 1px solid rgba(0,0,0,0.15); */
-  /* outline-offset: -1px; */
   margin: 1px;
   background-color: rgb(235 240 246);
   color: rgb(255 255 255);
@@ -274,7 +250,6 @@ header {
   width: 40px;
   height: 40px;
   font-size: 21px;
-  /* box-sizing: border-box; */
   display: flex;
   justify-content: center;
   align-items: center;
@@ -294,10 +269,6 @@ header {
 #clear-entry {
   background-color: rgb(186 90 20);
 }
-
-/* #clear:hover, #clear-entry:hover{
-  background-color:rgb(207, 0, 0)
-} */
 
 #\*,
 #\/,
@@ -328,16 +299,10 @@ header {
   background-color: rgb(158 180 192);
 }
 
-/* #multiply:hover, #divide:hover, #add:hover, #subtract:hover {
-  background-color: #555;
-} */
-
 #equals,
 #memrecall,
 #memclear,
 #memadd {
-  /* grid-column: 3/5; */
-  /* grid-row: 5; */
   background-color: rgb(35 71 96);
 }
 
@@ -346,25 +311,12 @@ header {
 }
 
 .calc-btn:active {
-  /* background: #e5e5e5; */
-  /* outline: 1px red; */
-  /* border: 1px inset white; */
-  /* -webkit-box-shadow: inset 0px 0px 5px #c1c1c1;
-     -moz-box-shadow: inset 0px 0px 5px #c1c1c1;
-          box-shadow: inset 0px 0px 5px #c1c1c1; */
-
-  /* -webkit-box-shadow:inset 0px 0px 0px .5px #fff;
-    -moz-box-shadow:inset 0px 0px 0px .5px #fff;
-    box-shadow:inset 0px 0px 0px 1px #fff; */
   background-image: linear-gradient(rgb(0, 0, 0, 0.4) 0 0);
-  /* background-color: rgba(0,0,0,0.5); */
 }
 
 footer {
   flex: 0 1 40px;
-  /* margin-top: 12rem; */
   text-align: center;
-  /* height: 80px; */
 }
 
 a:link {
@@ -413,25 +365,3 @@ a:visited {
     margin-top: 6px;
   }
 }
-/* 
-@media screen and (max-width: 320px) {
-  .calc-btn {
-    height: 10vh;
-    width: auto;
-    font-size: 24px;
-  }
-  #displayL{
-    font-size: 26px;
-    margin-top: 14px;
-  }
-  #displayR{
-    font-size: 28px;
-    margin-top: 12px;
-  }
-}
-
-@media screen and (max-width: 280px) {
-  .calc-btn {
-    font-size: 18px;
-  }
-} */
