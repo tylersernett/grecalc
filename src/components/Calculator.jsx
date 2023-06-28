@@ -1,88 +1,7 @@
 import React, { useState, useEffect, useCallback } from 'react';
+import ButtonBox from './ButtonBox';
+import { format, removeCommas, prefixIfPriorIsOperand, isOperand } from '../helpers/helpers';
 
-const format = (n) => {
-    //run .NumberFormat twice in succession to prevent
-    //maximumFractionDigits (7) overriding the maximumSignificantDigits (8)
-    let num = new Intl.NumberFormat('en-US', {
-        maximumSignificantDigits: 8
-    }).format(n);
-
-    num = new Intl.NumberFormat('en-US', {
-        maximumFractionDigits: 7
-    }).format(removeCommas(num));
-
-    if (num === "-0") {
-        return "0"
-    }
-
-    num = fixTrailingZeros(n, num);
-    return num;
-}
-
-const fixTrailingZeros = (n, num) => {
-    //include trailing 0s in decimals:
-    if (n.includes(".")) {
-        if (!num.includes(".")) {
-            num += ".";
-        }
-        let trailingZeros = 0;
-        //start at string end & move inwards, break if not a 0
-        for (let i = n.length - 1; i > 0; i--) {
-            if (n[i] === "0") {
-                trailingZeros++;
-            } else {
-                break;
-            }
-        }
-        //append the # of trailing 0s
-        for (let i = 0; i < trailingZeros; i++) {
-            num += "0";
-        }
-    }
-    return num;
-}
-
-const removeCommas = (string) => {
-    return string.replace(/,/g, '');
-}
-
-const prefixIfPriorIsOperand = (string) => {
-    if (string === "") {
-        return string;
-    }
-    let lastEntry = string[string.length - 1];
-    let stringPrefix = "";
-    //only change the stringPrefix for operators. this prevents appending the memory value to a previous string of #s
-    if (isOperand(lastEntry) || lastEntry === "(") {
-        stringPrefix = string;
-    }
-    return stringPrefix;
-}
-
-const isOperand = (string) => {
-    if (string === "+" || string === "-" || string === "*" || string === "/") {
-        return true;
-    }
-    return false;
-}
-
-const ButtonBox = ({ buttonMap }) => {
-    return (
-        <div className="button-box m-1">
-            {buttonMap.map((item) =>
-                <button className="calc-btn"
-                    id={item.name}
-                    key={item.name}
-                    aria-label={item.label}
-                    onClick={item.function}>
-                    {item.display}
-                </button>
-            )}
-        </div>
-    )
-}
-
-////////////////////////////////////////////////////////////////////////
 function Calculator({ timerInputIsOpen, calcIsOpen, setCalcIsOpen }) {
 
     const [calc, setCalc] = useState({
@@ -491,7 +410,7 @@ function Calculator({ timerInputIsOpen, calcIsOpen, setCalcIsOpen }) {
 
     return (
         <>
-            {calcIsOpen ?
+            {calcIsOpen &&
                 <div className="calc-body mt-3" id='calc-body'>
                     <div className='calc-top'>
                         <button className="close" aria-label="Close calculator" onClick={() => setCalcIsOpen(false)}>
@@ -499,7 +418,6 @@ function Calculator({ timerInputIsOpen, calcIsOpen, setCalcIsOpen }) {
                         </button>
                     </div>
 
-                    {/* what appears at the top: display num unless it's 0 -- else display result */}
                     <div id="display" className='display-box m-1'>
                         <div id='displayL' className="">{memory.memset ? "M" : ""}</div>
                         <div id='displayR' className="px-1">{display.string}</div>
@@ -507,7 +425,7 @@ function Calculator({ timerInputIsOpen, calcIsOpen, setCalcIsOpen }) {
 
                     <ButtonBox buttonMap={buttonMap} />
                 </div >
-                : <></>}
+            }
         </>
     )
 }
