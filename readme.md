@@ -1,11 +1,15 @@
-# GRE Calculator Dashboard
+# GRE Dashboard
 An emulation of the GRE calculator & timer.
 
 Problem: The GRE PowerPreps are buried deep in the ETS website, requiring login and multiple steps to open, creating a barrier to quick practice. Furthermore, the GRE calculator is quite particular -- practicing with a phone calculator or other advanced calculators do not properly reflect the limitations imposed by the GRE calculator (max display is 8 characters, only 1 active parentheses set allowed, other quirks).
 
-Solution: The GRE Calculator Dashboard, which allows for access to the GRE calculator and timer applets in one convenient place.
+Solution: The GRE Dashboard, which allows for access to the GRE calculator and timer applets in one convenient place.
 
-## Notes: Number Formatting:
+[Live Site](https://tylersernett.github.io/grecalc/)
+
+
+## Notes to self
+### Notes: Number Formatting:
 
 ```javascript
     const formatter = new Intl.NumberFormat('en-US', {
@@ -31,7 +35,7 @@ The above doesn't work because maximumFractionDigits overrides the maximumSignif
     }
 ```
 
-## Notes: Using react portal for modal:
+### Notes: Using react portal for modal:
 ```javascript
 import ReactDOM from 'react-dom'
 
@@ -47,7 +51,7 @@ and add
 ```
 to HTML file
 
-## Notes: State Management
+### Notes: State Management
 Problem: calculator needs to access a piece of state from the timer. Right now, #s entered into the time input box are also updating the calculator display.
 Solution: move the state up into the parent component (index.js or App.js), so both timer.js and calculator.js can access.
 ```javascript
@@ -78,7 +82,7 @@ function Calculator({timerInputIsOpen}) {
     ...
 ```
 
-## Notes: Drag and Drop
+### Notes: Drag and Drop
 Issue: client can drag calculator all the way off screen
 Solution: clamp the values to the visible area
 
@@ -111,14 +115,14 @@ if (element) {
 setPosition(position);
 ```
 
-## Notes: useRef Best Practices
+### Notes: useRef Best Practices
 useRef: when you don't need to update the render. Allows one to avoid unnecessary re-renders.
 
-## Notes: Input Limitations
+### Notes: Input Limitations
 Issue: timerInput can accept letters and non-digits, resulting in NaN display.
 Solution: add attribute: {pattern="\d*"} to input tag.
 
-## Notes: Styling
+### Notes: Styling
 adjust vertical position:
     css: line-height
 
@@ -143,10 +147,10 @@ And content above footer should have: (you can use a spacer)
 }
 ```
 
-## Notes: Media query not working?
+### Notes: Media query not working?
 Make sure it's at the end of the css file!
 
-## Notes: Overflow text not centering?
+### Notes: Overflow text not centering?
 Use the following CSS:
 ```css
 {
