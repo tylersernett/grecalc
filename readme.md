@@ -7,8 +7,24 @@ Solution: The GRE Dashboard, which allows for access to the GRE calculator and t
 
 [Live Site](https://tylersernett.github.io/grecalc/)
 
+## Built With
+React ⬩ Bootstrap
 
-## Notes to self
+## Features
+* Realistic GRE-styled calculator which handles a number of quirks
+  * Mouse and keyboard support
+  * max-display: 8 characters
+  * only 1 set of parentheses at a time
+  * handles in-line order of operations (1 + 2 * 3 = 7)
+  * Clear Entry button can clear numbers, but not operands
+  * +/- button immediately after an operand will not work until a new number is entered
+  * yields ERROR for
+    * division by 0
+    * negative square root
+    * 8 character cap exceeded
+* A countdown timer styled after the GRE timer
+
+## Dev Notes
 ### Notes: Number Formatting:
 
 ```javascript
