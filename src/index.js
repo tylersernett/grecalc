@@ -13,133 +13,76 @@ function App() {
   const [timerInputIsOpen, setTimerInputIsOpen] = useState(false);
   const [calcIsOpen, setCalcIsOpen] = useState(true);
 
-  //drag code mod'd from //from https://stackoverflow.com/questions/20926551/recommended-way-of-making-react-component-div-draggable
-  // const [position, setPosition] = useState({ x: 0, y: 0 });
-  // const elementRef = useRef(null);
-
   const draggingRef = useRef(false);
-  // const [dragging, setDragging] = useState(false);
   const [position, setPosition] = useState({ x: 0, y: -700 });
   const elementRef = useRef(null);
 
-  // useEffect(() => {
-  //   console.log(dragging)
-  // }, [dragging])
   const clamp = (num, min, max) => Math.min(Math.max(num, min), max);
 
   const dragAndDrop = (event) => {
     event.preventDefault();
-    draggingRef.current = true;
-    const initialX = event.clientX - position.x;
-    const initialY = event.clientY - position.y;
+    if (event.target.className === "calc-top") {
+      draggingRef.current = true;
+      const initialX = event.clientX - position.x;
+      const initialY = event.clientY - position.y;
 
-    const onMouseMove = (event) => {
-      if (draggingRef.current) {
-        const newX = event.clientX - initialX;
-        const newY = event.clientY - initialY;
+      const onMouseMove = (event) => {
+        if (draggingRef.current) {
+          const newX = event.clientX - initialX;
+          const newY = event.clientY - initialY;
+          setPosition({ x: newX, y: newY });
+          let calcElem = document.getElementById('calc-body');
+          let calcWidth = calcElem.offsetWidth;  //221 ;
+          let calcHeight = calcElem.offsetHeight; //298;
 
+          const draggableWidth = calcWidth//221/* Set the width of the draggable item */;
+          const draggableHeight = calcHeight//298/* Set the height of the draggable item */;
 
-        let calcElem = document.getElementById('calc-body');
-        let calcWidth = calcElem.offsetWidth;  //221 ;
-        let calcHeight = calcElem.offsetHeight; //298;
+          // Get the dimensions of the visible window
+          const windowWidth = window.innerWidth;
+          const windowHeight = window.innerHeight;
 
-        const draggableWidth = 221/* Set the width of the draggable item */;
-        const draggableHeight = 298/* Set the height of the draggable item */;
+          // Calculate the boundaries to keep the draggable item within the window
+          const maxX = windowWidth - draggableWidth;
+          const maxY = windowHeight - draggableHeight;
+          // const constrainedX = Math.max(-5000, Math.min(newX, maxX));
 
-        // Get the dimensions of the visible window
-        const windowWidth = window.innerWidth;
-        const windowHeight = window.innerHeight;
+          let appHeight = document.getElementsByClassName('white-body')[0].scrollHeight
+          let appHeight2 = document.getElementsByClassName('white-body')[0].clientHeight
+          let appHeight3 = document.getElementsByClassName('white-body')[0].offsetHeight
+          let topHeight = document.getElementsByClassName('calc-top')[0].offsetHeight
+          const topY = document.getElementsByClassName('calc-top')[0].getBoundingClientRect().y
 
-        // Calculate the boundaries to keep the draggable item within the window
-        const maxX = windowWidth - draggableWidth;
-        const maxY = windowHeight - draggableHeight;
-        const constrainedX = Math.max(0, Math.min(newX, maxX));
-        const constrainedY = Math.max(0, Math.min(newY, maxY));
+          let marginString = getComputedStyle(calcElem).marginTop
+          let marginInt = parseInt(marginString); //crop the 'px' from the string & convert to integer
+          let bannersElem = document.getElementById('banners');
+          let minHeight = -(bannersElem.getBoundingClientRect().height + marginInt); //-134
+          let maxHeight = appHeight - calcHeight - marginInt;
+          let footerHeight = document.getElementById('footer').getBoundingClientRect().height
+          let bannersHeight = bannersElem.getBoundingClientRect().height
 
+          const constrainedX = clamp(newX, -maxX + 0, 5)
+          const constrainedY = clamp(newY, -(windowHeight+topHeight), -draggableHeight + 0)
+          console.log(newY,constrainedY, appHeight, appHeight2,appHeight3,windowHeight, bannersHeight, minHeight, draggableHeight, windowHeight, appHeight+footerHeight+bannersHeight)
+          console.log(document.getElementsByClassName('calc-top')[0].getBoundingClientRect())
+          setPosition({ x: constrainedX, y: constrainedY });
+        }
 
-        //IMOPRT
-        //account for calc body top margin:
-        let appWidth = document.getElementsByClassName('app-container')[0].offsetWidth;
-        let appHeight = document.getElementsByClassName('white-body')[0].scrollHeight
-        let marginString = getComputedStyle(calcElem).marginTop
-        let marginInt = parseInt(marginString); //crop the 'px' from the string & convert to integer
-        let bannersElem = document.getElementById('banners');
-        let minHeight = -(bannersElem.offsetHeight + marginInt); //-134
-        let maxHeight = appHeight - calcHeight - marginInt;
-
-        // Apply boundary constraints
-        // const constrainedX = Math.max(0, Math.min(newX, maxX));
-        // const constrainedY = Math.max(0, Math.min(newY, maxY));
-        // const clampedX = clamp(newX, -5000, maxX)
-        // const clampedY = clamp(newY, minHeight, maxHeight)
-
-        // setPosition({ x: constrainedX, y: constrainedY });
-        // setPosition({ x: clampedX, y: clampedY });
-        setPosition({ x: newX, y: newY });
       }
-    };
 
-    const onMouseUp = () => {
-      if (draggingRef.current) {
-        draggingRef.current = false;
-        window.removeEventListener('mousemove', onMouseMove);
-        window.removeEventListener('mouseup', onMouseUp);
-      }
-    };
 
-    window.addEventListener('mousemove', onMouseMove);
-    window.addEventListener('mouseup', onMouseUp);
+      const onMouseUp = () => {
+        if (draggingRef.current) {
+          draggingRef.current = false;
+          window.removeEventListener('mousemove', onMouseMove);
+          window.removeEventListener('mouseup', onMouseUp);
+        }
+      };
+
+      window.addEventListener('mousemove', onMouseMove);
+      window.addEventListener('mouseup', onMouseUp);
+    };
   };
-
-
-  // const dragAndDrop = useCallback(
-  //   (event) => {
-  //     if (event.target.className === "calc-top") { //only allow dragging on uppermost part of calculator
-  //       const onMouseMove = (MouseEvent) => {
-  //         const element = elementRef.current;
-  //         let coords = element.getBoundingClientRect();
-  //         //establish bounds:
-  //         let appWidth = document.getElementsByClassName('app-container')[0].offsetWidth;
-  //         let appHeight = document.getElementsByClassName('white-body')[0].scrollHeight
-  //         let calcElem = document.getElementById('calc-body');
-  //         let calcWidth = calcElem.offsetWidth;  //221 ;
-  //         let calcHeight = calcElem.offsetHeight; //298;
-
-  //         let minWidth = -appWidth + calcWidth + 10;
-  //         let maxWidth = appWidth - coords.x - calcWidth;
-
-  //         //account for calc body top margin:
-  //         let marginString = getComputedStyle(calcElem).marginTop
-  //         let marginInt = parseInt(marginString); //crop the 'px' from the string & convert to integer
-  //         let bannersElem = document.getElementById('banners');
-  //         let minHeight = -1000//-(bannersElem.offsetHeight + marginInt); //-134
-  //         let maxHeight = 9999//appHeight - calcHeight - marginInt;
-
-  //         let xSum = position.x + MouseEvent.movementX;
-  //         let ySum = position.y + MouseEvent.movementY;
-  //         const newPosition = {
-  //           x: clamp(xSum, minWidth, maxWidth),
-  //           y: clamp(ySum, minHeight, maxHeight)
-  //         };
-  //         setPosition(newPosition);
-
-  //         if (element) {
-  //           element.style.transform = `translate(${newPosition.x}px, ${newPosition.y}px)`;
-  //           // element.style.transform = `translate(${xSum}px, ${ySum}px)`;
-  //         }
-  //         setPosition(position);
-  //       };
-
-  //       const onMouseUp = () => {
-  //         document.removeEventListener("mousemove", onMouseMove);
-  //         document.removeEventListener("mouseup", onMouseUp);
-  //       };
-  //       document.addEventListener("mousemove", onMouseMove);
-  //       document.addEventListener("mouseup", onMouseUp);
-  //     }
-  //   },
-  //   [position, setPosition, elementRef]
-  // );
 
   return (
     <div className='app-container'>
