@@ -152,6 +152,7 @@ header {
 }
 
 .calc-container{
+  height: 0px;
   display: grid;
   justify-content: right;
   padding-right: 5px;
@@ -325,6 +326,23 @@ a:link {
 
 a:visited {
   color: #333;
+}
+
+.embed-form {
+  width: 460px;
+  transition: width 0.3s ease;
+}
+
+@media (max-width: 860px) {
+  .embed-form {
+    width: 200px; /* Shrink width by 100 pixels */
+  }
+}
+
+@media (max-width: 600px) {
+  .embed-form {
+    width: 70px; /* Shrink width by 100 pixels */
+  }
 }
 
 @media screen and (max-width: 460px) {
