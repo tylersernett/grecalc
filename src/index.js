@@ -1,4 +1,4 @@
-import { React, useState, useCallback, useRef, useEffect } from 'react';
+import { React, useState, useRef } from 'react';
 import ReactDOM from 'react-dom/client';
 import './index.css';
 // import App from './App';
@@ -6,7 +6,7 @@ import Calculator from './components/Calculator';
 import Footer from './components/Footer';
 import LinkEmbed from './components/LinkEmbed';
 import Timer from './components/Timer';
-import reportWebVitals from './reportWebVitals';
+import useMediaQuery from './hooks/useMediaQuery';
 
 function App() {
   //declare timerInputIsOpen here, becuase both Timer and Calculator use it
@@ -66,6 +66,8 @@ function App() {
         </div>
       </section>
       <Timer timerInputIsOpen={timerInputIsOpen} setTimerInputIsOpen={setTimerInputIsOpen} calcIsOpen={calcIsOpen} setCalcIsOpen={setCalcIsOpen} />
+      <div className='white-body'>
+        {isNotMobile && <LinkEmbed />}
       </div>
       <Footer />
     </div>
@@ -74,8 +76,3 @@ function App() {
 
 const root = document.getElementById('root');
 ReactDOM.createRoot(root).render(<App />);
-
-// If you want to start measuring performance in your app, pass a function
-// to log results (for example: reportWebVitals(console.log))
-// or send to an analytics endpoint. Learn more: https://bit.ly/CRA-vitals
-reportWebVitals();
