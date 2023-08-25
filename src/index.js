@@ -14,8 +14,9 @@ function App() {
   const [calcIsOpen, setCalcIsOpen] = useState(true);
 
   const draggingRef = useRef(false);
-  const [position, setPosition] = useState({ x: 0, y: -700 });
+  const [position, setPosition] = useState({ x: 0, y: 140 });
   const elementRef = useRef(null);
+  const isNotMobile = useMediaQuery('(min-width: 461px)');
 
   const clamp = (num, min, max) => Math.min(Math.max(num, min), max);
 
@@ -33,43 +34,16 @@ function App() {
           setPosition({ x: newX, y: newY });
           let calcElem = document.getElementById('calc-body');
           let calcWidth = calcElem.offsetWidth;  //221 ;
-          let calcHeight = calcElem.offsetHeight; //298;
-
-          const draggableWidth = calcWidth//221/* Set the width of the draggable item */;
-          const draggableHeight = calcHeight//298/* Set the height of the draggable item */;
-
-          // Get the dimensions of the visible window
-          const windowWidth = window.innerWidth;
-          const windowHeight = window.innerHeight;
-
-          // Calculate the boundaries to keep the draggable item within the window
-          const maxX = windowWidth - draggableWidth;
-          const maxY = windowHeight - draggableHeight;
-          // const constrainedX = Math.max(-5000, Math.min(newX, maxX));
+          // let calcHeight = calcElem.offsetHeight; //298;
 
           let appHeight = document.getElementsByClassName('white-body')[0].scrollHeight
-          let appHeight2 = document.getElementsByClassName('white-body')[0].clientHeight
-          let appHeight3 = document.getElementsByClassName('white-body')[0].offsetHeight
-          let topHeight = document.getElementsByClassName('calc-top')[0].offsetHeight
-          const topY = document.getElementsByClassName('calc-top')[0].getBoundingClientRect().y
+          let appWidth = document.getElementsByClassName('white-body')[0].clientWidth
 
-          let marginString = getComputedStyle(calcElem).marginTop
-          let marginInt = parseInt(marginString); //crop the 'px' from the string & convert to integer
-          let bannersElem = document.getElementById('banners');
-          let minHeight = -(bannersElem.getBoundingClientRect().height + marginInt); //-134
-          let maxHeight = appHeight - calcHeight - marginInt;
-          let footerHeight = document.getElementById('footer').getBoundingClientRect().height
-          let bannersHeight = bannersElem.getBoundingClientRect().height
-
-          const constrainedX = clamp(newX, -maxX + 0, 5)
-          const constrainedY = clamp(newY, -(windowHeight+topHeight), -draggableHeight + 0)
-          console.log(newY,constrainedY, appHeight, appHeight2,appHeight3,windowHeight, bannersHeight, minHeight, draggableHeight, windowHeight, appHeight+footerHeight+bannersHeight)
-          console.log(document.getElementsByClassName('calc-top')[0].getBoundingClientRect())
+          const constrainedX = clamp(newX, -appWidth + calcWidth, 2)
+          const constrainedY = clamp(newY, -16, appHeight)
           setPosition({ x: constrainedX, y: constrainedY });
         }
-
       }
-
 
       const onMouseUp = () => {
         if (draggingRef.current) {
@@ -86,15 +60,12 @@ function App() {
 
   return (
     <div className='app-container'>
+      <section className='calc-container' >
+        <div className='calc-mover' ref={elementRef} onMouseDown={dragAndDrop} style={{ transform: `translate(${position.x}px, ${position.y}px)` }}>
+          <Calculator timerInputIsOpen={timerInputIsOpen} calcIsOpen={calcIsOpen} setCalcIsOpen={setCalcIsOpen} />
+        </div>
+      </section>
       <Timer timerInputIsOpen={timerInputIsOpen} setTimerInputIsOpen={setTimerInputIsOpen} calcIsOpen={calcIsOpen} setCalcIsOpen={setCalcIsOpen} />
-      <div className='white-body'>
-        <LinkEmbed />
-        <section className='calc-container' >
-          <div className='calc-mover' ref={elementRef} onMouseDown={dragAndDrop} style={{ transform: `translate(${position.x}px, ${position.y}px)` }}>
-            <Calculator timerInputIsOpen={timerInputIsOpen} calcIsOpen={calcIsOpen} setCalcIsOpen={setCalcIsOpen} />
-          </div>
-        </section>
-
       </div>
       <Footer />
     </div>
