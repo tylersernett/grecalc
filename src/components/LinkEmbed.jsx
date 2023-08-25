@@ -46,9 +46,8 @@ const LinkEmbed = () => {
       style={{marginTop:'5px'}}
         title="link-embed"
         src={iframeSrc}
-        width="816"
-        height="650"
-        allowFullScreen
+        width="752"
+        height="600"
       />
     </div>
   );

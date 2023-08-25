@@ -35,11 +35,10 @@ function LinkInstructions({ instructionsIsOpen, setInstructionsIsOpen, }) {
       <div className='instructions'>
         <h2>Instructions</h2>
         Enter a URL to display on the main page.
-        <br/>
-        <br/>
+        <br />
+        <br />
         <p>
-          
-          If using Google Slides, replace the “/edit” at the end of the URL with “/preview” to mimic fullscreen.
+          This feature works best with Google Slides (replace the “/edit” at the end of the URL with “/preview” to mimic fullscreen).
         </p>
         <button className='timer-btn fs-5' id='cancel' onClick={() => setInstructionsIsOpen(false)}>Close</button>
 
