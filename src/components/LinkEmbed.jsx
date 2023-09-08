@@ -1,15 +1,9 @@
-import { useState, useEffect, } from "react";
+import { useState, } from "react";
 import LinkInstructions from "./LinkInstructions";
 
-const LinkEmbed = () => {
-  const [urlInput, setUrlInput] = useState('');
-  const [iframeSrc, setIframeSrc] = useState('');
+const LinkEmbed = ({ urlInput, setUrlInput, iframeSrc, setIframeSrc }) => {
   const [instructionsIsOpen, setInstructionsIsOpen] = useState(false);
   const urlPattern = /^(https?|ftp):\/\/[^\s/$.?#].[^\s]*$/;
-
-  useEffect(() => {
-    setIframeSrc(`https://docs.google.com/presentation/d/1p4Eb57bOcfGdhoQu4OpuH0slvldGnJOHSPrzz8U251k/preview`);
-  }, []);
 
   const loadUrl = (e) => {
     e.preventDefault();
