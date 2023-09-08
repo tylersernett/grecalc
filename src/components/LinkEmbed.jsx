@@ -1,7 +1,7 @@
 import { useState, } from "react";
 import LinkInstructions from "./LinkInstructions";
 
-const LinkEmbed = ({ urlInput, setUrlInput, iframeSrc, setIframeSrc }) => {
+const LinkEmbed = ({ urlInput, setUrlInput, iframeSrc, setIframeSrc, setInputIsFocused }) => {
   const [instructionsIsOpen, setInstructionsIsOpen] = useState(false);
   const urlPattern = /^(https?|ftp):\/\/[^\s/$.?#].[^\s]*$/;
 
@@ -19,14 +19,25 @@ const LinkEmbed = ({ urlInput, setUrlInput, iframeSrc, setIframeSrc }) => {
     setIframeSrc('');
   };
 
+  const handleFocus = () => {
+    setInputIsFocused(true);
+  };
+
+  const handleBlur = () => {
+    setInputIsFocused(false);
+  };
+
   return (
     <div className='embed-form' style={{ marginLeft: '5px', marginTop: '-39px', display: 'inline-block' }}>
       <form onSubmit={(e) => loadUrl(e)} >
         <input
           className='embed-input'
+          // className={`embed-input ${inputIsFocused ? 'focused' : ''}`}
           type="text"
           value={urlInput}
           onChange={(e) => setUrlInput(e.target.value)}
+          onFocus={handleFocus}
+          onBlur={handleBlur}
           placeholder="Enter URL to load"
         />
         <button className='timer-btn calc-toggle-btn' style={{ marginRight: '0px' }} type="submit" >

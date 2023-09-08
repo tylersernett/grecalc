@@ -26,7 +26,6 @@ const OVERLAY_STYLES = {
 }
 
 //timerInputIsOpen: var to determine if we display or not, passed in from <Modal> tag
-//children: what's inbetween the <Modal> tags where it's called
 export default function InputModal({ timerInputIsOpen, setTimerInputIsOpen, handleSubmit, hh, mm, ss }) {
     return (
         <ReactModal isOpen={timerInputIsOpen} className='modal-reset'

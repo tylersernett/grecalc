@@ -2,7 +2,7 @@ import React, { useState, useEffect, useCallback } from 'react';
 import ButtonBox from './ButtonBox';
 import { format, removeCommas, prefixIfPriorIsOperand, isOperand } from '../helpers/helpers';
 
-function Calculator({ timerInputIsOpen, calcIsOpen, setCalcIsOpen }) {
+function Calculator({ timerInputIsOpen, calcIsOpen, setCalcIsOpen, inputIsFocused }) {
 
     const [calc, setCalc] = useState({
         num: 0,
@@ -342,7 +342,7 @@ function Calculator({ timerInputIsOpen, calcIsOpen, setCalcIsOpen }) {
     //listen for keyboard presses
     useEffect(() => {
         function handleKeydown(e) {
-            if (!timerInputIsOpen) {
+            if (!timerInputIsOpen && !inputIsFocused) { // don't register keypresses when timer input is open
                 const key = e.key
                 switch (key) {
                     case '1': case '2': case '3': case '4': case '5': case '6': case '7': case '8': case '9': case '0':
@@ -374,7 +374,7 @@ function Calculator({ timerInputIsOpen, calcIsOpen, setCalcIsOpen }) {
         document.addEventListener("keydown", handleKeydown)
         //remove eventListener in the return, or you get weird repeating states for keyboard entry
         return () => document.removeEventListener("keydown", handleKeydown)
-    }, [numberClickHandler, equalsClickHandler, decimalClickHandler, clearClickHandler, operandClickHandler, parenLeftClickHandler, parenRightClickHandler, timerInputIsOpen]); //use dependency, or you only get 1 number in display at a time for keyboard entry
+    }, [numberClickHandler, equalsClickHandler, decimalClickHandler, clearClickHandler, operandClickHandler, parenLeftClickHandler, parenRightClickHandler, timerInputIsOpen, inputIsFocused]); //use dependency, or you only get 1 number in display at a time for keyboard entry
 
     const buttonMap = [
         {display: "MR", name: "memrecall",      function: memRecallHandler,                 label:"Memory Recall"}, 

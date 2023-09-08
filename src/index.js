@@ -18,6 +18,7 @@ function App() {
   const elementRef = useRef(null);
   const isNotMobile = useMediaQuery('(min-width: 461px)');
 
+  const [inputIsFocused, setInputIsFocused] = useState(false);
   const [urlInput, setUrlInput] = useState('');
   const [iframeSrc, setIframeSrc] = useState('');
 
@@ -92,13 +93,13 @@ function App() {
     <div className='app-container'>
       <section className='calc-container' >
         <div className='calc-mover' ref={elementRef} onMouseDown={dragAndDrop} style={{ transform: `translate(${position.x}px, ${position.y}px)` }}>
-          <Calculator timerInputIsOpen={timerInputIsOpen} calcIsOpen={calcIsOpen} setCalcIsOpen={setCalcIsOpen} />
+          <Calculator timerInputIsOpen={timerInputIsOpen} calcIsOpen={calcIsOpen} setCalcIsOpen={setCalcIsOpen} inputIsFocused={inputIsFocused}/>
         </div>
       </section>
       <Timer timerInputIsOpen={timerInputIsOpen} setTimerInputIsOpen={setTimerInputIsOpen} calcIsOpen={calcIsOpen} setCalcIsOpen={setCalcIsOpen} />
       <div className='white-body'>
         {isNotMobile &&
-          <LinkEmbed urlInput={urlInput} setUrlInput={setUrlInput} iframeSrc={iframeSrc} setIframeSrc={setIframeSrc} />
+          <LinkEmbed urlInput={urlInput} setUrlInput={setUrlInput} iframeSrc={iframeSrc} setIframeSrc={setIframeSrc} setInputIsFocused={setInputIsFocused}/>
         }
       </div>
       <Footer />
