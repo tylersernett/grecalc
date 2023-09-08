@@ -9,7 +9,7 @@ import Timer from './components/Timer';
 import useMediaQuery from './hooks/useMediaQuery';
 
 function App() {
-  //declare timerInputIsOpen here, becuase both Timer and Calculator use it
+  //declare timerInputIsOpen here: both Timer and Calculator use it
   const [timerInputIsOpen, setTimerInputIsOpen] = useState(false);
   const [calcIsOpen, setCalcIsOpen] = useState(true);
 
@@ -64,6 +64,29 @@ function App() {
       window.addEventListener('mouseup', onMouseUp);
     };
   };
+
+  // Add a resize event listener: fixes bug where calc could dissappear on window resize
+  useEffect(() => {
+    const handleResize = () => {
+      // Recalculate and clamp the position when the window is resized
+      let calcElem = document.getElementById('calc-body');
+      let calcWidth = calcElem.offsetWidth;
+      let appHeight = document.getElementsByClassName('white-body')[0].scrollHeight;
+      let appWidth = document.getElementsByClassName('white-body')[0].clientWidth;
+
+      const constrainedX = clamp(position.x, -appWidth + calcWidth, 2);
+      const constrainedY = clamp(position.y, -16, appHeight);
+      setPosition({ x: constrainedX, y: constrainedY });
+    };
+
+    // Add the event listener
+    window.addEventListener('resize', handleResize);
+
+    // Clean up the event listener when the component unmounts
+    return () => {
+      window.removeEventListener('resize', handleResize);
+    };
+  }, [position]);
 
   return (
     <div className='app-container'>
