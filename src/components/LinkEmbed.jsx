@@ -21,29 +21,28 @@ const LinkEmbed = () => {
   };
 
   return (
-    <div style={{ marginLeft: '5px', marginTop: '-39px' }}>
-      <form onSubmit={(e) => loadUrl(e)}>
+    <div className='embed-form' style={{ marginLeft: '5px', marginTop: '-39px', display: 'inline-block' }}>
+      <form onSubmit={(e) => loadUrl(e)} >
         <input
-          className='embed-form'
-          // style={{ width: '460px' }}
+          className='embed-input'
           type="text"
           value={urlInput}
           onChange={(e) => setUrlInput(e.target.value)}
           placeholder="Enter URL to load"
         />
-        <button className='timer-btn calc-toggle-btn' style={{marginRight:'0px'}} type="submit" >
+        <button className='timer-btn calc-toggle-btn' style={{ marginRight: '0px' }} type="submit" >
           Load URL
         </button>
-        <button className='timer-btn calc-toggle-btn' style={{marginRight:'0px'}} type="button" onClick={clear}>
+        <button className='timer-btn calc-toggle-btn' style={{ marginRight: '0px' }} type="button" onClick={clear}>
           Clear
         </button>
-        <button className='timer-btn calc-toggle-btn' style={{marginRight:'0px'}} type="button" onClick={() => setInstructionsIsOpen(!instructionsIsOpen)}>
+        <button className='timer-btn calc-toggle-btn' style={{ marginRight: '0px' }} type="button" onClick={() => setInstructionsIsOpen(!instructionsIsOpen)}>
           Help
         </button>
         <LinkInstructions instructionsIsOpen={instructionsIsOpen} setInstructionsIsOpen={setInstructionsIsOpen} />
       </form>
       <iframe
-      style={{marginTop:'5px'}}
+        style={{ marginTop: '5px' }}
         title="link-embed"
         src={iframeSrc}
         width="752"

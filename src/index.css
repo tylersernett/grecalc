@@ -329,19 +329,33 @@ a:visited {
 }
 
 .embed-form {
+  width: 650px;
+  transition: width 0.3s ease;
+}
+
+.embed-input {
   width: 460px;
   transition: width 0.3s ease;
 }
 
 @media (max-width: 860px) {
   .embed-form {
-    width: 200px; /* Shrink width by 100 pixels */
+    width: 390px;
+    /* Shrink width by 100 pixels */
+  }
+
+  .embed-input {
+    width: 200px;
   }
 }
 
 @media (max-width: 600px) {
   .embed-form {
-    width: 70px; /* Shrink width by 100 pixels */
+    width: 260px;
+    /* Shrink width by 100 pixels */
+  }
+  .embed-input{
+    width: 70px;
   }
 }
 
