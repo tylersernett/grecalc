@@ -5,6 +5,7 @@ const LinkEmbed = () => {
   const [urlInput, setUrlInput] = useState('');
   const [iframeSrc, setIframeSrc] = useState('');
   const [instructionsIsOpen, setInstructionsIsOpen] = useState(false);
+  const urlPattern = /^(https?|ftp):\/\/[^\s/$.?#].[^\s]*$/;
 
   useEffect(() => {
     setIframeSrc(`https://docs.google.com/presentation/d/1p4Eb57bOcfGdhoQu4OpuH0slvldGnJOHSPrzz8U251k/preview`);
@@ -12,7 +13,11 @@ const LinkEmbed = () => {
 
   const loadUrl = (e) => {
     e.preventDefault();
-    setIframeSrc(urlInput);
+    if (!urlPattern.test(urlInput)) {
+      alert('Please enter a valid URL beginning with http://')
+    } else {
+      setIframeSrc(urlInput);
+    }
   };
 
   const clear = () => {
