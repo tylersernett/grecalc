@@ -1,4 +1,4 @@
-import { React, useState, useRef } from 'react';
+import { React, useState, useRef, useEffect } from 'react';
 import ReactDOM from 'react-dom/client';
 import './index.css';
 // import App from './App';
@@ -17,6 +17,13 @@ function App() {
   const [position, setPosition] = useState({ x: 0, y: 140 });
   const elementRef = useRef(null);
   const isNotMobile = useMediaQuery('(min-width: 461px)');
+
+  const [urlInput, setUrlInput] = useState('');
+  const [iframeSrc, setIframeSrc] = useState('');
+
+  useEffect(() => {
+    setIframeSrc(`https://docs.google.com/presentation/d/1p4Eb57bOcfGdhoQu4OpuH0slvldGnJOHSPrzz8U251k/preview`);
+  }, []);
 
   const clamp = (num, min, max) => Math.min(Math.max(num, min), max);
 
@@ -67,7 +74,9 @@ function App() {
       </section>
       <Timer timerInputIsOpen={timerInputIsOpen} setTimerInputIsOpen={setTimerInputIsOpen} calcIsOpen={calcIsOpen} setCalcIsOpen={setCalcIsOpen} />
       <div className='white-body'>
-        {isNotMobile && <LinkEmbed />}
+        {isNotMobile &&
+          <LinkEmbed urlInput={urlInput} setUrlInput={setUrlInput} iframeSrc={iframeSrc} setIframeSrc={setIframeSrc} />
+        }
       </div>
       <Footer />
     </div>
