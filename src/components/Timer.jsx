@@ -11,7 +11,7 @@ const Modal_Wrapper = {
 
 function Timer({ timerInputIsOpen, setTimerInputIsOpen, calcIsOpen, setCalcIsOpen }) {
 
-    const [defaultTime, setDefaultTime] = useState(35 * 60);
+    const [defaultTime, setDefaultTime] = useState(21 * 60);
     const [seconds, setSeconds] = useState(defaultTime);
     const [run, setRun] = useState(false);
     const [hide, setHide] = useState(false);
