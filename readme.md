@@ -7,7 +7,7 @@ Solution: The GRE Dashboard, which allows for access to the GRE calculator and t
 
 [Live Site](https://tylersernett.github.io/grecalc/)
 
-<img src="./readme/gredash.png" alt="gre dash screenshot" height="400"/>
+<img src="./readme/gredash.png" alt="gre dash screenshot" style="max-height:400px;"/>
 
 ## Built With
 React ⬩ Bootstrap
