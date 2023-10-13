@@ -7,6 +7,8 @@ Solution: The GRE Dashboard, which allows for access to the GRE calculator and t
 
 [Live Site](https://tylersernett.github.io/grecalc/)
 
+<img src="./readme/grecalc.png" alt="drawing" height="400"/>
+
 ## Built With
 React ⬩ Bootstrap
 
@@ -49,53 +51,6 @@ The above doesn't work because maximumFractionDigits overrides the maximumSignif
         }
         return num;
     }
-```
-
-### Notes: Using react portal for modal:
-```javascript
-import ReactDOM from 'react-dom'
-
-    return ReactDOM.createPortal(
-        <>
-        </>,
-        document.getElementById('portal')
-    )
-```
-and add 
-```HTML
-<div id="portal"></div>
-```
-to HTML file
-
-### Notes: State Management
-Problem: calculator needs to access a piece of state from the timer. Right now, #s entered into the time input box are also updating the calculator display.
-Solution: move the state up into the parent component (index.js or App.js), so both timer.js and calculator.js can access.
-```javascript
-function App() {
-  const [timerInputIsOpen, setTimerInputIsOpen] = useState(false);
-```
-
-And now pass the relevant pieces of state as props to the components:
-```javascript
-  return (
-    <div>
-      <Timer timerInputIsOpen={timerInputIsOpen} setTimerInputIsOpen={setTimerInputIsOpen}/>
-      <Calculator timerInputIsOpen={timerInputIsOpen} />
-    </div>
-  )
-```
-
-And update the component functions to accept these parameters:
-(in timer.js)
-```javascript
-function Timer({timerInputIsOpen, setTimerInputIsOpen}) {
-    ...
-```
-
-in calculator.js:
-```javascript
-function Calculator({timerInputIsOpen}) {
-    ...
 ```
 
 ### Notes: Drag and Drop
@@ -175,3 +130,8 @@ Use the following CSS:
   align-items: center;
 }
 ```
+
+## Future Optimizations
+
+1. Add login, allow users to save URLs / practice sets for quick access
+2. Add skins for other tests (GMAT, SAT, ACT, TOEFL, etc)
