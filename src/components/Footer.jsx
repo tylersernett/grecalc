@@ -1,7 +1,7 @@
 const Footer = () => {
     return (
         <footer className='footer'>
-            ©<a href="https://github.com/tylersernett/">Tyler Sernett</a>
+            ©GRE Dash
         </footer>
     )
 }
