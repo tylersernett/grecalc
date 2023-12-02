@@ -1,13 +1,13 @@
 {
   "files": {
     "main.css": "/grecalc/static/css/main.2de15113.css",
-    "main.js": "/grecalc/static/js/main.5d4bdc53.js",
+    "main.js": "/grecalc/static/js/main.e39a1e0f.js",
     "index.html": "/grecalc/index.html",
     "main.2de15113.css.map": "/grecalc/static/css/main.2de15113.css.map",
-    "main.5d4bdc53.js.map": "/grecalc/static/js/main.5d4bdc53.js.map"
+    "main.e39a1e0f.js.map": "/grecalc/static/js/main.e39a1e0f.js.map"
   },
   "entrypoints": [
     "static/css/main.2de15113.css",
-    "static/js/main.5d4bdc53.js"
+    "static/js/main.e39a1e0f.js"
   ]
 }
